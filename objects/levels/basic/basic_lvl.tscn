@@ -1,0 +1,68 @@
+[gd_scene load_steps=6 format=3 uid="uid://bd367rr8rfijc"]
+
+[ext_resource type="Script" uid="uid://crlxp5yjng4t4" path="res://objects/levels/basic/basic_lvl.gd" id="1_74g82"]
+[ext_resource type="PackedScene" uid="uid://kvjswh5bloxe" path="res://objects/city/city.tscn" id="1_gvys7"]
+[ext_resource type="Script" uid="uid://cytsq0lr5xxo2" path="res://objects/levels/basic/panel.gd" id="3_4ebhi"]
+[ext_resource type="Texture2D" uid="uid://bmb05dgdvgml8" path="res://icon.svg" id="3_65iuk"]
+[ext_resource type="Texture2D" uid="uid://cjlyfnt6tl4ih" path="res://sprites/images/table.png" id="3_qwom7"]
+
+[node name="BasicLvl" type="Node2D"]
+script = ExtResource("1_74g82")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="City" parent="." instance=ExtResource("1_gvys7")]
+position = Vector2(-160, -160)
+
+[node name="CanvasModulate" type="CanvasModulate" parent="."]
+
+[node name="Panel" type="Panel" parent="CanvasModulate"]
+offset_left = 576.0
+offset_top = -328.0
+offset_right = 1456.0
+offset_bottom = 328.0
+script = ExtResource("3_4ebhi")
+
+[node name="undo_btn" type="Button" parent="CanvasModulate/Panel"]
+layout_mode = 0
+offset_left = 64.0
+offset_top = 32.0
+offset_right = 320.0
+offset_bottom = 87.0
+text = "Undo Move"
+
+[node name="TextureButton" type="TextureButton" parent="CanvasModulate/Panel"]
+layout_mode = 0
+offset_left = -128.0
+offset_top = 520.0
+offset_bottom = 648.0
+texture_normal = ExtResource("3_65iuk")
+
+[node name="ai_difficulty_btn" type="OptionButton" parent="CanvasModulate/Panel"]
+layout_mode = 0
+offset_left = 64.0
+offset_top = 104.0
+offset_right = 320.0
+offset_bottom = 135.0
+selected = 0
+item_count = 2
+popup/item_0/text = "AI Difficulty: Easy"
+popup/item_0/id = 0
+popup/item_1/id = 1
+
+[node name="main_menu_btn" type="Button" parent="CanvasModulate/Panel"]
+layout_mode = 0
+offset_left = 64.0
+offset_top = 592.0
+offset_right = 320.0
+offset_bottom = 623.0
+text = "Back to Main menu"
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = -1
+scale = Vector2(0.765625, 0.765625)
+texture = ExtResource("3_qwom7")
+
+[connection signal="pressed" from="CanvasModulate/Panel/undo_btn" to="." method="_on_undo_btn_pressed"]
+[connection signal="pressed" from="CanvasModulate/Panel/TextureButton" to="CanvasModulate/Panel" method="_on_texture_button_pressed"]
+[connection signal="pressed" from="CanvasModulate/Panel/main_menu_btn" to="CanvasModulate/Panel" method="_on_main_menu_btn_pressed"]

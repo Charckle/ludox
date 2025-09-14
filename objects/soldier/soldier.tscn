@@ -1,0 +1,42 @@
+[gd_scene load_steps=2 format=3 uid="uid://dfdwypfy8fn0i"]
+
+[ext_resource type="Script" uid="uid://dy2lfwu4iejmi" path="res://objects/soldier/soldier.gd" id="1_oixgj"]
+
+[node name="Soldier" type="Node2D"]
+script = ExtResource("1_oixgj")
+
+[node name="myturn" type="ColorRect" parent="."]
+visible = false
+offset_left = 3.0
+offset_top = 3.0
+offset_right = 37.0
+offset_bottom = 37.0
+
+[node name="selectedpiece" type="ColorRect" parent="."]
+visible = false
+offset_left = 2.0
+offset_top = 2.0
+offset_right = 38.0
+offset_bottom = 38.0
+color = Color(0.2, 0.596078, 0.0313726, 1)
+
+[node name="rect_dux" type="ColorRect" parent="."]
+offset_left = 5.0
+offset_top = 5.0
+offset_right = 35.0
+offset_bottom = 35.0
+color = Color(1, 0.866667, 0.270588, 1)
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_left = 8.0
+offset_top = 8.0
+offset_right = 32.0
+offset_bottom = 32.0
+
+[node name="moved" type="ColorRect" parent="."]
+visible = false
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 24.0
+offset_bottom = 24.0
+color = Color(0.72032, 0.447014, 5.77569e-07, 1)

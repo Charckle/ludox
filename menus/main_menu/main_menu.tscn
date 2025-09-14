@@ -1,0 +1,158 @@
+[gd_scene load_steps=6 format=3 uid="uid://blglugajiqw3y"]
+
+[ext_resource type="Script" uid="uid://cjmw0hmqq8fmc" path="res://menus/main_menu/top_btns.gd" id="1_1nwmw"]
+[ext_resource type="Script" uid="uid://bpk3x06ssbpm7" path="res://menus/main_menu/main_menu.gd" id="1_ml8bw"]
+[ext_resource type="Script" uid="uid://c146knvqhpoml" path="res://menus/main_menu/bottom_btns.gd" id="1_xbn2l"]
+[ext_resource type="Script" uid="uid://bub4ffpv8tcbw" path="res://menus/main_menu/new_game_pan.gd" id="3_vu5tu"]
+[ext_resource type="Texture2D" uid="uid://c5pc6hoik0e1v" path="res://sprites/images/main_menu_01.png" id="5_oic2i"]
+
+[node name="MainMenu" type="Node2D"]
+script = ExtResource("1_ml8bw")
+
+[node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="main_container" type="PanelContainer" parent="."]
+offset_left = 32.0
+offset_top = -288.0
+offset_right = 544.0
+offset_bottom = 280.0
+
+[node name="top_buttons" type="Control" parent="main_container"]
+layout_mode = 2
+
+[node name="top_btns" type="VBoxContainer" parent="main_container/top_buttons"]
+layout_mode = 2
+offset_left = 16.0
+offset_top = 24.0
+offset_right = 496.0
+offset_bottom = 96.0
+script = ExtResource("1_1nwmw")
+
+[node name="continue_btn" type="Button" parent="main_container/top_buttons/top_btns"]
+layout_mode = 2
+text = "Continue"
+
+[node name="new_game_btn" type="Button" parent="main_container/top_buttons/top_btns"]
+layout_mode = 2
+text = "New game"
+
+[node name="bottom_btns" type="VBoxContainer" parent="main_container/top_buttons"]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = -88.0
+offset_right = -16.0
+offset_bottom = -22.0
+grow_horizontal = 2
+grow_vertical = 0
+script = ExtResource("1_xbn2l")
+
+[node name="settings_btn" type="Button" parent="main_container/top_buttons/bottom_btns"]
+layout_mode = 2
+text = "Settings"
+
+[node name="exit_btn" type="Button" parent="main_container/top_buttons/bottom_btns"]
+layout_mode = 2
+text = "Exit"
+
+[node name="othr_containers" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="new_game_pan" type="Panel" parent="othr_containers"]
+visible = false
+layout_mode = 0
+offset_left = -528.0
+offset_top = -88.0
+offset_right = -40.0
+offset_bottom = 104.0
+script = ExtResource("3_vu5tu")
+
+[node name="game_rules_btn" type="OptionButton" parent="othr_containers/new_game_pan"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -480.0
+offset_top = -80.0
+offset_right = -200.0
+offset_bottom = -49.0
+grow_horizontal = 0
+grow_vertical = 2
+selected = 0
+item_count = 3
+popup/item_0/text = "Basic Rules"
+popup/item_0/id = 0
+popup/item_1/text = "Basic PLUS Rules"
+popup/item_1/id = 1
+popup/item_2/text = "XXI"
+popup/item_2/id = 2
+
+[node name="game_type_btn" type="OptionButton" parent="othr_containers/new_game_pan"]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -480.0
+offset_top = -32.0
+offset_right = -200.0
+offset_bottom = -1.0
+grow_horizontal = 0
+grow_vertical = 2
+selected = 0
+item_count = 2
+popup/item_0/text = "Player VS Player"
+popup/item_0/id = 0
+popup/item_1/text = "Player VS AI"
+popup/item_1/id = 1
+
+[node name="ai_lvl_btn" type="OptionButton" parent="othr_containers/new_game_pan"]
+visible = false
+layout_mode = 1
+anchors_preset = 14
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = 296.0
+offset_top = -32.0
+offset_right = -8.0
+offset_bottom = -1.0
+grow_horizontal = 2
+grow_vertical = 2
+selected = 0
+item_count = 4
+popup/item_0/text = "Easy"
+popup/item_0/id = 0
+popup/item_1/text = "Medium"
+popup/item_1/id = 1
+popup/item_2/text = "Hard"
+popup/item_2/id = 2
+popup/item_3/text = "Impossible"
+popup/item_3/id = 3
+
+[node name="start_g_btn" type="Button" parent="othr_containers/new_game_pan"]
+layout_mode = 2
+offset_top = 152.0
+offset_right = 488.0
+offset_bottom = 183.0
+text = "Start Game"
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = -1
+position = Vector2(-12, 18)
+scale = Vector2(0.765625, 0.765625)
+texture = ExtResource("5_oic2i")
+
+[connection signal="pressed" from="main_container/top_buttons/top_btns/new_game_btn" to="main_container/top_buttons/top_btns" method="_on_new_game_btn_pressed"]
+[connection signal="pressed" from="main_container/top_buttons/bottom_btns/exit_btn" to="main_container/top_buttons/bottom_btns" method="_on_exit_btn_pressed"]
+[connection signal="item_selected" from="othr_containers/new_game_pan/game_type_btn" to="othr_containers/new_game_pan" method="_on_game_type_btn_item_selected"]
+[connection signal="pressed" from="othr_containers/new_game_pan/start_g_btn" to="othr_containers/new_game_pan" method="_on_start_g_btn_pressed"]
