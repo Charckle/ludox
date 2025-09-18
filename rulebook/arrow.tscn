@@ -1,0 +1,24 @@
+[gd_scene format=3 uid="uid://fv1fk5ro8xmt"]
+
+[node name="Arrow" type="Node2D"]
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_right = 104.0
+offset_bottom = 8.0
+color = Color(0.286275, 0.215686, 0, 1)
+
+[node name="ColorRect2" type="ColorRect" parent="."]
+offset_left = 100.0
+offset_top = 7.0
+offset_right = 123.0
+offset_bottom = 15.0
+rotation = -2.61799
+color = Color(0.286275, 0.215686, 0, 1)
+
+[node name="ColorRect3" type="ColorRect" parent="."]
+offset_left = 80.0
+offset_top = 12.0
+offset_right = 103.0
+offset_bottom = 20.0
+rotation = -0.523598
+color = Color(0.286275, 0.215686, 0, 1)

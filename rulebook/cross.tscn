@@ -1,0 +1,19 @@
+[gd_scene format=3 uid="uid://u8n28ml7weyi"]
+
+[node name="Cross" type="Node2D"]
+
+[node name="ColorRect" type="ColorRect" parent="."]
+offset_right = 40.0
+offset_bottom = 8.0
+rotation = 0.785397
+pivot_offset = Vector2(20, 4)
+color = Color(0.286866, 0.216368, 9.62615e-08, 1)
+
+[node name="ColorRect2" type="ColorRect" parent="."]
+offset_left = -0.673589
+offset_top = -1.1366
+offset_right = 39.3264
+offset_bottom = 6.8634
+rotation = -0.785397
+pivot_offset = Vector2(20.9051, 4.23149)
+color = Color(0.286866, 0.216368, 9.62615e-08, 1)

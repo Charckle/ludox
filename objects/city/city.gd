@@ -12,8 +12,8 @@ var tile_selected = null
 var possible_moves = []
 var tile_target = null
 
-var previous_tile = null
-var moved_to_tile = null
+var previous_tile = Vector2i(0,0)
+var moved_to_tile = Vector2i(0,0)
 
 var since_last_eat = 0
 
@@ -39,9 +39,12 @@ enum Game_types {
 	PVAI
 }
 
-var fast_game = false # move pieces slowly
+enum Ai_lvl {
+	EASY,
+	NORMAL
+}
+
 var rules : int
-var ai_lvl = 0
 
 var game_move_states = []
 
@@ -49,7 +52,7 @@ var soldierUnitScene = preload("res://objects/soldier/soldier.tscn")
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	rules = GlobalSet.game_rules
+	rules = GlobalSet.settings["game_rules"]
 	#GlobalSet.game_type = $game_type_btn.selected
 	#GlobalSet.ai_lvl = $ai_lvl_btn.select
 	
@@ -57,8 +60,12 @@ func _ready() -> void:
 	corners = get_corners()
 	border_tiles = get_border_tiles()
 	
-	show_pieces_turn()
-	save_move_state()
+	if GlobalSet.load_saved_continue:
+		GlobalSet.load_saved_continue = false
+		load_game_state(ContinueGame.load_continue())
+	else:
+		show_pieces_turn()
+		save_move_state()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -123,8 +130,9 @@ func show_where_can_move(yes=false):
 	for tile in tiles:
 		tile.dim(false)
 		
-		if yes and not tile.position_grid in possible_moves:
-			tile.dim(yes)
+		if GlobalSet.settings["movement_highlight"] == 1:
+			if yes and not tile.position_grid in possible_moves:
+				tile.dim(yes)
 
 func show_pieces_turn():
 	var units = $soldiers.get_children()
@@ -299,7 +307,7 @@ func move_unit(start_pos, end_pos):
 	
 	# move and end turn
 	
-	if fast_game:
+	if GlobalSet.settings["animation"] == 0:
 		unit.global_position = tile.global_position
 		unit_stopped_moving(start_pos, end_pos)
 	else:
@@ -356,8 +364,10 @@ func basic_plus_eatable_rules(pos_coord, dryrun=false):
 	can_eat.append(basic_eatable_rules(pos_coord, dryrun))
 	# check corners
 	# Check top, bottom, left right, if there is an enemy
-	var current_unit = get_soldier_on_position(pos_coord)
-	var adj_tiles = current_unit.get_adjacent_tiles(self)
+	
+	var current_tile = get_tile_on_position(pos_coord)
+
+	var adj_tiles = current_tile.get_adjacent_tiles(self)
 	
 	# if there is, check if its in a corner
 	for tile_coord in adj_tiles:
@@ -392,6 +402,8 @@ func eat_unit(unit):
 func xxi_eatable_rules(start_coord, pos_coord, dryrun=false):
 	var can_eat = []
 	can_eat.append(basic_eatable_rules(pos_coord, dryrun))
+	can_eat.append(basic_plus_eatable_rules(pos_coord, dryrun))
+	
 	
 	can_eat.append($xxi.eatable_rules(start_coord, pos_coord, dryrun))
 	
@@ -457,7 +469,7 @@ func end_turn():
 	save_move_state()
 	
 	check_win()
-	if player_turn != 3 and GlobalSet.game_type != Game_types.PVP:
+	if player_turn != 3 and GlobalSet.settings["game_type"] != Game_types.PVP:
 		if player_turn != 2:
 			$ai.execute_move()
 
@@ -523,26 +535,36 @@ func set_winner(player_n):
 	for unit_ in $soldiers.get_children():
 		if unit_.player != player_n:
 			unit_.set_lost()
+	
+	ContinueGame.delete_continue()
 
 func get_current_game_state():
 	var game_state = {
 		"player_turn": self.player_turn,
 		"rules": self.rules,
-		"game_type": GlobalSet.game_type,
-		"ai_lvl": self.ai_lvl,
-		"previous_tile": self.previous_tile,
-		"moved_to_tile": self.moved_to_tile,
+		"game_type": GlobalSet.settings["game_type"],
+		"ai_lvl": GlobalSet.settings["ai_lvl"],
+		"previous_tile": v_t_l(self.previous_tile),
+		"moved_to_tile": v_t_l(self.moved_to_tile),
 		"all_units": get_all_units_for_bckup(),
 		"since_last_eat": self.since_last_eat
 	}
 	return game_state
 
+func v_t_l(vector_):
+	var my_list = [vector_[0], vector_[1]]
+	return my_list
+	
+func l_t_v(list_):
+	var my_vector = Vector2i(list_[0], list_[1])
+	return my_vector
+
 func get_all_units_for_bckup():
 	var all_units = []
 	for unit in $soldiers.get_children():
 		all_units.append([
-			unit.position_grid,
-			unit.global_position,
+			v_t_l(unit.position_grid),
+			v_t_l(unit.global_position),
 			unit.player,
 			unit.dux
 		])
@@ -550,13 +572,18 @@ func get_all_units_for_bckup():
 	return all_units
 
 func save_move_state():
-	self.game_move_states.append(get_current_game_state())
+	var cur_state = get_current_game_state()
+	self.game_move_states.append(cur_state)
+	ContinueGame.save_continue(cur_state)
+
 	
 func undo_move():
 	self.show_where_can_move()
 	
 	if len( self.game_move_states) > 1:
 		self.game_move_states.pop_back() 
+		if GlobalSet.settings["game_type"] != 0:
+			self.game_move_states.pop_back() 
 		var previous_state = self.game_move_states[-1]
 		
 		self.load_game_state(previous_state)
@@ -565,10 +592,10 @@ func undo_move():
 func load_game_state(game_state):
 	self.player_turn = game_state["player_turn"]
 	self.rules = game_state["rules"]
-	GlobalSet.game_type = game_state["game_type"]
-	self.ai_lvl = game_state["ai_lvl"]
-	self.previous_tile = game_state["previous_tile"]
-	self.moved_to_tile = game_state["moved_to_tile"]
+	GlobalSet.settings["game_type"] = game_state["game_type"]
+	GlobalSet.settings["ai_lvl"] = game_state["ai_lvl"]
+	self.previous_tile = l_t_v(game_state["previous_tile"])
+	self.moved_to_tile = l_t_v(game_state["moved_to_tile"])
 	self.all_units = game_state["all_units"]
 	self.since_last_eat = game_state["since_last_eat"]
 	
@@ -596,11 +623,13 @@ func remove_all_units():
 
 func restore_unit(unit_data):
 	var unit = soldierUnitScene.instantiate()
-	unit.position_grid = unit_data[0]
+	var position_grid = l_t_v(unit_data[0])
+	var global_pos = l_t_v(unit_data[1])
+	unit.position_grid = position_grid
 	unit.player = unit_data[2]
 	unit.dux = unit_data[3]
 	$soldiers.add_child(unit)
-	unit.global_position = unit_data[1]
+	unit.global_position = global_pos
 	unit.set_position_grid()
 
 

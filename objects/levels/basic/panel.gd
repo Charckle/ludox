@@ -13,14 +13,16 @@ func _ready() -> void:
 	var panel_lenght = self.size.x
 	hidden_x = self.position.x 
 	
-	visible_x = - 300# panel_lenght # In case it's already anchored where you want it
+	visible_x = - 200# panel_lenght # In case it's already anchored where you want it
 
 	#self.position.x = hidden_x  # Start hidden
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
-	pass
+	# set ai lvl
+	if GlobalSet.settings["ai_lvl"] != $ai_difficulty_btn.selected:
+		$ai_difficulty_btn.selected = GlobalSet.settings["ai_lvl"]
 
 
 func toggle_console():
@@ -46,3 +48,11 @@ func _on_texture_button_pressed() -> void:
 
 func _on_main_menu_btn_pressed() -> void:
 	get_tree().change_scene_to_file("res://menus/main_menu/main_menu.tscn")
+
+
+func _on_rematch_btn_pressed() -> void:
+	get_tree().reload_current_scene()
+
+
+func _on_ai_difficulty_btn_item_selected(index: int) -> void:
+	GlobalSet.settings["ai_lvl"] = $ai_difficulty_btn.selected

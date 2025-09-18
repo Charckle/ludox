@@ -10,16 +10,21 @@ config_version=5
 
 [application]
 
-config/name="ludox"
+config/name="Ludos Romana"
+run/main_scene="uid://blglugajiqw3y"
 config/features=PackedStringArray("4.4", "GL Compatibility")
 config/icon="res://icon.svg"
 
 [autoload]
 
 GlobalSet="*res://global_scripts/global_set.gd"
+SettingsLoad="*res://global_scripts/settings_load.gd"
+ContinueGame="*res://global_scripts/continue_game.gd"
 
 [display]
 
+window/size/viewport_width=850
+window/size/viewport_height=480
 window/stretch/mode="viewport"
 
 [rendering]
