@@ -53,6 +53,12 @@ custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 text = "Campaign"
 
+[node name="online_btn" type="Button" parent="main_container/top_buttons/top_btns"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+disabled = true
+text = "Online Multiplayer"
+
 [node name="bottom_btns" type="VBoxContainer" parent="main_container/top_buttons"]
 layout_mode = 1
 anchors_preset = 12

@@ -279,13 +279,13 @@ position = Vector2(280, 0)
 position = Vector2(40, 0)
 
 [node name="Soldier3" parent="soldiers" instance=ExtResource("3_sgfal")]
-position = Vector2(80, 40)
+position = Vector2(80, 0)
 
 [node name="Soldier4" parent="soldiers" instance=ExtResource("3_sgfal")]
 position = Vector2(120, 0)
 
 [node name="Soldier5" parent="soldiers" instance=ExtResource("3_sgfal")]
-position = Vector2(160, 40)
+position = Vector2(160, 0)
 
 [node name="Soldier6" parent="soldiers" instance=ExtResource("3_sgfal")]
 position = Vector2(200, 0)

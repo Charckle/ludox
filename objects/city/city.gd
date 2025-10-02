@@ -15,6 +15,7 @@ var tile_target = null
 var previous_tile = Vector2i(0,0)
 var moved_to_tile = Vector2i(0,0)
 
+var all_moves = 0
 var since_last_eat = 0
 var moves_to_draw = 50
 
@@ -39,6 +40,8 @@ enum Ai_lvl {
 	EASY,
 	NORMAL
 }
+
+var moves_till_attack_dux_ai = 2
 
 var rules
 
@@ -259,6 +262,7 @@ func move_unit(my_player, start_pos, end_pos):
 	
 	
 	self.since_last_eat = self.since_last_eat + 1
+	self.all_moves = all_moves + 1
 	
 	# move and end turn
 	if GlobalSet.settings["animation"] == 0:
@@ -444,7 +448,7 @@ func check_win():
 	
 	
 	if since_last_eat >= moves_to_draw:
-		var text_ = "The game ends in a draw. Throw some dice to decde the winner"
+		var text_ = "The game ends in a draw. Throw some dice to decide the winner"
 		lvl_.show_info_pan(text_)
 		player_turn = 3
 		ContinueGame.delete_continue()
@@ -469,7 +473,8 @@ func get_current_game_state():
 		"previous_tile": v_t_l(self.previous_tile),
 		"moved_to_tile": v_t_l(self.moved_to_tile),
 		"all_units": get_all_units_for_bckup(),
-		"since_last_eat": self.since_last_eat
+		"since_last_eat": self.since_last_eat,
+		"all_moves": self.all_moves
 	}
 	return game_state
 
@@ -520,6 +525,7 @@ func load_game_state(game_state):
 	self.moved_to_tile = l_t_v(game_state["moved_to_tile"])
 	self.all_units = game_state["all_units"]
 	self.since_last_eat = game_state["since_last_eat"]
+	self.all_moves = game_state["all_moves"]
 	
 	remove_all_units()
 	

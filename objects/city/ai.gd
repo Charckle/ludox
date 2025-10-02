@@ -70,7 +70,7 @@ func execute_move(my_player):
 			
 	
 	var eat_dux = false
-	if not eat and len(units_att_dux) > 0:
+	if not eat and len(units_att_dux) > 0 and city.all_moves > city.moves_till_attack_dux_ai:
 		eat_dux = chance(ai_perc)
 		
 		if eat_dux:
@@ -96,7 +96,7 @@ func ai_perc_set():
 		city.Ai_lvl.EASY:
 			return 0.65
 		city.Ai_lvl.NORMAL:
-			return 0.9
+			return 0.85
 
 
 func pop_random_fast(arr: Array) -> Variant:
