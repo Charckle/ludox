@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://blglugajiqw3y"]
+[gd_scene load_steps=15 format=3 uid="uid://blglugajiqw3y"]
 
 [ext_resource type="Script" uid="uid://cjmw0hmqq8fmc" path="res://menus/main_menu/top_btns.gd" id="1_1nwmw"]
 [ext_resource type="Script" uid="uid://bpk3x06ssbpm7" path="res://menus/main_menu/main_menu.gd" id="1_ml8bw"]
@@ -13,6 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://fv1fk5ro8xmt" path="res://rulebook/arrow.tscn" id="10_sk04l"]
 [ext_resource type="Texture2D" uid="uid://coar21qa72561" path="res://rulebook/rule_3.png" id="11_pmi7g"]
 [ext_resource type="Texture2D" uid="uid://bl7qw12331oqi" path="res://rulebook/rule_4.png" id="12_sk04l"]
+[ext_resource type="Texture2D" uid="uid://bqnmfgehdm1bj" path="res://sprites/images/europe_map.png" id="13_11cdn"]
 
 [node name="MainMenu" type="Node2D"]
 script = ExtResource("1_ml8bw")
@@ -38,12 +39,19 @@ script = ExtResource("1_1nwmw")
 
 [node name="continue_btn" type="Button" parent="main_container/top_buttons/top_btns"]
 visible = false
+custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 text = "Continue"
 
 [node name="new_game_btn" type="Button" parent="main_container/top_buttons/top_btns"]
+custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 text = "New game"
+
+[node name="campaign_btn" type="Button" parent="main_container/top_buttons/top_btns"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+text = "Campaign"
 
 [node name="bottom_btns" type="VBoxContainer" parent="main_container/top_buttons"]
 layout_mode = 1
@@ -60,14 +68,17 @@ grow_vertical = 0
 script = ExtResource("1_xbn2l")
 
 [node name="game_rules_btn" type="Button" parent="main_container/top_buttons/bottom_btns"]
+custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 text = "Game Rule"
 
 [node name="settings_btn" type="Button" parent="main_container/top_buttons/bottom_btns"]
+custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 text = "Settings"
 
 [node name="exit_btn" type="Button" parent="main_container/top_buttons/bottom_btns"]
+custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 text = "Exit"
 
@@ -81,11 +92,12 @@ offset_bottom = 40.0
 visible = false
 layout_mode = 0
 offset_left = -312.0
-offset_top = -96.0
-offset_bottom = 96.0
+offset_top = -136.0
+offset_bottom = 136.0
 script = ExtResource("3_vu5tu")
 
 [node name="game_rules_btn" type="OptionButton" parent="othr_containers/new_game_pan"]
+custom_minimum_size = Vector2(0, 50)
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -93,9 +105,9 @@ anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
 offset_left = -296.0
-offset_top = -80.0
+offset_top = -112.0
 offset_right = -16.0
-offset_bottom = -49.0
+offset_bottom = -62.0
 grow_horizontal = 0
 grow_vertical = 2
 selected = 0
@@ -108,6 +120,7 @@ popup/item_2/text = "XXI"
 popup/item_2/id = 2
 
 [node name="game_type_btn" type="OptionButton" parent="othr_containers/new_game_pan"]
+custom_minimum_size = Vector2(0, 50)
 layout_mode = 1
 anchors_preset = 6
 anchor_left = 1.0
@@ -115,9 +128,9 @@ anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
 offset_left = -296.0
-offset_top = -40.0
+offset_top = -56.0
 offset_right = -16.0
-offset_bottom = -9.0
+offset_bottom = -6.0
 grow_horizontal = 0
 grow_vertical = 2
 selected = 0
@@ -129,6 +142,7 @@ popup/item_1/id = 1
 
 [node name="ai_lvl_btn" type="OptionButton" parent="othr_containers/new_game_pan"]
 visible = false
+custom_minimum_size = Vector2(0, 50)
 layout_mode = 1
 anchors_preset = 14
 anchor_top = 0.5
@@ -137,7 +151,7 @@ anchor_bottom = 0.5
 offset_left = 16.0
 offset_top = -10.0
 offset_right = -144.0
-offset_bottom = 31.0
+offset_bottom = 50.0
 grow_horizontal = 2
 grow_vertical = 2
 selected = 0
@@ -148,11 +162,12 @@ popup/item_1/text = "Normal"
 popup/item_1/id = 1
 
 [node name="start_g_btn" type="Button" parent="othr_containers/new_game_pan"]
+custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 offset_left = 16.0
-offset_top = 152.0
+offset_top = 208.0
 offset_right = 296.0
-offset_bottom = 183.0
+offset_bottom = 258.0
 text = "Start Game"
 
 [node name="settings_pan" type="Panel" parent="othr_containers"]
@@ -177,6 +192,7 @@ layout_mode = 2
 text = "Animation"
 
 [node name="animation_btn" type="OptionButton" parent="othr_containers/settings_pan/GridContainer"]
+custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 selected = 0
 item_count = 2
@@ -190,6 +206,7 @@ layout_mode = 2
 text = "Movement highlight"
 
 [node name="movement_btn" type="OptionButton" parent="othr_containers/settings_pan/GridContainer"]
+custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 selected = 0
 item_count = 2
@@ -203,6 +220,7 @@ layout_mode = 2
 text = "Username"
 
 [node name="username_lnd" type="LineEdit" parent="othr_containers/settings_pan/GridContainer"]
+custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 placeholder_text = "Vigitilus"
 
@@ -211,11 +229,13 @@ layout_mode = 2
 text = "Online Server IP"
 
 [node name="server_ip_lnd" type="LineEdit" parent="othr_containers/settings_pan/GridContainer"]
+custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "192.168.0.10"
 
 [node name="rules_pan" type="Panel" parent="othr_containers"]
+visible = false
 layout_mode = 0
 offset_left = -406.0
 offset_top = -227.0
@@ -626,6 +646,45 @@ size_flags_horizontal = 3
 size_flags_vertical = 3
 text = "Next"
 
+[node name="campaign_pan" type="Panel" parent="othr_containers"]
+visible = false
+layout_mode = 0
+offset_left = -384.0
+offset_top = -216.0
+offset_bottom = 208.0
+
+[node name="map" type="Sprite2D" parent="othr_containers/campaign_pan"]
+position = Vector2(190, 120)
+scale = Vector2(0.22695, 0.22695)
+texture = ExtResource("13_11cdn")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="othr_containers/campaign_pan"]
+layout_mode = 0
+offset_left = 22.0
+offset_top = 240.0
+offset_right = 358.0
+offset_bottom = 408.0
+
+[node name="punic_btn" type="Button" parent="othr_containers/campaign_pan/VBoxContainer"]
+layout_mode = 2
+disabled = true
+text = "Punic Wars"
+
+[node name="galic_btn" type="Button" parent="othr_containers/campaign_pan/VBoxContainer"]
+layout_mode = 2
+disabled = true
+text = "Galic Campaign"
+
+[node name="civil_war_btn" type="Button" parent="othr_containers/campaign_pan/VBoxContainer"]
+layout_mode = 2
+disabled = true
+text = "Civil War"
+
+[node name="greco_persian_btn2" type="Button" parent="othr_containers/campaign_pan/VBoxContainer"]
+layout_mode = 2
+disabled = true
+text = "Greco Persian Wars"
+
 [node name="Sprite2D" type="Sprite2D" parent="."]
 z_index = -1
 position = Vector2(-1, 4)
@@ -634,6 +693,7 @@ texture = ExtResource("5_oic2i")
 
 [connection signal="pressed" from="main_container/top_buttons/top_btns/continue_btn" to="main_container/top_buttons/top_btns" method="_on_continue_btn_pressed"]
 [connection signal="pressed" from="main_container/top_buttons/top_btns/new_game_btn" to="main_container/top_buttons/top_btns" method="_on_new_game_btn_pressed"]
+[connection signal="pressed" from="main_container/top_buttons/top_btns/campaign_btn" to="main_container/top_buttons/top_btns" method="_on_button_pressed"]
 [connection signal="pressed" from="main_container/top_buttons/bottom_btns/game_rules_btn" to="main_container/top_buttons/bottom_btns" method="_on_game_rules_btn_pressed"]
 [connection signal="pressed" from="main_container/top_buttons/bottom_btns/settings_btn" to="main_container/top_buttons/bottom_btns" method="_on_settings_btn_pressed"]
 [connection signal="pressed" from="main_container/top_buttons/bottom_btns/exit_btn" to="main_container/top_buttons/bottom_btns" method="_on_exit_btn_pressed"]

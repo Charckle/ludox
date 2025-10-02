@@ -2,6 +2,7 @@ extends Node2D
 
 @export var player: int = 1
 @export var dux: bool = false
+var captured = false
 var position_grid: Vector2i = Vector2i.ZERO
 
 
@@ -57,7 +58,8 @@ func get_blocking_tiles(city, foes_only=false):
 	
 	for unit_ in city.get_node("soldiers").get_children():
 		var unit_pos = unit_.position_grid
-		if unit_pos in adj_tiles:
+
+		if unit_pos in adj_tiles and unit_.captured == false:
 			adj_free_tile_pos.erase(unit_pos)
 			if not foes_only:
 				adj_units.append(unit_)
@@ -90,4 +92,4 @@ func tween_to_global_and_resume(target_global: Vector2, city, start_pos, end_pos
 
 	tween.tween_property(self, "global_position", target_global, 0.8)
 	await tween.finished
-	city.unit_stopped_moving(start_pos, end_pos)
+	city.unit_stopped_moving(self.player, start_pos, end_pos)

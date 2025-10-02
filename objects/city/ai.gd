@@ -22,13 +22,13 @@ func _process(delta: float) -> void:
 # if you can eat something, choose randomly one
 # throw a random if you actually will eat. if fails, choose randomly one of the places you can move
 
-func execute_move():
+func execute_move(my_player):
 	print("AI moving")
 	var ai_lvl = GlobalSet.settings["ai_lvl"]
 	
 	var ai_perc = ai_perc_set()
-	print(ai_perc)
-	var soldiers = city.get_soldiers(city.player_turn)
+	
+	var soldiers = city.get_soldiers(my_player)
 	
 	var units_with_possible_eat = []
 	var units_att_dux = []
@@ -40,7 +40,7 @@ func execute_move():
 		
 		for move in poss_moves:
 			possible_moves.append([start_coord, move])
-			var is_eatable = city.check_if_eatable(start_coord, move, true)
+			var is_eatable = city.check_if_eatable(my_player, start_coord, move, true)
 			var tile =  city.get_tile_on_position(move)
 			
 			#var is_eatable = false
@@ -59,13 +59,13 @@ func execute_move():
 			#var random_value = units_with_possible_eat.pick_random()
 			var random_value = pop_random_fast(units_with_possible_eat)
 			if ai_lvl == city.Ai_lvl.EASY:
-				city.move_unit(random_value[0], random_value[1])
+				city.move_unit(my_player, random_value[0], random_value[1])
 				return
 				# check if you get eaten on that spot
 				#while true:
 					#pass#if check_if_eaten()
 			else:
-				city.move_unit(random_value[0], random_value[1])
+				city.move_unit(my_player, random_value[0], random_value[1])
 				return
 			
 	
@@ -75,14 +75,13 @@ func execute_move():
 		
 		if eat_dux:
 			var random_value = units_att_dux.pick_random()
-			city.move_unit(random_value[0], random_value[1])
+			city.move_unit(my_player, random_value[0], random_value[1])
 			
 			return
-	else:
-		var random_value = possible_moves.pick_random()
-		
-		city.move_unit(random_value[0], random_value[1])
-		return
+	
+	var random_value = possible_moves.pick_random()
+	city.move_unit(my_player, random_value[0], random_value[1])
+	
 
 
 
@@ -93,7 +92,7 @@ func chance(prob: float) -> bool:
 
 
 func ai_perc_set():
-	match GlobalSet.settings["ai_lvl"]:
+	match int(GlobalSet.settings["ai_lvl"]):
 		city.Ai_lvl.EASY:
 			return 0.65
 		city.Ai_lvl.NORMAL:

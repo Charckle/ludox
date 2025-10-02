@@ -1,4 +1,4 @@
-extends Node2D
+extends Control
 
 var all_board_positions
 var corners
@@ -16,16 +16,12 @@ var previous_tile = Vector2i(0,0)
 var moved_to_tile = Vector2i(0,0)
 
 var since_last_eat = 0
+var moves_to_draw = 50
 
 var all_units = []
 
 
-enum Where {
-	TOP,
-	BOTTOM,
-	LEFT,
-	RIGHT
-}
+
 
 
 enum Rules {
@@ -44,9 +40,11 @@ enum Ai_lvl {
 	NORMAL
 }
 
-var rules : int
+var rules
 
 var game_move_states = []
+
+@onready var lvl_ = get_parent()
 
 var soldierUnitScene = preload("res://objects/soldier/soldier.tscn")
 
@@ -55,11 +53,13 @@ func _ready() -> void:
 	rules = GlobalSet.settings["game_rules"]
 	#GlobalSet.game_type = $game_type_btn.selected
 	#GlobalSet.ai_lvl = $ai_lvl_btn.select
+	#pivot_offset = size * 0.5
+	scale = Vector2(1.3, 1.3)
 	
 	all_board_positions = blank_board()
 	corners = get_corners()
 	border_tiles = get_border_tiles()
-	
+
 	if GlobalSet.load_saved_continue:
 		GlobalSet.load_saved_continue = false
 		load_game_state(ContinueGame.load_continue())
@@ -82,6 +82,7 @@ func _input(event):
 
 
 func check_tile(mouse_pos):
+	var my_player = self.player_turn
 	for tile in $tiles.get_children():
 		if tile.get_child(0).get_global_rect().has_point(mouse_pos):
 			#print("Clicked on:", tile.name)
@@ -90,7 +91,7 @@ func check_tile(mouse_pos):
 			
 			# if there is a soldier on that position
 			if soldier_on_pos != null:
-				if soldier_on_pos.player == self.player_turn:
+				if soldier_on_pos.player == my_player:
 					select_soldier(soldier_on_pos)
 					show_selected_piece(soldier_on_pos)
 					tile_selected = tile
@@ -99,7 +100,7 @@ func check_tile(mouse_pos):
 				if tile_selected != null:
 					if tile.position_grid in possible_moves:
 						# move selcted unit to position
-						self.move_unit(tile_selected.position_grid, tile.position_grid)
+						self.move_unit(my_player, tile_selected.position_grid, tile.position_grid)
 				
 
 func get_soldier_on_position(pos_coord):
@@ -158,62 +159,16 @@ func get_possible_moves(soldier_pos, dryrun=false):
 	
 	match rules:
 		Rules.BASIC:
-			poss_moves = get_basic_moves(soldier_pos, dryrun)
+			poss_moves = $basic.get_basic_moves(soldier_pos, dryrun)
 		Rules.BASIC_PLUS:
-			poss_moves = get_basic_moves(soldier_pos, dryrun)
+			poss_moves = $basic.get_basic_moves(soldier_pos, dryrun)
 		Rules.XXI:
 			poss_moves = $xxi.get_moves(soldier_pos, dryrun)
 
 	return poss_moves
 
 
-func get_basic_moves(soldier_pos, dryrun=false):
-	# check bottom positions
-	var _possible_moves_local = []
-	var ckeck_from = soldier_pos
-	
-	while true:
-		ckeck_from.y = ckeck_from.y - 1
 
-		if ckeck_from in all_board_positions and get_soldier_on_position(ckeck_from) == null:
-			_possible_moves_local.append(ckeck_from)
-		else:
-			break
-	
-	# check top positions
-	ckeck_from = soldier_pos
-	while true:
-		ckeck_from.y = ckeck_from.y + 1
-				
-		if ckeck_from in all_board_positions and get_soldier_on_position(ckeck_from) == null:
-			_possible_moves_local.append(ckeck_from)
-		else:
-			break
-	
-	# check left positions
-	ckeck_from = soldier_pos
-	while true:
-		ckeck_from.x = ckeck_from.x - 1
-
-		if ckeck_from in all_board_positions and get_soldier_on_position(ckeck_from) == null:
-			_possible_moves_local.append(ckeck_from)
-		else:
-			break
-	
-	# check right positions
-	ckeck_from = soldier_pos
-	while true:
-		ckeck_from.x = ckeck_from.x + 1
-
-		if ckeck_from in all_board_positions and get_soldier_on_position(ckeck_from) == null:
-			_possible_moves_local.append(ckeck_from)
-		else:
-			break
-	
-	if dryrun:
-		return _possible_moves_local
-	else:
-		possible_moves = _possible_moves_local
 
 
 func blank_board():
@@ -287,7 +242,7 @@ func get_border_tiles(all_positions = null):
 	
 	return border_tiles_
 
-func move_unit(start_pos, end_pos):
+func move_unit(my_player, start_pos, end_pos):
 	can_interact = false
 	var unit = get_soldier_on_position(start_pos)
 	var start_tile = get_tile_on_position(start_pos)
@@ -306,32 +261,32 @@ func move_unit(start_pos, end_pos):
 	self.since_last_eat = self.since_last_eat + 1
 	
 	# move and end turn
-	
 	if GlobalSet.settings["animation"] == 0:
 		unit.global_position = tile.global_position
-		unit_stopped_moving(start_pos, end_pos)
+		unit_stopped_moving(my_player, start_pos, end_pos)
 	else:
 		unit.tween_to_global_and_resume(tile.global_position, self, start_pos, end_pos)
 	
 	
 	
 
-func unit_stopped_moving(start_pos, end_pos):
+func unit_stopped_moving(my_player, start_pos, end_pos):
 	# check if you eat anything
-	check_if_eatable(start_pos, end_pos)
+	check_if_eatable(my_player, start_pos, end_pos)
 	can_interact = true
+	
 	end_turn()
 
-func check_if_eatable(start_coord, pos_coord, dryrun=false):
+func check_if_eatable(my_player, start_coord, pos_coord, dryrun=false):
 	var can_eat = []
 	
 	match rules:
 		Rules.BASIC:
-			can_eat.append(basic_eatable_rules(pos_coord, dryrun))
+			can_eat.append($basic.basic_eatable_rules(my_player, start_coord, pos_coord, dryrun))
 		Rules.BASIC_PLUS:
-			can_eat.append(basic_plus_eatable_rules(pos_coord, dryrun))
+			can_eat.append($basic.basic_plus_eatable_rules(my_player, start_coord, pos_coord, dryrun))
 		Rules.XXI:
-			can_eat.append(xxi_eatable_rules(start_coord, pos_coord, dryrun))
+			can_eat.append($xxi.xxi_eatable_rules(my_player, start_coord, pos_coord, dryrun))
 	
 	if dryrun:
 		if true in can_eat:
@@ -341,111 +296,51 @@ func check_if_eatable(start_coord, pos_coord, dryrun=false):
 
 
 
-func basic_eatable_rules(pos_coord, dryrun=false):
-	var can_eat = []
-	# check bottom
-	can_eat.append(check_basic_kill(Where.BOTTOM, pos_coord, dryrun))
-	# check top
-	can_eat.append(check_basic_kill(Where.TOP, pos_coord, dryrun))
-	# check left
-	can_eat.append(check_basic_kill(Where.LEFT, pos_coord, dryrun))
-	# check right
-	can_eat.append(check_basic_kill(Where.RIGHT, pos_coord, dryrun))
 
-	if dryrun:
-		if true in can_eat:
-			return true
-		else:
-			return false
-
-func basic_plus_eatable_rules(pos_coord, dryrun=false):
-	var can_eat = []
-
-	can_eat.append(basic_eatable_rules(pos_coord, dryrun))
-	# check corners
-	# Check top, bottom, left right, if there is an enemy
-	
-	var current_tile = get_tile_on_position(pos_coord)
-
-	var adj_tiles = current_tile.get_adjacent_tiles(self)
-	
-	# if there is, check if its in a corner
-	for tile_coord in adj_tiles:
-		#print(corners)
-		if tile_coord in corners["all"]:
-			# check if unit there
-			var unit_ = get_soldier_on_position(tile_coord)
-			if unit_ != null and unit_.player != player_turn:
-				# check if that unit ha another player unit alongside it
-				var enemy_adj_tiles = unit_.get_adjacent_tiles(self)
-				# remove the player unit
-				enemy_adj_tiles.erase(pos_coord)
-				for adj_tile_coord in enemy_adj_tiles:
-					var unit_adj = get_soldier_on_position(adj_tile_coord)
-					if unit_adj != null:
-						if unit_adj.player == player_turn:
-							if unit_.dux == false:
-								if not dryrun:
-									can_eat.append(true)
-									self.eat_unit(unit_)
-									
-	if dryrun:
-		if true in can_eat:
-			return true
-		else:
-			return false
 
 func eat_unit(unit):
+	unit.captured = true
 	unit.queue_free()
 	self.since_last_eat = -1
 
-func xxi_eatable_rules(start_coord, pos_coord, dryrun=false):
-	var can_eat = []
-	can_eat.append(basic_eatable_rules(pos_coord, dryrun))
-	can_eat.append(basic_plus_eatable_rules(pos_coord, dryrun))
+
+func where_can_player_move(player):
+	var soldiers = self.get_soldiers(player)
 	
+	var can_move = true
+	var units_with_possible_eat = []
+	var units_att_dux = []
+	var possible_moves = []
 	
-	can_eat.append($xxi.eatable_rules(start_coord, pos_coord, dryrun))
+	for unit in soldiers:
+		var start_coord = unit.position_grid
+		var poss_moves = self.get_possible_moves(start_coord, true)
+		
+		for move in poss_moves:
+			possible_moves.append([start_coord, move])
+			var is_eatable = self.check_if_eatable(player, start_coord, move, true)
+			var tile =  self.get_tile_on_position(move)
+			
+			#var is_eatable = false
+			if is_eatable:
+				units_with_possible_eat.append([unit.position_grid, move])
+				#break
+			if tile.do_adj_dux(self, self.get_enemy_pid()):
+				units_att_dux.append([unit.position_grid, move])
+	if not units_with_possible_eat and not units_att_dux and not possible_moves:
+		can_move = false
+		
+	var result = {
+		"can_move": can_move,
+		"units_with_possible_eat": units_with_possible_eat,
+		"units_att_dux": units_att_dux,
+		"possible_moves": possible_moves
+	}
 	
-	if dryrun:
-		if true in can_eat:
-			return true
-		else:
-			return false
+	return result
 
 
-func check_basic_kill(where: Where, pos_coord, dryrun=false):
-	var can_eat = false
-	var up = 1
-	var axis = 0
-	match where:
-		Where.TOP:
-			up = up * 1
-			axis = 1
-		Where.BOTTOM:
-			up = up * -1
-			axis = 1
-		Where.LEFT:
-			up = up * -1
-		Where.RIGHT:
-			up = up * 1
-	
-	# check right
-	var position_to_check = pos_coord
-	position_to_check[axis] = position_to_check[axis] + up
-	var enemy_unit = get_soldier_on_position(position_to_check)
-	if enemy_unit != null:
-		if enemy_unit.player != player_turn:
-			position_to_check[axis] = position_to_check[axis] + up
-			var friendly_unit = get_soldier_on_position(position_to_check)
-			if friendly_unit != null and friendly_unit.player == player_turn:
-				if enemy_unit.dux == false:
-					if not dryrun:
-						self.eat_unit(enemy_unit)
-					else:
-						can_eat = true
 
-	return can_eat
 
 
 func end_turn():
@@ -468,17 +363,18 @@ func end_turn():
 	
 	save_move_state()
 	
-	check_win()
-	if player_turn != 3 and GlobalSet.settings["game_type"] != Game_types.PVP:
-		if player_turn != 2:
-			$ai.execute_move()
+	if not check_win():
+		if player_turn != 3 and GlobalSet.settings["game_type"] != Game_types.PVP:
+			if player_turn != 2:
+				$ai.execute_move(self.player_turn)
+
 
 func get_soldiers(player=false):
 	
 	if player:
 		var units = []
 		for unit in $soldiers.get_children():
-			if unit.player == player:
+			if unit.player == player and unit.captured == false:
 				units.append(unit)
 		return units
 	else:
@@ -506,14 +402,22 @@ func check_win():
 	var score = {1: 0, 2: 0}
 	
 	for unit_ in $soldiers.get_children():
-		if unit_.dux == false:
+		if unit_.dux == false and unit_.captured == false:
 			score[unit_.player] = score[unit_.player] + 1 
+	
+	var winner_ = 0
+	
 	if score[1] == 0:
-		print("player 2 wins!")
-		set_winner(2)
+		winner_ = 2
 	elif score[2] == 0:
-		print("player 1 wins!")
-		set_winner(1)
+		winner_ = 1
+	
+	if winner_ != 0:
+		var text_ = get_winner_text(winner_) + " won the day!\nThere has no more pawns."
+		lvl_.show_info_pan(text_)
+		set_winner(winner_)
+		return true
+	
 	# check for dux
 	for unit_ in $soldiers.get_children():
 		if unit_.dux == true:
@@ -522,12 +426,30 @@ func check_win():
 			var all_tiles = blocking_tiles[1]
 			
 			if len(blocking_units) == len(all_tiles):
-				if unit_.player == 1:
-					print("player 2 wins!")
-					set_winner(2)
-				else:
-					print("player 1 wins!")
-					set_winner(1)
+				var winner = get_enemy_pid(unit_.player)
+				var text_ = get_winner_text(winner) + " won the day!\nThe dux is sorounded."
+				lvl_.show_info_pan(text_)
+				set_winner(winner)
+				return true
+	
+	# check if player can move
+	var results = where_can_player_move(player_turn)
+	
+	if results["can_move"] == false:
+		var winner = get_enemy_pid(player_turn)
+		var text_ = get_winner_text(winner) + " won the day! No more moves available"
+		lvl_.show_info_pan(text_)
+		set_winner(winner)
+		return true
+	
+	
+	if since_last_eat >= moves_to_draw:
+		var text_ = "The game ends in a draw. Throw some dice to decde the winner"
+		lvl_.show_info_pan(text_)
+		player_turn = 3
+		ContinueGame.delete_continue()
+	return false
+
 
 func set_winner(player_n):
 	player_turn = 3
@@ -640,3 +562,15 @@ func get_enemy_pid(manual_player = null):
 		return 2
 	else:
 		return 1
+
+func get_winner_text(player):
+	if GlobalSet.settings["game_type"] != Game_types.PVP:
+		if player == 2:
+			return "You"
+		else:
+			return "The opponent"
+	else:
+		if player == 2:
+			return "Red Player"
+		else:
+			return "Blue Player"

@@ -1,14 +1,18 @@
-[gd_scene load_steps=7 format=3 uid="uid://kvjswh5bloxe"]
+[gd_scene load_steps=8 format=3 uid="uid://kvjswh5bloxe"]
 
 [ext_resource type="PackedScene" uid="uid://duo2ga25l3551" path="res://objects/tile/base_tile.tscn" id="1_s8o60"]
 [ext_resource type="Script" uid="uid://dnbyqnmcn1ybf" path="res://objects/city/city.gd" id="1_v861l"]
 [ext_resource type="PackedScene" uid="uid://dfdwypfy8fn0i" path="res://objects/soldier/soldier.tscn" id="3_sgfal"]
 [ext_resource type="PackedScene" uid="uid://tyxnri4weyhu" path="res://objects/decoration/meander_basic/meander_basic.tscn" id="4_a731x"]
 [ext_resource type="Script" uid="uid://bptaxt1ht2svc" path="res://objects/city/xxi.gd" id="4_wv755"]
+[ext_resource type="Script" uid="uid://dipmmxnnvn7ts" path="res://objects/city/basic.gd" id="5_c1rcx"]
 [ext_resource type="Script" uid="uid://b88pmp3x5mxe1" path="res://objects/city/ai.gd" id="6_efj38"]
 
-[node name="City" type="Node2D"]
+[node name="City" type="Control"]
+layout_mode = 3
+anchors_preset = 0
 script = ExtResource("1_v861l")
+metadata/_edit_use_anchors_ = true
 
 [node name="tiles" type="Node2D" parent="."]
 
@@ -269,18 +273,19 @@ position_grid = Vector2i(1, 0)
 [node name="soldiers" type="Node2D" parent="."]
 
 [node name="Soldier" parent="soldiers" instance=ExtResource("3_sgfal")]
+position = Vector2(280, 0)
 
 [node name="Soldier2" parent="soldiers" instance=ExtResource("3_sgfal")]
 position = Vector2(40, 0)
 
 [node name="Soldier3" parent="soldiers" instance=ExtResource("3_sgfal")]
-position = Vector2(80, 0)
+position = Vector2(80, 40)
 
 [node name="Soldier4" parent="soldiers" instance=ExtResource("3_sgfal")]
 position = Vector2(120, 0)
 
 [node name="Soldier5" parent="soldiers" instance=ExtResource("3_sgfal")]
-position = Vector2(160, 0)
+position = Vector2(160, 40)
 
 [node name="Soldier6" parent="soldiers" instance=ExtResource("3_sgfal")]
 position = Vector2(200, 0)
@@ -289,7 +294,6 @@ position = Vector2(200, 0)
 position = Vector2(240, 0)
 
 [node name="Soldier8" parent="soldiers" instance=ExtResource("3_sgfal")]
-position = Vector2(280, 0)
 
 [node name="Soldier18" parent="soldiers" instance=ExtResource("3_sgfal")]
 position = Vector2(120, 40)
@@ -300,7 +304,7 @@ position = Vector2(40, 280)
 player = 2
 
 [node name="Soldier10" parent="soldiers" instance=ExtResource("3_sgfal")]
-position = Vector2(200, 280)
+position = Vector2(280, 280)
 player = 2
 
 [node name="Soldier11" parent="soldiers" instance=ExtResource("3_sgfal")]
@@ -312,7 +316,7 @@ position = Vector2(120, 280)
 player = 2
 
 [node name="Soldier13" parent="soldiers" instance=ExtResource("3_sgfal")]
-position = Vector2(280, 280)
+position = Vector2(240, 280)
 player = 2
 
 [node name="Soldier14" parent="soldiers" instance=ExtResource("3_sgfal")]
@@ -320,11 +324,11 @@ position = Vector2(0, 280)
 player = 2
 
 [node name="Soldier15" parent="soldiers" instance=ExtResource("3_sgfal")]
-position = Vector2(240, 280)
+position = Vector2(160, 280)
 player = 2
 
 [node name="Soldier16" parent="soldiers" instance=ExtResource("3_sgfal")]
-position = Vector2(160, 280)
+position = Vector2(200, 280)
 player = 2
 
 [node name="Soldier17" parent="soldiers" instance=ExtResource("3_sgfal")]
@@ -333,6 +337,7 @@ player = 2
 dux = true
 
 [node name="decoration" type="Node2D" parent="."]
+visible = false
 
 [node name="MeanderBasic" parent="decoration" instance=ExtResource("4_a731x")]
 position = Vector2(0, -40)
@@ -466,6 +471,9 @@ rotation = -1.57079
 [node name="MeanderBasic36" parent="decoration" instance=ExtResource("4_a731x")]
 position = Vector2(320, 320)
 rotation = -1.57079
+
+[node name="basic" type="Node" parent="."]
+script = ExtResource("5_c1rcx")
 
 [node name="xxi" type="Node" parent="."]
 script = ExtResource("4_wv755")
