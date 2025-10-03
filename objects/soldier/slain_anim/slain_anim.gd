@@ -6,7 +6,7 @@ extends Node2D
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	var duration := 0.6
+	var duration := 0.5
 	var offset := 50.0   # how far to slide
 
 	# One tween, parallel tracks, eased out

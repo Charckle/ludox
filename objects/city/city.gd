@@ -169,7 +169,7 @@ func get_possible_moves(soldier_pos, dryrun=false):
 			poss_moves = $basic.get_basic_moves(soldier_pos, dryrun)
 		Rules.XXI:
 			poss_moves = $xxi.get_moves(soldier_pos, dryrun)
-
+	
 	return poss_moves
 
 

@@ -104,6 +104,7 @@ func check_basic_kill(where: Where, my_player, pos_coord, dryrun=false):
 	var enemy_unit = city.get_soldier_on_position(position_to_check)
 	if enemy_unit != null:
 		if enemy_unit.player != my_player:
+			
 			position_to_check[axis] = position_to_check[axis] + up
 			var friendly_unit = city.get_soldier_on_position(position_to_check)
 			if friendly_unit != null and friendly_unit.player == my_player:
@@ -111,6 +112,7 @@ func check_basic_kill(where: Where, my_player, pos_coord, dryrun=false):
 					if not dryrun:
 						city.eat_unit(enemy_unit)
 					else:
+						var ba = 0
 						can_eat = true
 
 	return can_eat
@@ -123,7 +125,7 @@ func basic_plus_eatable_rules(my_player, start_coord, pos_coord, dryrun=false):
 	# check corners
 	# Check top, bottom, left right, if there is an enemy
 	
-	can_eat.append(basic_eatable_rules(my_player, start_coord, pos_coord, dryrun))
+	#can_eat.append(basic_eatable_rules(my_player, start_coord, pos_coord, dryrun))
 	
 	var current_tile = city.get_tile_on_position(pos_coord)
 

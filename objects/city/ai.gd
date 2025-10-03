@@ -41,6 +41,7 @@ func execute_move(my_player):
 		for move in poss_moves:
 			possible_moves.append([start_coord, move])
 			var is_eatable = city.check_if_eatable(my_player, start_coord, move, true)
+
 			var tile =  city.get_tile_on_position(move)
 			
 			#var is_eatable = false
@@ -56,6 +57,7 @@ func execute_move(my_player):
 		eat = chance(ai_perc)
 		
 		if eat:
+			print("eating")
 			#var random_value = units_with_possible_eat.pick_random()
 			var random_value = pop_random_fast(units_with_possible_eat)
 			if ai_lvl == city.Ai_lvl.EASY:
@@ -67,10 +69,12 @@ func execute_move(my_player):
 			else:
 				city.move_unit(my_player, random_value[0], random_value[1])
 				return
-			
+		else:
+			print("not eating")
 	
 	var eat_dux = false
 	if not eat and len(units_att_dux) > 0 and city.all_moves > city.moves_till_attack_dux_ai:
+		print("going after the dux")
 		eat_dux = chance(ai_perc)
 		
 		if eat_dux:

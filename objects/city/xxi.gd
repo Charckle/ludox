@@ -309,13 +309,17 @@ func phalanx_attack(where, my_player, start_coord, target_pos, dryrun=false):
 	var next_position = target_pos
 	next_position[axis] = target_pos[axis] + up
 	
+	
 	var unit = city.get_soldier_on_position(next_position)
 	var first_unit = false
 	
 	if unit != null and unit.player == my_player:
 		if start_coord.x == unit.position_grid.x or start_coord.y == unit.position_grid.y:
 			first_unit = true
-
+	
+	# if the first unit is the one your are moving, shit is afoot, stop
+	if next_position == start_coord:
+		return false
 	if first_unit:
 		# check on which side your units are
 		var tile = city.get_tile_on_position(target_pos)
@@ -339,10 +343,10 @@ func phalanx_attack(where, my_player, start_coord, target_pos, dryrun=false):
 			var mlist = [unit_l, unit_r]
 			if mlist.has(null) and mlist.count(null) < mlist.size():
 				if unit_l == null:
-					if unit_r.player == my_player:
+					if unit_r.player == my_player and unit_r.position_grid != start_coord:
 						testudo_side = right_side_pos
 				elif unit_r == null:
-					if unit_l.player == my_player:
+					if unit_l.player == my_player and unit_l.position_grid != start_coord:
 						testudo_side = left_side_pos
 		
 		
@@ -352,21 +356,23 @@ func phalanx_attack(where, my_player, start_coord, target_pos, dryrun=false):
 			var unit_opos_testudo_side = next_position - testudo_side
 			var test_no_unit = city.get_soldier_on_position(unit_pos_testudo_side)
 			var test_yes_unit = city.get_soldier_on_position(unit_opos_testudo_side)
+
 			if test_no_unit != null and (test_yes_unit == null or test_yes_unit.player != my_player):
+				testudo_side = false
+				first_unit = false
+			if start_coord in [unit_pos_testudo_side, unit_opos_testudo_side]:
 				testudo_side = false
 				first_unit = false
 
 
 	if first_unit and testudo_side:
 		while true:
-			
 			next_position[axis] = next_position[axis] + up
 			var unit_r = city.get_soldier_on_position(next_position)
 
 			if unit_r != null and unit_r.player != my_player:
 				if not unit_r.dux:
 					can_eat = true
-					
 					if not dryrun:
 						city.eat_unit(unit_r)
 				break
@@ -380,12 +386,10 @@ func phalanx_attack(where, my_player, start_coord, target_pos, dryrun=false):
 			else:
 				break
 
-
 	return can_eat
 	
 func xxi_eatable_rules(my_player, start_coord, pos_coord, dryrun=false):
 	var can_eat = []
-	can_eat.append(basic.basic_eatable_rules(my_player, start_coord, pos_coord, dryrun))
 	can_eat.append(basic.basic_plus_eatable_rules(my_player, start_coord, pos_coord, dryrun))
 	
 	
