@@ -49,7 +49,9 @@ var game_move_states = []
 
 @onready var lvl_ = get_parent()
 
-var soldierUnitScene = preload("res://objects/soldier/soldier.tscn")
+var SoldierUnitScene = preload("res://objects/soldier/soldier.tscn")
+var SlainScene = preload("res://objects/soldier/slain_anim/slain_anim.tscn")
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -306,7 +308,14 @@ func eat_unit(unit):
 	unit.captured = true
 	unit.queue_free()
 	self.since_last_eat = -1
+	
+	if GlobalSet.settings["animation"] == 1:
+		spawn_slain_anim(unit.global_position)
 
+func spawn_slain_anim(gb):
+	var fx = SlainScene.instantiate()
+	$trash.add_child(fx)
+	fx.global_position = gb
 
 func where_can_player_move(player):
 	var soldiers = self.get_soldiers(player)
@@ -550,7 +559,7 @@ func remove_all_units():
 
 
 func restore_unit(unit_data):
-	var unit = soldierUnitScene.instantiate()
+	var unit = SoldierUnitScene.instantiate()
 	var position_grid = l_t_v(unit_data[0])
 	var global_pos = l_t_v(unit_data[1])
 	unit.position_grid = position_grid

@@ -472,6 +472,8 @@ rotation = -1.57079
 position = Vector2(320, 320)
 rotation = -1.57079
 
+[node name="trash" type="Node2D" parent="."]
+
 [node name="basic" type="Node" parent="."]
 script = ExtResource("5_c1rcx")
 
