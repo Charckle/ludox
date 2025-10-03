@@ -108,9 +108,14 @@ func check_tile(mouse_pos):
 						self.move_unit(my_player, tile_selected.position_grid, tile.position_grid)
 				
 
-func get_soldier_on_position(pos_coord):
+func get_soldier_on_position(pos_coord, simulation=false):
+	var pool = $soldiers
+	
+	if simulation == true:
+		pool = $simulation
+		
 	var soldier_on_pos = null
-	for soldier in $soldiers.get_children():
+	for soldier in pool.get_children():
 		if soldier.position_grid == pos_coord:
 			soldier_on_pos = soldier
 	
@@ -157,18 +162,18 @@ func show_selected_piece(unit_=null):
 			unit.set_selected(false)
 		
 
-func get_possible_moves(soldier_pos, dryrun=false):
+func get_possible_moves(soldier_pos, dryrun=false, simulation=false):
 	var poss_moves = []
 	if not dryrun:
 		possible_moves.clear()
 	
 	match rules:
 		Rules.BASIC:
-			poss_moves = $basic.get_basic_moves(soldier_pos, dryrun)
+			poss_moves = $basic.get_basic_moves(soldier_pos, dryrun, simulation)
 		Rules.BASIC_PLUS:
-			poss_moves = $basic.get_basic_moves(soldier_pos, dryrun)
+			poss_moves = $basic.get_basic_moves(soldier_pos, dryrun, simulation)
 		Rules.XXI:
-			poss_moves = $xxi.get_moves(soldier_pos, dryrun)
+			poss_moves = $xxi.get_moves(soldier_pos, dryrun, simulation)
 	
 	return poss_moves
 
@@ -283,22 +288,21 @@ func unit_stopped_moving(my_player, start_pos, end_pos):
 	
 	end_turn()
 
-func check_if_eatable(my_player, start_coord, pos_coord, dryrun=false):
+func check_if_eatable(my_player, start_coord, pos_coord, dryrun=false, simulation=false):
 	var can_eat = []
 	
 	match rules:
 		Rules.BASIC:
-			can_eat.append($basic.basic_eatable_rules(my_player, start_coord, pos_coord, dryrun))
+			can_eat.append_array($basic.basic_eatable_rules(my_player, 
+			start_coord, pos_coord, dryrun, simulation))
 		Rules.BASIC_PLUS:
-			can_eat.append($basic.basic_plus_eatable_rules(my_player, start_coord, pos_coord, dryrun))
+			can_eat.append_array($basic.basic_plus_eatable_rules(my_player, 
+			start_coord, pos_coord, dryrun, simulation))
 		Rules.XXI:
-			can_eat.append($xxi.xxi_eatable_rules(my_player, start_coord, pos_coord, dryrun))
+			can_eat.append_array($xxi.xxi_eatable_rules(my_player, 
+			start_coord, pos_coord, dryrun, simulation))
 	
-	if dryrun:
-		if true in can_eat:
-			return true
-		else:
-			return false
+	return can_eat
 
 
 
@@ -317,8 +321,9 @@ func spawn_slain_anim(gb):
 	$trash.add_child(fx)
 	fx.global_position = gb
 
-func where_can_player_move(player):
-	var soldiers = self.get_soldiers(player)
+func where_can_player_move(player, simulation=false):
+	
+	var soldiers = self.get_soldiers(player, simulation)
 	
 	var can_move = true
 	var units_with_possible_eat = []
@@ -327,7 +332,7 @@ func where_can_player_move(player):
 	
 	for unit in soldiers:
 		var start_coord = unit.position_grid
-		var poss_moves = self.get_possible_moves(start_coord, true)
+		var poss_moves = self.get_possible_moves(start_coord, true, simulation)
 		
 		for move in poss_moves:
 			possible_moves.append([start_coord, move])
@@ -335,11 +340,12 @@ func where_can_player_move(player):
 			var tile =  self.get_tile_on_position(move)
 			
 			#var is_eatable = false
-			if is_eatable:
-				units_with_possible_eat.append([unit.position_grid, move])
+			if len(is_eatable) > 0:
+				units_with_possible_eat.append_array(is_eatable)
 				#break
 			if tile.do_adj_dux(self, self.get_enemy_pid()):
 				units_att_dux.append([unit.position_grid, move])
+	
 	if not units_with_possible_eat and not units_att_dux and not possible_moves:
 		can_move = false
 		
@@ -382,16 +388,20 @@ func end_turn():
 				$ai.execute_move(self.player_turn)
 
 
-func get_soldiers(player=false):
+func get_soldiers(player=false, simulation=false):
+	var pool = $soldiers
+	
+	if simulation == true:
+		pool = $simulation
 	
 	if player:
 		var units = []
-		for unit in $soldiers.get_children():
+		for unit in pool.get_children():
 			if unit.player == player and unit.captured == false:
 				units.append(unit)
 		return units
 	else:
-		return $soldiers.get_children()
+		return pool.get_children()
 
 func clear_all_last_moved():
 	for tile in $tiles.get_children():
@@ -446,6 +456,7 @@ func check_win():
 				return true
 	
 	# check if player can move
+	print("Calculating if the player can move")
 	var results = where_can_player_move(player_turn)
 	
 	if results["can_move"] == false:

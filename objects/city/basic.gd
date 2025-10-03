@@ -15,15 +15,16 @@ func _ready() -> void:
 
 
 
-func get_basic_moves(soldier_pos, dryrun=false):
+func get_basic_moves(soldier_pos, dryrun=false, simulation=false):
 	# check bottom positions
 	var _possible_moves_local = []
 	var ckeck_from = soldier_pos
 	
+	# fix this....
 	while true:
 		ckeck_from.y = ckeck_from.y - 1
 
-		if ckeck_from in city.all_board_positions and city.get_soldier_on_position(ckeck_from) == null:
+		if ckeck_from in city.all_board_positions and city.get_soldier_on_position(ckeck_from, simulation) == null:
 			_possible_moves_local.append(ckeck_from)
 		else:
 			break
@@ -33,7 +34,7 @@ func get_basic_moves(soldier_pos, dryrun=false):
 	while true:
 		ckeck_from.y = ckeck_from.y + 1
 				
-		if ckeck_from in city.all_board_positions and city.get_soldier_on_position(ckeck_from) == null:
+		if ckeck_from in city.all_board_positions and city.get_soldier_on_position(ckeck_from, simulation) == null:
 			_possible_moves_local.append(ckeck_from)
 		else:
 			break
@@ -43,7 +44,7 @@ func get_basic_moves(soldier_pos, dryrun=false):
 	while true:
 		ckeck_from.x = ckeck_from.x - 1
 
-		if ckeck_from in city.all_board_positions and city.get_soldier_on_position(ckeck_from) == null:
+		if ckeck_from in city.all_board_positions and city.get_soldier_on_position(ckeck_from, simulation) == null:
 			_possible_moves_local.append(ckeck_from)
 		else:
 			break
@@ -53,7 +54,7 @@ func get_basic_moves(soldier_pos, dryrun=false):
 	while true:
 		ckeck_from.x = ckeck_from.x + 1
 
-		if ckeck_from in city.all_board_positions and city.get_soldier_on_position(ckeck_from) == null:
+		if ckeck_from in city.all_board_positions and city.get_soldier_on_position(ckeck_from, simulation) == null:
 			_possible_moves_local.append(ckeck_from)
 		else:
 			break
@@ -64,25 +65,26 @@ func get_basic_moves(soldier_pos, dryrun=false):
 		city.possible_moves = _possible_moves_local
 
 
-func basic_eatable_rules(my_player, start_coord, pos_coord, dryrun=false):
+func basic_eatable_rules(my_player, start_coord, pos_coord, dryrun=false, simulation=false):
 	var can_eat = []
 	# check bottom
-	can_eat.append(check_basic_kill(Where.BOTTOM, my_player, pos_coord, dryrun))
+	can_eat.append_array(check_basic_kill(Where.BOTTOM, my_player, 
+			start_coord, pos_coord, dryrun, simulation))
 	# check top
-	can_eat.append(check_basic_kill(Where.TOP, my_player, pos_coord, dryrun))
+	can_eat.append_array(check_basic_kill(Where.TOP, my_player, 
+			start_coord, pos_coord, dryrun, simulation))
 	# check left
-	can_eat.append(check_basic_kill(Where.LEFT, my_player, pos_coord, dryrun))
+	can_eat.append_array(check_basic_kill(Where.LEFT, my_player, 
+			start_coord, pos_coord, dryrun, simulation))
 	# check right
-	can_eat.append(check_basic_kill(Where.RIGHT, my_player, pos_coord, dryrun))
+	can_eat.append_array(check_basic_kill(Where.RIGHT, my_player, 
+			start_coord, pos_coord, dryrun, simulation))
 
-	if dryrun:
-		if true in can_eat:
-			return true
-		else:
-			return false
+	return can_eat
 
-func check_basic_kill(where: Where, my_player, pos_coord, dryrun=false):
-	var can_eat = false
+func check_basic_kill(where: Where, my_player, start_coord, pos_coord, 
+						dryrun=false, simulation=false):
+	var can_eat = [] # start position, move position, eat position, is dux
 	var up = 1
 	var axis = 0
 	match where:
@@ -101,27 +103,28 @@ func check_basic_kill(where: Where, my_player, pos_coord, dryrun=false):
 	# check right
 	var position_to_check = pos_coord
 	position_to_check[axis] = position_to_check[axis] + up
-	var enemy_unit = city.get_soldier_on_position(position_to_check)
+	var enemy_unit = city.get_soldier_on_position(position_to_check, simulation)
 	if enemy_unit != null:
 		if enemy_unit.player != my_player:
 			
 			position_to_check[axis] = position_to_check[axis] + up
-			var friendly_unit = city.get_soldier_on_position(position_to_check)
+			var friendly_unit = city.get_soldier_on_position(position_to_check, simulation)
 			if friendly_unit != null and friendly_unit.player == my_player:
 				if enemy_unit.dux == false:
 					if not dryrun:
 						city.eat_unit(enemy_unit)
 					else:
-						var ba = 0
-						can_eat = true
+						can_eat.append([start_coord, pos_coord, position_to_check])
 
 	return can_eat
 
 
-func basic_plus_eatable_rules(my_player, start_coord, pos_coord, dryrun=false):
+func basic_plus_eatable_rules(my_player, start_coord, pos_coord, dryrun=false, 
+							simulation=false):
 	var can_eat = []
 
-	can_eat.append(basic_eatable_rules(my_player, start_coord, pos_coord, dryrun))
+	can_eat.append_array(basic_eatable_rules(my_player, start_coord, 
+					pos_coord, dryrun, simulation))
 	# check corners
 	# Check top, bottom, left right, if there is an enemy
 	
@@ -136,26 +139,23 @@ func basic_plus_eatable_rules(my_player, start_coord, pos_coord, dryrun=false):
 		#print(corners)
 		if tile_coord in city.corners["all"]:
 			# check if unit there
-			var unit_ = city.get_soldier_on_position(tile_coord)
+			var unit_ = city.get_soldier_on_position(tile_coord, simulation)
 			if unit_ != null and unit_.player != my_player:
 				# check if that unit ha another player unit alongside it
 				var enemy_adj_tiles = unit_.get_adjacent_tiles(city)
 				# remove the player unit
 				enemy_adj_tiles.erase(pos_coord)
 				for adj_tile_coord in enemy_adj_tiles:
-					var unit_adj = city.get_soldier_on_position(adj_tile_coord)
+					var unit_adj = city.get_soldier_on_position(adj_tile_coord, simulation)
 					if unit_adj != null:
 						if unit_adj.player == my_player:
 							if unit_.dux == false:
 								if not dryrun:
-									can_eat.append(true)
 									city.eat_unit(unit_)
-									
-	if dryrun:
-		if true in can_eat:
-			return true
-		else:
-			return false
+								else:
+									can_eat.append([start_coord, pos_coord, tile_coord])
+
+	return can_eat
 
 
 func othr_p(player):

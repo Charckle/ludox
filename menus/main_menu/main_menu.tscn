@@ -118,9 +118,9 @@ grow_horizontal = 0
 grow_vertical = 2
 selected = 0
 item_count = 3
-popup/item_0/text = "Basic Rules"
+popup/item_0/text = "Classic Rules"
 popup/item_0/id = 0
-popup/item_1/text = "Basic PLUS Rules"
+popup/item_1/text = "Classic PLUS Rules"
 popup/item_1/id = 1
 popup/item_2/text = "XXI"
 popup/item_2/id = 2
@@ -297,7 +297,7 @@ offset_left = -20.5
 offset_right = 20.5
 offset_bottom = 23.0
 grow_horizontal = 2
-text = "Basic"
+text = "Classic"
 
 [node name="RichTextLabel" type="RichTextLabel" parent="othr_containers/rules_pan/rules/rule_2"]
 layout_mode = 1
@@ -330,7 +330,7 @@ offset_left = -38.5
 offset_right = 38.5
 offset_bottom = 23.0
 grow_horizontal = 2
-text = "Basic Plus"
+text = "Classic Plus"
 
 [node name="RichTextLabel" type="RichTextLabel" parent="othr_containers/rules_pan/rules/rule_3"]
 layout_mode = 1
@@ -341,7 +341,7 @@ offset_top = 40.0
 offset_bottom = -136.0
 grow_horizontal = 2
 grow_vertical = 2
-text = "The same rules from the basic set apply here, with the addition that you can capture an opponents pawn, if it stands in the corner.
+text = "The same rules from the Classic set apply here, with the addition that you can capture an opponents pawn, if it stands in the corner.
 Do to its location you cannot capture it orthogonally, so the capture takes place if the pawn has no tile to move to.
 The top left and bottom right blue pawns would get captured.
 "

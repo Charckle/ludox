@@ -23,10 +23,13 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	pass
 
-func set_position_grid():
-	for tile in $"../..".get_node("tiles").get_children():
-		if tile.global_position == self.global_position:
-			position_grid = tile.position_grid
+func set_position_grid(pos_grid=null):
+	if not pos_grid:
+		for tile in $"../..".get_node("tiles").get_children():
+			if tile.global_position == self.global_position:
+				position_grid = tile.position_grid
+	else:
+		position_grid = pos_grid
 
 func set_moved(yes_no):
 	if yes_no:
@@ -47,7 +50,12 @@ func get_adjacent_tiles(city):
 
 	return adj_tiles
 
-func get_blocking_tiles(city, foes_only=false):
+func get_blocking_tiles(city, foes_only=false, simulation=false):
+	var pool = "soldiers"
+	
+	if simulation == true:
+		pool = "simulation"
+		
 	var adj_units = []
 	var adj_tiles = self.get_adjacent_tiles(city)
 	var adj_free_tile_pos = adj_tiles.duplicate() 
@@ -56,7 +64,7 @@ func get_blocking_tiles(city, foes_only=false):
 		if c_tile not in city.all_board_positions:
 			adj_tiles.erase(c_tile)
 	
-	for unit_ in city.get_node("soldiers").get_children():
+	for unit_ in city.get_node(pool).get_children():
 		var unit_pos = unit_.position_grid
 
 		if unit_pos in adj_tiles and unit_.captured == false:
