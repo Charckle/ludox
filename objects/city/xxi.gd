@@ -183,29 +183,30 @@ func push_and_crush(where, my_player, start_coord, target_pos, dryrun=false,
 
 		if unit_rr != null:
 			# if the unit is on the edge of the city
-			if unit_rr.player != my_player and unit_rr.position_grid in city.border_tiles:
-				position_to_check = unit_rr.position_grid
-				position_to_check[axis] = position_to_check[axis] + up
-				var tile_ = city.get_tile_on_position(position_to_check)
-				
-				if tile_ == null:
-					if not unit_rr.dux:
-						if dryrun:
-							can_eat.append([start_coord, target_pos, position_to_check])
-						else:
-							city.eat_unit(unit_rr)
-			# if the unit is squashed between two other
-			else:
-				position_to_check = unit_rr.position_grid
-				position_to_check[axis] = position_to_check[axis] + up
-				var unit_rrr = city.get_soldier_on_position(position_to_check, simulation)
-				
-				if unit_rrr != null and unit_rrr.player == my_player:
-					if not unit_rr.dux:
-						if dryrun:
-							can_eat.append([start_coord, target_pos, position_to_check])
-						else:
-							city.eat_unit(unit_rr)
+			if unit_rr.player != my_player:
+				if unit_rr.position_grid in city.border_tiles:
+					position_to_check = unit_rr.position_grid
+					position_to_check[axis] = position_to_check[axis] + up
+					var tile_ = city.get_tile_on_position(position_to_check)
+					
+					if tile_ == null:
+						if not unit_rr.dux:
+							if dryrun:
+								can_eat.append([start_coord, target_pos, position_to_check])
+							else:
+								city.eat_unit(unit_rr)
+				# if the unit is squashed between two other
+				else:
+					position_to_check = unit_rr.position_grid
+					position_to_check[axis] = position_to_check[axis] + up
+					var unit_rrr = city.get_soldier_on_position(position_to_check, simulation)
+					
+					if unit_rrr != null and unit_rrr.player == my_player:
+						if not unit_rr.dux:
+							if dryrun:
+								can_eat.append([start_coord, target_pos, position_to_check])
+							else:
+								city.eat_unit(unit_rr)
 	
 	return can_eat
 
@@ -292,16 +293,16 @@ func eat_phalanx_attack(my_player, start_coord, pos_coord, dryrun=false,
 	var direction_ = get_direction(start_coord, pos_coord)
 
 	match direction_:
-		"right_":
+		"right":
 			can_eat.append_array(phalanx_attack(Where.RIGHT, my_player, start_coord, 
 						pos_coord, dryrun, simulation))
-		"down_":
+		"down":
 			can_eat.append_array(phalanx_attack(Where.BOTTOM, my_player, start_coord, 
 						pos_coord, dryrun, simulation))
 		"up":
 			can_eat.append_array(phalanx_attack(Where.TOP, my_player, start_coord, 
 						pos_coord, dryrun, simulation))
-		"left_":
+		"left":
 			can_eat.append_array(phalanx_attack(Where.LEFT, my_player, start_coord, 
 						pos_coord, dryrun, simulation))
 
@@ -346,12 +347,10 @@ func phalanx_attack(where, my_player, start_coord, target_pos, dryrun=false,
 		var tile = city.get_tile_on_position(target_pos)
 		var unit_sourounding_tiles = tile.get_adjacent_tiles(city)
 		unit_sourounding_tiles.erase(start_coord)
-		#print(next_position) (6,4)
-		#print(start_coord) (6,0)
-		#print(target_pos) (6,3)
+
 		var xyz_pos = target_pos
 		xyz_pos[axis] = xyz_pos[axis] + up
-		#print(xyz_pos) (6,4)
+
 		unit_sourounding_tiles.erase(target_pos)
 		# erase one in the back
 		xyz_pos = target_pos
@@ -398,7 +397,6 @@ func phalanx_attack(where, my_player, start_coord, target_pos, dryrun=false,
 	if first_unit and testudo_side:
 		while true:
 			next_position[axis] = next_position[axis] + up
-			print(next_position)
 			var unit_r = city.get_soldier_on_position(next_position, simulation)
 
 			if unit_r != null and unit_r.player != my_player:
@@ -407,7 +405,6 @@ func phalanx_attack(where, my_player, start_coord, target_pos, dryrun=false,
 					if dryrun:
 						can_eat.append([start_coord, target_pos, next_position])
 					else:
-						print("banana")
 						city.eat_unit(unit_r)
 						
 				break
