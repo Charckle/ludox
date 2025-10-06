@@ -114,7 +114,7 @@ func check_basic_kill(where: Where, my_player, start_coord, pos_coord,
 					if not dryrun:
 						city.eat_unit(enemy_unit)
 					else:
-						can_eat.append([start_coord, pos_coord, position_to_check])
+						can_eat.append([start_coord, pos_coord, enemy_unit.position_grid])
 
 	return can_eat
 
@@ -122,7 +122,7 @@ func check_basic_kill(where: Where, my_player, start_coord, pos_coord,
 func basic_plus_eatable_rules(my_player, start_coord, pos_coord, dryrun=false, 
 							simulation=false):
 	var can_eat = []
-
+	
 	can_eat.append_array(basic_eatable_rules(my_player, start_coord, 
 					pos_coord, dryrun, simulation))
 	# check corners
@@ -153,7 +153,7 @@ func basic_plus_eatable_rules(my_player, start_coord, pos_coord, dryrun=false,
 								if not dryrun:
 									city.eat_unit(unit_)
 								else:
-									can_eat.append([start_coord, pos_coord, tile_coord])
+									can_eat.append([start_coord, pos_coord, unit_.position_grid])
 
 	return can_eat
 

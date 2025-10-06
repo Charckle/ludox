@@ -45,16 +45,13 @@ func get_moves(soldier_pos, dryrun=false, simulation=false):
 				for tile_pos in all_free_tiles_coord:
 					possible_moves.append(tile_pos)
 			# can move to dux
-			
-			
-			# NADALJUJ TUKAJ S PREVERJANJEM, ČE VZME POVSOD SIMULACIJO
-			
-			var dux_pos = get_coord_nxt_to_dux(soldier_pos, possible_basic_moves, othr_p(city.player_turn))
+			var dux_pos = get_coord_nxt_to_dux(soldier_pos, possible_basic_moves, 
+									othr_p(city.player_turn), simulation)
 			for pos in dux_pos:
 				possible_moves.append(pos)
 			# add to all those, that would attack another unit
 			for pos in possible_basic_moves:
-				if self.eatable_rules(current_unit.player, soldier_pos, pos, true):
+				if self.eatable_rules(current_unit.player, soldier_pos, pos, true, simulation):
 					possible_moves.append(pos)
 					
 			_possible_moves_local = possible_moves
@@ -64,32 +61,34 @@ func get_moves(soldier_pos, dryrun=false, simulation=false):
 				possible_moves = []
 			else:
 				# can move to dux
-				var dux_pos = get_coord_nxt_to_dux(soldier_pos, possible_basic_moves, othr_p(city.player_turn))
+				var dux_pos = get_coord_nxt_to_dux(soldier_pos, possible_basic_moves, 
+									othr_p(city.player_turn), simulation)
 				
 				for pos in dux_pos:
 					possible_moves.append(pos)
 				# add to all those, that would attack another unit
 				for pos in possible_basic_moves:
-					if self.eatable_rules(current_unit.player, soldier_pos, pos, true):
+					if self.eatable_rules(current_unit.player, soldier_pos, pos, true, simulation):
 						possible_moves.append(pos)
 						
 				_possible_moves_local = possible_moves
 	else:
 		for adj_enemy in blocking_enemy_units:
-			var blocking_tiles_enemy = adj_enemy.get_blocking_tiles(city, true)
+			var blocking_tiles_enemy = adj_enemy.get_blocking_tiles(city, true, simulation)
 			var blocking_enemy_units_enemy = blocking_tiles_enemy[0]
 			var all_tiles_coord_enemy = blocking_tiles_enemy[1]
 			
 			if len(blocking_enemy_units_enemy) == 1:
 				# add to the possible moves all those, that are next to an enemy dux
-				var dux_pos = get_coord_nxt_to_dux(soldier_pos, possible_basic_moves, blocking_enemy_units[0].player)
+				var dux_pos = get_coord_nxt_to_dux(soldier_pos, possible_basic_moves, 
+				blocking_enemy_units[0].player, simulation)
 				
 				for pos in dux_pos:
 					possible_moves.append(pos)
 
 				# add to all those, that would attack another unit
 				for pos in possible_basic_moves:
-					if self.eatable_rules(current_unit.player, soldier_pos, pos, true):
+					if self.eatable_rules(current_unit.player, soldier_pos, pos, true, simulation):
 						possible_moves.append(pos)
 						
 				_possible_moves_local = possible_moves
@@ -99,16 +98,18 @@ func get_moves(soldier_pos, dryrun=false, simulation=false):
 			else:
 				_possible_moves_local = possible_basic_moves
 	
+	#rm_duplicates_in_list(_possible_moves_local)
+	
 	if dryrun:
 		return _possible_moves_local
 	else:
 		city.possible_moves = _possible_moves_local
 	
-func get_coord_nxt_to_dux(soldier_pos, possible_moves, player_of_dux):
+func get_coord_nxt_to_dux(soldier_pos, possible_moves, player_of_dux, simulation):
 	var _moves = []
-	for tile_pos in basic.get_basic_moves(soldier_pos, true):
+	for tile_pos in basic.get_basic_moves(soldier_pos, true, simulation):
 		var tile = city.get_tile_on_position(tile_pos)
-		if tile.do_adj_dux(city, player_of_dux):
+		if tile.do_adj_dux(city, player_of_dux, simulation):
 			_moves.append(tile_pos)
 	return _moves
 	
@@ -441,6 +442,16 @@ func xxi_eatable_rules(my_player, start_coord, pos_coord, dryrun=false,
 				simulation))
 	
 	return can_eat
+
+
+func rm_duplicates_in_list(my_list):
+	var seen := {}
+	var out: Array = []
+	for v in my_list:
+		if not seen.has(v):
+			seen[v] = true
+			out.append(v)
+	my_list = out
 
 func othr_p(player):
 	if player == 1:

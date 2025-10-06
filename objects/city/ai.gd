@@ -59,35 +59,44 @@ func execute_move(my_player):
 			print("not eating")
 	
 	var eat_dux = false
-	if not eat and len(units_att_dux) > 0 :#and city.all_moves > city.moves_till_attack_dux_ai:
+	if not eat and len(units_att_dux) > 0:
 		print("going after the dux")
-		eat_dux = chance(ai_perc)
+		eat_dux = true#chance(ai_perc) FIXXXX THISSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
 		
 		if eat_dux:
 			if ai_lvl == city.Ai_lvl.EASY:
-				var random_value = units_att_dux.pick_random()
-				city.move_unit(my_player, random_value[0], random_value[1])
-				return
+				if city.all_moves > city.moves_till_attack_dux_ai:
+					var random_value = units_att_dux.pick_random()
+					city.move_unit(my_player, random_value[0], random_value[1])
+					return
 			else:
-				for move in units_att_dux:
+				var units_att_dux_copy = units_att_dux.duplicate()
+				for move in units_att_dux_copy:
+					# simulate to see, if the opponent can eat your unit
 					new_scenarion()
-					print(move[0])
-					for unit in city.get_soldiers(1,true):
-						print(unit.position_grid)
+					#print($"../simulation".get_children())
+					#print(move[0])
+					#for unit in city.get_soldiers(1,true):
+					#	print(unit.position_grid)
 					# move unit
-					var unit_s = city.get_soldier_on_position(move[0], true)
+					var simulation_s = true
+					var unit_s = city.get_soldier_on_position(move[0], simulation_s)
 					unit_s.position_grid = move[1]
 					# calculate, if it can be eaten
-					var simulation_s = true
-					var player_actions_s = city.where_can_player_move(my_player, simulation_s)
-					print(player_actions_s)
-					var units_with_possible_eat_s = player_actions["units_with_possible_eat"]
-					var units_att_dux_s = player_actions["units_att_dux"]
-					var possible_moves_s = player_actions["possible_moves"]
+					var player_actions_s = city.where_can_player_move(othr_p(my_player), simulation_s)
+
+					var units_with_possible_eat_s = player_actions_s["units_with_possible_eat"]
+					for att_move in units_with_possible_eat_s:
+						if att_move[2] == move[1]:
+							units_att_dux.erase(move)
 
 				var random_value = units_att_dux.pick_random()
-				city.move_unit(my_player, random_value[0], random_value[1])
-				return
+
+				if random_value != null:
+					city.move_unit(my_player, random_value[0], random_value[1])
+					return
+				else:
+					print("no good moves available")
 		else:
 			print("deciding not to")
 				
@@ -95,34 +104,6 @@ func execute_move(my_player):
 	var random_value = possible_moves.pick_random()
 	
 	city.move_unit(my_player, random_value[0], random_value[1])
-
-
-func get_player_actions_not_IN_USE(my_player, simulation):
-	var soldiers = city.get_soldiers(my_player, simulation)
-	
-	var units_with_possible_eat = []
-	var units_att_dux = []
-	var possible_moves = []
-	
-	for unit in soldiers:
-		var start_coord = unit.position_grid
-		var poss_moves = city.get_possible_moves(start_coord, true, simulation)
-		
-		for move in poss_moves:
-			possible_moves.append([start_coord, move])
-			var is_eatable = city.check_if_eatable(my_player, start_coord, move, true)
-
-			var tile =  city.get_tile_on_position(move)
-			
-			#var is_eatable = false
-			if is_eatable:
-				units_with_possible_eat.append([unit.position_grid, move])
-				#break
-			if tile.do_adj_dux(city, city.get_enemy_pid()):
-				units_att_dux.append([unit.position_grid, move])
-				
-	
-	return [units_with_possible_eat, units_att_dux, possible_moves]
 
 
 
@@ -155,7 +136,7 @@ func pop_random_fast(arr: Array) -> Variant:
 func new_scenarion():
 	# clear all
 	for unit in $"../simulation".get_children():
-		unit.queue_free()
+		unit.free()
 	
 	for unit in $"../soldiers".get_children():
 		var new_unit = city.SoldierUnitScene.instantiate()
@@ -163,3 +144,10 @@ func new_scenarion():
 		new_unit.dux = unit.dux
 		$"../simulation".add_child(new_unit)
 		new_unit.set_position_grid(unit.position_grid)
+
+
+func othr_p(player):
+	if player == 1:
+		return 2
+	else:
+		return 1

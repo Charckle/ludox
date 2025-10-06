@@ -24,10 +24,10 @@ func get_adjacent_tiles(city):
 
 	return adj_tiles
 
-func do_adj_dux(city, player_id):
+func do_adj_dux(city, player_id, simulation=false):
 	var adj_tiles_pos = get_adjacent_tiles(city)
 	for tile_pos in adj_tiles_pos:
-		var unit = city.get_soldier_on_position(tile_pos)
+		var unit = city.get_soldier_on_position(tile_pos, simulation)
 		
 		if unit != null and unit.player == player_id and unit.dux:
 			return true

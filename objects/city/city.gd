@@ -294,13 +294,13 @@ func check_if_eatable(my_player, start_coord, pos_coord, dryrun=false, simulatio
 	match rules:
 		Rules.BASIC:
 			can_eat.append_array($basic.basic_eatable_rules(my_player, 
-			start_coord, pos_coord, dryrun, simulation))
+					start_coord, pos_coord, dryrun, simulation))
 		Rules.BASIC_PLUS:
 			can_eat.append_array($basic.basic_plus_eatable_rules(my_player, 
-			start_coord, pos_coord, dryrun, simulation))
+					start_coord, pos_coord, dryrun, simulation))
 		Rules.XXI:
 			can_eat.append_array($xxi.xxi_eatable_rules(my_player, 
-			start_coord, pos_coord, dryrun, simulation))
+					start_coord, pos_coord, dryrun, simulation))
 	
 	return can_eat
 
@@ -322,7 +322,6 @@ func spawn_slain_anim(gb):
 	fx.global_position = gb
 
 func where_can_player_move(player, simulation=false):
-	
 	var soldiers = self.get_soldiers(player, simulation)
 	
 	var can_move = true
@@ -336,14 +335,15 @@ func where_can_player_move(player, simulation=false):
 		
 		for move in poss_moves:
 			possible_moves.append([start_coord, move])
-			var is_eatable = self.check_if_eatable(player, start_coord, move, true)
+			var is_eatable = self.check_if_eatable(player, start_coord, move, true, simulation)
 			var tile =  self.get_tile_on_position(move)
 			
 			#var is_eatable = false
 			if len(is_eatable) > 0:
+				# can_eat.append([start_coord, pos_coord, who_gonna_be_eaten_coord])
 				units_with_possible_eat.append_array(is_eatable)
-				#break
-			if tile.do_adj_dux(self, self.get_enemy_pid()):
+				
+			if tile.do_adj_dux(self, self.get_enemy_pid(player), simulation):
 				units_att_dux.append([unit.position_grid, move])
 	
 	if not units_with_possible_eat and not units_att_dux and not possible_moves:
@@ -564,6 +564,7 @@ func load_game_state(game_state):
 	print("Undone")
 
 
+
 func remove_all_units():
 	for unit in $soldiers.get_children():
 		eat_unit(unit)
@@ -573,12 +574,13 @@ func restore_unit(unit_data):
 	var unit = SoldierUnitScene.instantiate()
 	var position_grid = l_t_v(unit_data[0])
 	var global_pos = l_t_v(unit_data[1])
-	unit.position_grid = position_grid
+	
 	unit.player = unit_data[2]
 	unit.dux = unit_data[3]
 	$soldiers.add_child(unit)
 	unit.global_position = global_pos
-	unit.set_position_grid()
+	#unit.set_position_grid()
+	unit.position_grid = position_grid
 
 
 func get_enemy_pid(manual_player = null):
