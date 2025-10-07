@@ -282,21 +282,21 @@ position = Vector2(40, 0)
 position = Vector2(80, 0)
 
 [node name="Soldier4" parent="soldiers" instance=ExtResource("3_sgfal")]
-position = Vector2(120, 0)
+position = Vector2(160, 40)
 
 [node name="Soldier5" parent="soldiers" instance=ExtResource("3_sgfal")]
-position = Vector2(160, 0)
+position = Vector2(160, 80)
 
 [node name="Soldier6" parent="soldiers" instance=ExtResource("3_sgfal")]
 position = Vector2(200, 0)
 
 [node name="Soldier7" parent="soldiers" instance=ExtResource("3_sgfal")]
-position = Vector2(280, 0)
+position = Vector2(280, 120)
 
 [node name="Soldier8" parent="soldiers" instance=ExtResource("3_sgfal")]
 
 [node name="Soldier18" parent="soldiers" instance=ExtResource("3_sgfal")]
-position = Vector2(120, 40)
+position = Vector2(200, 80)
 dux = true
 
 [node name="Soldier9" parent="soldiers" instance=ExtResource("3_sgfal")]
@@ -312,15 +312,15 @@ position = Vector2(0, 280)
 player = 2
 
 [node name="Soldier12" parent="soldiers" instance=ExtResource("3_sgfal")]
-position = Vector2(240, 280)
+position = Vector2(200, 120)
 player = 2
 
 [node name="Soldier13" parent="soldiers" instance=ExtResource("3_sgfal")]
-position = Vector2(280, 280)
+position = Vector2(160, 0)
 player = 2
 
 [node name="Soldier14" parent="soldiers" instance=ExtResource("3_sgfal")]
-position = Vector2(200, 280)
+position = Vector2(80, 80)
 player = 2
 
 [node name="Soldier15" parent="soldiers" instance=ExtResource("3_sgfal")]

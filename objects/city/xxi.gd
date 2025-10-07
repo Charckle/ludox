@@ -359,6 +359,8 @@ func phalanx_attack(where, my_player, start_coord, target_pos, dryrun=false,
 		unit_sourounding_tiles.erase(xyz_pos)
 		# erase the next one
 		unit_sourounding_tiles.erase(next_position)
+
+		var diff_vector = null
 		if len(unit_sourounding_tiles) > 1:
 			var left_side_pos = unit_sourounding_tiles[0]
 			var right_side_pos = unit_sourounding_tiles[1]
@@ -372,28 +374,27 @@ func phalanx_attack(where, my_player, start_coord, target_pos, dryrun=false,
 			if mlist.has(null) and mlist.count(null) < mlist.size():
 				if unit_l == null:
 					if unit_r.player == my_player and unit_r.position_grid != start_coord:
-						testudo_side = right_side_pos
+						testudo_side = right_side_pos # position of the unit
 				elif unit_r == null:
 					if unit_l.player == my_player and unit_l.position_grid != start_coord:
-						testudo_side = left_side_pos
+						testudo_side = left_side_pos # position of the unit
+				# get the vector to which you add the central to get hte periferal vector
+				diff_vector = signed_axis(right_side_pos, left_side_pos)
 		
 		
-		#if testudo_side:
-			#print("teetudo")
-			##print(testudo_side) (7,3)
-			## check if the next unit has our unit on the right side
-			#var unit_pos_testudo_side = next_position + testudo_side
-			#var unit_opos_testudo_side = next_position - testudo_side
-			#var test_no_unit = city.get_soldier_on_position(unit_pos_testudo_side, simulation)
-			#var test_yes_unit = city.get_soldier_on_position(unit_opos_testudo_side, simulation)
-#
-			#if test_no_unit != null and (test_yes_unit == null or test_yes_unit.player != my_player):
-				#testudo_side = false
-				#first_unit = false
+		if testudo_side:
+			# check if the next unit has our unit on the right side
+			var unit_pos_testudo_side = next_position + diff_vector
+			var unit_opos_testudo_side = next_position - diff_vector
+			var test_yes_unit = city.get_soldier_on_position(unit_pos_testudo_side, simulation)
+			var test_no_unit = city.get_soldier_on_position(unit_opos_testudo_side, simulation)
+
+			if test_no_unit != null or test_yes_unit == null or test_yes_unit.player != my_player:
+				testudo_side = false
+				first_unit = false
 			#if start_coord in [unit_pos_testudo_side, unit_opos_testudo_side]:
 				#testudo_side = false
 				#first_unit = false
-
 
 	if first_unit and testudo_side:
 		while true:
@@ -420,6 +421,14 @@ func phalanx_attack(where, my_player, start_coord, target_pos, dryrun=false,
 				break
 
 	return can_eat
+
+# Unit axis (±1 on the dominant axis) from `from_p` toward `to_p`
+func signed_axis(from_p: Vector2i, to_p: Vector2i) -> Vector2i:
+	var d := to_p - from_p
+	if abs(d.x) >= abs(d.y):
+		return Vector2i(sign(d.x), 0)
+	else:
+		return Vector2i(0, sign(d.y))
 
 func get_direction(start: Vector2, end: Vector2) -> String:
 	var d := end - start
