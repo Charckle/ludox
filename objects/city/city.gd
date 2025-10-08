@@ -41,7 +41,7 @@ enum Ai_lvl {
 	NORMAL
 }
 
-var moves_till_attack_dux_ai = 2
+var moves_till_attack_dux_ai = 6
 
 var rules
 
@@ -537,16 +537,16 @@ func undo_move():
 		
 
 func load_game_state(game_state):
-	self.player_turn = game_state["player_turn"]
-	self.rules = game_state["rules"]
-	GlobalSet.settings["game_type"] = game_state["game_type"]
-	GlobalSet.settings["ai_lvl"] = game_state["ai_lvl"]
+	self.player_turn = int(game_state["player_turn"])
+	self.rules = int(game_state["rules"])
+	GlobalSet.settings["game_type"] = int(game_state["game_type"])
+	GlobalSet.settings["ai_lvl"] = int(game_state["ai_lvl"])
 	self.previous_tile = l_t_v(game_state["previous_tile"])
 	self.moved_to_tile = l_t_v(game_state["moved_to_tile"])
 	self.all_units = game_state["all_units"]
-	self.since_last_eat = game_state["since_last_eat"]
-	self.all_moves = game_state["all_moves"]
-	
+	self.since_last_eat = int( game_state["since_last_eat"])
+	self.all_moves = int(game_state["all_moves"])
+
 	remove_all_units()
 	
 	for unit_data in self.all_units:

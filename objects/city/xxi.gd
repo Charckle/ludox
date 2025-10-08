@@ -222,13 +222,13 @@ func eat_flank_attack(my_player, start_coord, pos_coord, dryrun=false,
 		"right":
 			can_eat.append_array(flank_nomnom(Where.RIGHT, my_player, start_coord, 
 				pos_coord, dryrun, simulation))
-		"down_":
+		"down":
 			can_eat.append_array(flank_nomnom(Where.BOTTOM, my_player, start_coord, 
 				pos_coord, dryrun, simulation))
-		"up_":
+		"up":
 			can_eat.append_array(flank_nomnom(Where.TOP, my_player, start_coord, pos_coord, 
 				dryrun, simulation))
-		"left_":
+		"left":
 			can_eat.append_array(flank_nomnom(Where.LEFT, my_player, start_coord, pos_coord, 
 				dryrun, simulation))
 	

@@ -61,14 +61,13 @@ func execute_move(my_player):
 	var eat_dux = false
 	if not eat and len(units_att_dux) > 0:
 		print("going after the dux")
-		eat_dux = true#chance(ai_perc) FIXXXX THISSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSSS
+		eat_dux = chance(ai_perc)
 		
-		if eat_dux:
+		if eat_dux and (city.all_moves > city.moves_till_attack_dux_ai):
 			if ai_lvl == city.Ai_lvl.EASY:
-				if city.all_moves > city.moves_till_attack_dux_ai:
-					var random_value = units_att_dux.pick_random()
-					city.move_unit(my_player, random_value[0], random_value[1])
-					return
+				var random_value = units_att_dux.pick_random()
+				city.move_unit(my_player, random_value[0], random_value[1])
+				return
 			else:
 				var units_att_dux_copy = units_att_dux.duplicate()
 				for move in units_att_dux_copy:
