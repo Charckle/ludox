@@ -5,5 +5,10 @@
 	"music": 0,
 	"game_rules": 0,
 	"game_type": 0,
-	"ai_lvl": 0
+	"ai_lvl": 0,
+	"multiplayer": {
+		"server_ip": "127.0.0.1",
+		"port": 7331,
+		"username": "Vitigilus"
+	}
 }

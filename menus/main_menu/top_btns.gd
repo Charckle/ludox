@@ -28,3 +28,7 @@ func _on_button_pressed() -> void:
 	ContinueGame.load_continue()
 	$"../../../othr_containers/campaign_pan".visible = true
 	
+
+
+func _on_online_btn_pressed() -> void:
+	get_tree().change_scene_to_file("res://multiplayer/multiplayer_menu/multiplayer_menu.tscn")

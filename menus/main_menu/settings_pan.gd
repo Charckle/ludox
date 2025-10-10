@@ -14,8 +14,13 @@ func _process(delta: float) -> void:
 
 
 func populate_settings():
+	
 	$GridContainer/animation_btn.selected = $GridContainer/animation_btn.get_item_index(int(GlobalSet.settings["animation"]))
 	$GridContainer/movement_btn.selected = $GridContainer/movement_btn.get_item_index(int(GlobalSet.settings["movement_highlight"]))
+	
+	$GridContainer/username_lnd.text = GlobalSet.settings["multiplayer"]["username"]
+	$GridContainer/server_ip_lnd.text = GlobalSet.settings["multiplayer"]["server_ip"]
+
 
 func _on_animation_btn_item_selected(index: int) -> void:
 	GlobalSet.settings["animation"] = $GridContainer/animation_btn.get_item_id(index)

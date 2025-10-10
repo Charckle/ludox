@@ -56,7 +56,6 @@ text = "Campaign"
 [node name="online_btn" type="Button" parent="main_container/top_buttons/top_btns"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
-disabled = true
 text = "Online Multiplayer"
 
 [node name="bottom_btns" type="VBoxContainer" parent="main_container/top_buttons"]
@@ -177,7 +176,6 @@ offset_bottom = 258.0
 text = "Start Game"
 
 [node name="settings_pan" type="Panel" parent="othr_containers"]
-visible = false
 layout_mode = 0
 offset_left = -360.0
 offset_top = -144.0
@@ -238,7 +236,7 @@ text = "Online Server IP"
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 size_flags_horizontal = 3
-placeholder_text = "192.168.0.10"
+placeholder_text = "Vigitilus"
 
 [node name="rules_pan" type="Panel" parent="othr_containers"]
 visible = false
@@ -700,6 +698,7 @@ texture = ExtResource("5_oic2i")
 [connection signal="pressed" from="main_container/top_buttons/top_btns/continue_btn" to="main_container/top_buttons/top_btns" method="_on_continue_btn_pressed"]
 [connection signal="pressed" from="main_container/top_buttons/top_btns/new_game_btn" to="main_container/top_buttons/top_btns" method="_on_new_game_btn_pressed"]
 [connection signal="pressed" from="main_container/top_buttons/top_btns/campaign_btn" to="main_container/top_buttons/top_btns" method="_on_button_pressed"]
+[connection signal="pressed" from="main_container/top_buttons/top_btns/online_btn" to="main_container/top_buttons/top_btns" method="_on_online_btn_pressed"]
 [connection signal="pressed" from="main_container/top_buttons/bottom_btns/game_rules_btn" to="main_container/top_buttons/bottom_btns" method="_on_game_rules_btn_pressed"]
 [connection signal="pressed" from="main_container/top_buttons/bottom_btns/settings_btn" to="main_container/top_buttons/bottom_btns" method="_on_settings_btn_pressed"]
 [connection signal="pressed" from="main_container/top_buttons/bottom_btns/exit_btn" to="main_container/top_buttons/bottom_btns" method="_on_exit_btn_pressed"]
