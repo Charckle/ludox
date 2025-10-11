@@ -3,7 +3,7 @@ extends Node2D
 @onready var multiplayer_s = get_tree().root.get_node("Main-multiplayer")
 
 @onready var main_container = $main_container
-@onready var chat_container = $chat/base_node/Panel/RichTextLabel
+#@onready var chat_container = $chat/base_node/Panel/RichTextLabel
 @onready var msg_log_container = $chat/base_node/Panel/msg_log_cont
 
 @onready var chat_insert = $chat/base_node/LineEdit
@@ -20,6 +20,7 @@ func _ready() -> void:
 	show_default_windows()
 	
 	$main_container.multiplayer_s = self.multiplayer_s
+	$room_container.multiplayer_s = self.multiplayer_s
 	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -57,6 +58,14 @@ func show_room(room_name):
 	var color = color_for_username(room_name)
 	var message = "Welcome to [color=#%s]%s[/color] room!" % [color, room_name]
 	insert_message(message)
+
+func show_loby(loby_players):
+	main_container.visible = true
+	$room_container.visible = false
+	msg_log_container.text = ""
+	var message = "Welcome to the loby. There are currently %s players here." % [loby_players]
+	insert_message(message)
+
 
 func color_for_username(name: String) -> String:
 	var hue := float(abs(hash(name)) % 360) / 360.0

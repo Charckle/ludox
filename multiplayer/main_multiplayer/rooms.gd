@@ -15,7 +15,7 @@ func _process(delta: float) -> void:
 
 
 
-# runs only on server, ignored here
+# runs only on server, ignored zhere
 @rpc("any_peer", "call_remote", "reliable")
 func create_room():
 	pass
@@ -34,3 +34,13 @@ func update_room_list(room_data):
 @rpc("any_peer", "call_remote", "reliable")
 func join_room_request(room_id):
 	pass
+
+@rpc("any_peer", "call_remote", "reliable")
+func leave_room_request(room_id):
+	pass
+
+
+@rpc("authority", "call_remote", "reliable")
+func move_to_loby(loby_players):
+	m_m.room_id = null
+	multiplayer_menu.show_loby(loby_players)

@@ -179,5 +179,6 @@ text = "Cancel"
 
 [connection signal="pressed" from="main_container/top_cont/HBoxContainer/new_room_btn" to="." method="_on_new_room_btn_pressed"]
 [connection signal="pressed" from="main_container/top_cont/HBoxContainer/leave_btn" to="." method="exit_multiplayer"]
+[connection signal="pressed" from="room_container/leave_btn" to="room_container" method="_on_leave_btn_pressed"]
 [connection signal="text_submitted" from="chat/base_node/LineEdit" to="." method="_on_line_edit_text_submitted"]
 [connection signal="pressed" from="waiting_conn_pan/wait_conn_btn" to="." method="exit_multiplayer"]

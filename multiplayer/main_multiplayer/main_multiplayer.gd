@@ -37,9 +37,9 @@ func _local_on_connected_ok():
 	self.rpc_id(1, "_register_player_on_server", username)
 
 	# welcome message
-	var text_to_display = "Joined online lobby"
+	#var text_to_display = "Welcome to the lobby."
 	multiplayer_menu.get_node("waiting_conn_pan").visible = false
-	multiplayer_menu.insert_message(text_to_display)
+	#multiplayer_menu.insert_message(text_to_display)
 	
 func _local_on_connected_fail():
 	multiplayer.multiplayer_peer = null
