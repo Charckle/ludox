@@ -107,7 +107,7 @@ func is_valid_ipv4(ip: String) -> bool:
 
 # runs only on server, ignored here
 @rpc("any_peer", "call_remote", "reliable")
-func propagate_message(message: String, room_id= null):
+func propagate_user_message(message: String, room_id= null):
 	pass
 
 

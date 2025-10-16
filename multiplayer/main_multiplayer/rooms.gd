@@ -31,6 +31,10 @@ func move_to_room(room_id, room_name):
 func update_room_list(room_data):
 	multiplayer_menu.main_container.recreate_room_list(room_data)
 
+@rpc("authority", "call_remote", "reliable")
+func update_room_data(room_data):
+	multiplayer_menu.room_container.update_room_data(room_data)
+
 @rpc("any_peer", "call_remote", "reliable")
 func join_room_request(room_id):
 	pass
@@ -41,6 +45,6 @@ func leave_room_request(room_id):
 
 
 @rpc("authority", "call_remote", "reliable")
-func move_to_loby(loby_players):
+func move_to_loby():
 	m_m.room_id = null
-	multiplayer_menu.show_loby(loby_players)
+	multiplayer_menu.show_loby()

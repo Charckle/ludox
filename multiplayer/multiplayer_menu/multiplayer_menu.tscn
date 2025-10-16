@@ -90,6 +90,15 @@ offset_bottom = 80.0
 disabled = true
 text = "Start"
 
+[node name="settings" type="Button" parent="room_container"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+offset_left = 16.0
+offset_top = 272.0
+offset_right = 304.0
+offset_bottom = 322.0
+text = "Settings"
+
 [node name="leave_btn" type="Button" parent="room_container"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
@@ -98,6 +107,29 @@ offset_top = 334.0
 offset_right = 304.0
 offset_bottom = 384.0
 text = "Leave room"
+
+[node name="player_v_cont" type="VBoxContainer" parent="room_container"]
+layout_mode = 0
+offset_left = 16.0
+offset_top = 96.0
+offset_right = 304.0
+offset_bottom = 256.0
+
+[node name="player_lbl" type="Label" parent="room_container/player_v_cont"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.662452, 0.662452, 0.662452, 1)
+text = "Players:"
+
+[node name="player_cont" type="GridContainer" parent="room_container/player_v_cont"]
+layout_mode = 2
+
+[node name="spectators_lbl" type="Label" parent="room_container/player_v_cont"]
+layout_mode = 2
+theme_override_colors/font_color = Color(0.662745, 0.662745, 0.662745, 1)
+text = "Spectators:"
+
+[node name="spectator_cont" type="GridContainer" parent="room_container/player_v_cont"]
+layout_mode = 2
 
 [node name="chat" type="PanelContainer" parent="."]
 anchors_preset = 6

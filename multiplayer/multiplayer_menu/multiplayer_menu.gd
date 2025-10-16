@@ -3,6 +3,7 @@ extends Node2D
 @onready var multiplayer_s = get_tree().root.get_node("Main-multiplayer")
 
 @onready var main_container = $main_container
+@onready var room_container = $room_container
 #@onready var chat_container = $chat/base_node/Panel/RichTextLabel
 @onready var msg_log_container = $chat/base_node/Panel/msg_log_cont
 
@@ -20,7 +21,7 @@ func _ready() -> void:
 	show_default_windows()
 	
 	$main_container.multiplayer_s = self.multiplayer_s
-	$room_container.multiplayer_s = self.multiplayer_s
+	room_container.multiplayer_s = self.multiplayer_s
 	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -29,7 +30,7 @@ func _process(delta: float) -> void:
 
 func show_default_windows():
 	main_container.visible = true
-	$room_container.visible = false
+	room_container.visible = false
 
 func insert_message(message):
 	message += "\n"
@@ -37,7 +38,7 @@ func insert_message(message):
 
 func _on_line_edit_text_submitted(new_text: String) -> void:
 	var msg = chat_insert.text
-	multiplayer_s.rpc_id(1, "propagate_message", msg, multiplayer_s.room_id)
+	multiplayer_s.rpc_id(1, "propagate_user_message", msg, multiplayer_s.room_id)
 
 	chat_insert.clear()
 
@@ -53,18 +54,17 @@ func _on_new_room_btn_pressed() -> void:
 
 func show_room(room_name):
 	main_container.visible = false
-	$room_container.visible = true
+	room_container.visible = true
 	msg_log_container.text = ""
 	var color = color_for_username(room_name)
 	var message = "Welcome to [color=#%s]%s[/color] room!" % [color, room_name]
 	insert_message(message)
 
-func show_loby(loby_players):
+func show_loby():
 	main_container.visible = true
-	$room_container.visible = false
+	room_container.visible = false
 	msg_log_container.text = ""
-	var message = "Welcome to the loby. There are currently %s players here." % [loby_players]
-	insert_message(message)
+
 
 
 func color_for_username(name: String) -> String:
