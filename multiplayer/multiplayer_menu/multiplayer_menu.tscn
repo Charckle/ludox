@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://c5hu5spls1b6x"]
+[gd_scene load_steps=9 format=3 uid="uid://c5hu5spls1b6x"]
 
 [ext_resource type="Script" uid="uid://dmp4lvmo23kcs" path="res://multiplayer/multiplayer_menu/multiplayer_menu.gd" id="1_bd2p5"]
 [ext_resource type="Script" uid="uid://46kpgufpnq4y" path="res://multiplayer/multiplayer_menu/main_container.gd" id="1_do8j0"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://cdrr1oyilrq5p" path="res://objects/city_multiplayer/city_multiplayer.tscn" id="5_b2214"]
 [ext_resource type="Texture2D" uid="uid://bmb05dgdvgml8" path="res://icon.svg" id="6_1rj7s"]
 [ext_resource type="Script" uid="uid://b404jc6byw5vm" path="res://multiplayer/multiplayer_menu/ui.gd" id="6_r56x7"]
+[ext_resource type="PackedScene" uid="uid://barp2eu1vt3yw" path="res://menus/rule_book/rule_book.tscn" id="8_oh6t8"]
 
 [node name="MultiplayerMenu" type="Node2D"]
 script = ExtResource("1_bd2p5")
@@ -204,7 +205,6 @@ layout_mode = 2
 bbcode_enabled = true
 
 [node name="game_ui" type="Control" parent="ui"]
-visible = false
 layout_mode = 3
 anchors_preset = 0
 offset_right = 40.0
@@ -263,6 +263,13 @@ offset_top = 376.0
 offset_right = 392.0
 offset_bottom = 426.0
 text = "Leave game"
+
+[node name="rule_book" parent="ui/game_ui" instance=ExtResource("8_oh6t8")]
+layout_mode = 1
+offset_left = 404.0
+offset_top = -252.0
+offset_right = 836.0
+offset_bottom = 199.0
 
 [node name="waiting_conn_pan" type="Panel" parent="."]
 visible = false
