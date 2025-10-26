@@ -24,4 +24,4 @@ func _on_settings_btn_pressed() -> void:
 
 func _on_game_rules_btn_pressed() -> void:
 	main_menu.hide_all_oth_containers()
-	main_menu.get_node("othr_containers").get_node("rules_pan").visible = true
+	main_menu.get_node("othr_containers").get_node("rule_book").visible = true

@@ -1,9 +1,12 @@
-[gd_scene load_steps=5 format=3 uid="uid://c5hu5spls1b6x"]
+[gd_scene load_steps=8 format=3 uid="uid://c5hu5spls1b6x"]
 
 [ext_resource type="Script" uid="uid://dmp4lvmo23kcs" path="res://multiplayer/multiplayer_menu/multiplayer_menu.gd" id="1_bd2p5"]
 [ext_resource type="Script" uid="uid://46kpgufpnq4y" path="res://multiplayer/multiplayer_menu/main_container.gd" id="1_do8j0"]
 [ext_resource type="Texture2D" uid="uid://wsvsgsnc3sus" path="res://sprites/images/table_tournament.png" id="1_qb1go"]
 [ext_resource type="Script" uid="uid://bu1ycm1vxapkv" path="res://multiplayer/multiplayer_menu/room_container.gd" id="3_5pcwm"]
+[ext_resource type="PackedScene" uid="uid://cdrr1oyilrq5p" path="res://objects/city_multiplayer/city_multiplayer.tscn" id="5_b2214"]
+[ext_resource type="Texture2D" uid="uid://bmb05dgdvgml8" path="res://icon.svg" id="6_1rj7s"]
+[ext_resource type="Script" uid="uid://b404jc6byw5vm" path="res://multiplayer/multiplayer_menu/ui.gd" id="6_r56x7"]
 
 [node name="MultiplayerMenu" type="Node2D"]
 script = ExtResource("1_bd2p5")
@@ -131,7 +134,41 @@ text = "Spectators:"
 [node name="spectator_cont" type="GridContainer" parent="room_container/player_v_cont"]
 layout_mode = 2
 
-[node name="chat" type="PanelContainer" parent="."]
+[node name="game_container" type="Panel" parent="."]
+visible = false
+offset_left = -424.0
+offset_top = -240.0
+offset_right = 432.0
+offset_bottom = 240.0
+
+[node name="CityMultiplayer" parent="game_container" instance=ExtResource("5_b2214")]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="background" type="Sprite2D" parent="."]
+visible = false
+z_index = -1
+scale = Vector2(0.578125, 0.578125)
+texture = ExtResource("1_qb1go")
+
+[node name="ui" type="CanvasModulate" parent="."]
+script = ExtResource("6_r56x7")
+
+[node name="ColorRect" type="ColorRect" parent="ui"]
+visible = false
+offset_left = -464.0
+offset_top = -264.0
+offset_right = 424.0
+offset_bottom = 264.0
+color = Color(0.0687983, 0.0687983, 0.0687983, 1)
+
+[node name="chat" type="PanelContainer" parent="ui"]
 anchors_preset = 6
 anchor_left = 1.0
 anchor_top = 0.5
@@ -145,32 +182,87 @@ grow_horizontal = 0
 grow_vertical = 2
 size_flags_horizontal = 8
 
-[node name="base_node" type="Control" parent="chat"]
+[node name="base_node" type="Control" parent="ui/chat"]
 layout_mode = 2
 
-[node name="LineEdit" type="LineEdit" parent="chat/base_node"]
+[node name="LineEdit" type="LineEdit" parent="ui/chat/base_node"]
 layout_mode = 2
 offset_left = 16.0
 offset_top = 392.0
 offset_right = 424.0
 offset_bottom = 431.0
 
-[node name="Panel" type="PanelContainer" parent="chat/base_node"]
+[node name="Panel" type="PanelContainer" parent="ui/chat/base_node"]
 layout_mode = 0
 offset_left = 16.0
 offset_top = 16.0
 offset_right = 416.0
 offset_bottom = 368.0
 
-[node name="msg_log_cont" type="RichTextLabel" parent="chat/base_node/Panel"]
+[node name="msg_log_cont" type="RichTextLabel" parent="ui/chat/base_node/Panel"]
 layout_mode = 2
 bbcode_enabled = true
 
-[node name="background" type="Sprite2D" parent="."]
+[node name="game_ui" type="Control" parent="ui"]
 visible = false
-z_index = -1
-scale = Vector2(0.578125, 0.578125)
-texture = ExtResource("1_qb1go")
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="chat_btn" type="TextureButton" parent="ui/game_ui"]
+layout_mode = 0
+offset_left = -416.0
+offset_top = 168.0
+offset_right = -288.0
+offset_bottom = 296.0
+scale = Vector2(0.5, 0.5)
+texture_normal = ExtResource("6_1rj7s")
+
+[node name="option_panel" type="Panel" parent="ui/game_ui"]
+layout_mode = 0
+offset_left = 432.0
+offset_top = -224.0
+offset_right = 840.0
+offset_bottom = 216.0
+
+[node name="options_btn" type="TextureButton" parent="ui/game_ui/option_panel"]
+layout_mode = 1
+offset_left = -80.0
+offset_top = 392.0
+offset_right = 48.0
+offset_bottom = 520.0
+scale = Vector2(0.5, 0.5)
+texture_normal = ExtResource("6_1rj7s")
+
+[node name="rules_btn" type="Button" parent="ui/game_ui/option_panel"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 0
+offset_left = 24.0
+offset_top = 272.0
+offset_right = 384.0
+offset_bottom = 322.0
+disabled = true
+text = "Rule Book"
+
+[node name="surrender_btn" type="Button" parent="ui/game_ui/option_panel"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 0
+offset_left = 24.0
+offset_top = 24.0
+offset_right = 384.0
+offset_bottom = 74.0
+disabled = true
+text = "Surrender Victory"
+
+[node name="leave_btn" type="Button" parent="ui/game_ui/option_panel"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 0
+offset_left = 256.0
+offset_top = 376.0
+offset_right = 392.0
+offset_bottom = 426.0
+text = "Leave game"
 
 [node name="waiting_conn_pan" type="Panel" parent="."]
 visible = false
@@ -186,6 +278,14 @@ offset_bottom = 72.0
 grow_horizontal = 2
 grow_vertical = 2
 
+[node name="ColorRect" type="ColorRect" parent="waiting_conn_pan"]
+layout_mode = 0
+offset_left = -312.0
+offset_top = -192.0
+offset_right = 576.0
+offset_bottom = 336.0
+color = Color(0.0687983, 0.0687983, 0.0687983, 1)
+
 [node name="Label" type="Label" parent="waiting_conn_pan"]
 layout_mode = 1
 anchors_preset = 8
@@ -193,24 +293,28 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -51.0
-offset_top = -32.0
-offset_right = 51.0
-offset_bottom = -9.0
+offset_left = -88.0
+offset_top = -40.0
+offset_right = 97.0
+offset_bottom = 52.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "...connecting to server..."
 
 [node name="wait_conn_btn" type="Button" parent="waiting_conn_pan"]
 layout_mode = 0
-offset_left = 16.0
-offset_top = 96.0
-offset_right = 288.0
-offset_bottom = 135.0
+offset_left = 8.0
+offset_top = 64.0
+offset_right = 296.0
+offset_bottom = 124.0
 text = "Cancel"
 
 [connection signal="pressed" from="main_container/top_cont/HBoxContainer/new_room_btn" to="." method="_on_new_room_btn_pressed"]
 [connection signal="pressed" from="main_container/top_cont/HBoxContainer/leave_btn" to="." method="exit_multiplayer"]
+[connection signal="pressed" from="room_container/start_btn" to="room_container" method="_on_start_btn_pressed"]
 [connection signal="pressed" from="room_container/leave_btn" to="room_container" method="_on_leave_btn_pressed"]
-[connection signal="text_submitted" from="chat/base_node/LineEdit" to="." method="_on_line_edit_text_submitted"]
+[connection signal="text_submitted" from="ui/chat/base_node/LineEdit" to="." method="_on_line_edit_text_submitted"]
+[connection signal="pressed" from="ui/game_ui/chat_btn" to="ui" method="_on_chat_btn_pressed"]
+[connection signal="pressed" from="ui/game_ui/option_panel/options_btn" to="ui" method="_on_options_btn_pressed"]
+[connection signal="pressed" from="ui/game_ui/option_panel/leave_btn" to="ui" method="_on_leave_btn_pressed"]
 [connection signal="pressed" from="waiting_conn_pan/wait_conn_btn" to="." method="exit_multiplayer"]

@@ -5,6 +5,8 @@ extends Node2D
 var captured = false
 var position_grid: Vector2i = Vector2i.ZERO
 
+var my_size = Vector2i(40,40)
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

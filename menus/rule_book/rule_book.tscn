@@ -1,0 +1,436 @@
+[gd_scene load_steps=8 format=3 uid="uid://barp2eu1vt3yw"]
+
+[ext_resource type="Script" uid="uid://bq1g5ht65oheh" path="res://menus/rule_book/rule_book.gd" id="1_swpd8"]
+[ext_resource type="Texture2D" uid="uid://dp05tqo7p4o03" path="res://rulebook/rule_1.png" id="2_vr6pg"]
+[ext_resource type="Texture2D" uid="uid://h3wnxx4suwy" path="res://rulebook/rule_2.png" id="3_gucmy"]
+[ext_resource type="PackedScene" uid="uid://u8n28ml7weyi" path="res://rulebook/cross.tscn" id="4_ii262"]
+[ext_resource type="PackedScene" uid="uid://fv1fk5ro8xmt" path="res://rulebook/arrow.tscn" id="5_nj8rq"]
+[ext_resource type="Texture2D" uid="uid://coar21qa72561" path="res://rulebook/rule_3.png" id="6_iy4lo"]
+[ext_resource type="Texture2D" uid="uid://bl7qw12331oqi" path="res://rulebook/rule_4.png" id="7_yyr5g"]
+
+[node name="rule_book" type="Panel"]
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -216.0
+offset_top = -225.5
+offset_right = 216.0
+offset_bottom = 225.5
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_swpd8")
+
+[node name="rules" type="Control" parent="."]
+layout_mode = 2
+anchors_preset = 0
+offset_left = -106.0
+offset_top = 19.0
+offset_right = -58.0
+offset_bottom = 50.0
+
+[node name="rule_1" type="Panel" parent="rules"]
+layout_mode = 0
+offset_left = 109.0
+offset_top = -8.0
+offset_right = 533.0
+offset_bottom = 368.0
+
+[node name="RichTextLabel" type="RichTextLabel" parent="rules/rule_1"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Lantruculi is an anctient roman game that most likely evolved from the greek game Petteia, which is similar, but excludes the Dux.
+No complete rulebook has come down to us, so every ruleset is an interpretation on how it could be played, based on snippets about the game that ancient historians wrote about.
+There are many ways to play it: from multiple rows of soldiers, to placing the units on the board before starting the game.
+There are three game rulesets implemented:
+
+- Basic: simplest
+- Basic Plus: simplest + capture units in corners
+- Latrunculi XXI: complex rules for high level gameplay"
+
+[node name="rule_2" type="Panel" parent="rules"]
+visible = false
+layout_mode = 0
+offset_left = 109.0
+offset_top = -8.0
+offset_right = 533.0
+offset_bottom = 368.0
+
+[node name="Label" type="Label" parent="rules/rule_2"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -20.5
+offset_right = 20.5
+offset_bottom = 23.0
+grow_horizontal = 2
+text = "Classic"
+
+[node name="RichTextLabel" type="RichTextLabel" parent="rules/rule_2"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 40.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "As the name suggest, its the most basic set.
+In Lantrunculi, you win if your opponent has no more pawns except the dux, or if the dux cannot move.
+You cannot capture (eat) the dux, which you can use to your advantage.
+To eat an enemy pawn, you move it orthogonally any number of squares, and then block the enemy pawn in a custodial attack, which means the opponents pawn is between two of yours.
+However, if the opponent moves the pawn between two of your pawns, it does not count as a capture."
+
+[node name="rule_3" type="Panel" parent="rules"]
+visible = false
+layout_mode = 0
+offset_left = 109.0
+offset_top = -8.0
+offset_right = 533.0
+offset_bottom = 368.0
+
+[node name="Label" type="Label" parent="rules/rule_3"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -38.5
+offset_right = 38.5
+offset_bottom = 23.0
+grow_horizontal = 2
+text = "Classic Plus"
+
+[node name="RichTextLabel" type="RichTextLabel" parent="rules/rule_3"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 40.0
+offset_bottom = -136.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "The same rules from the Classic set apply here, with the addition that you can capture an opponents pawn, if it stands in the corner.
+Do to its location you cannot capture it orthogonally, so the capture takes place if the pawn has no tile to move to.
+The top left and bottom right blue pawns would get captured.
+"
+
+[node name="Rule1" type="Sprite2D" parent="rules/rule_3"]
+position = Vector2(219, 288)
+scale = Vector2(0.495356, 0.495356)
+texture = ExtResource("2_vr6pg")
+
+[node name="rule_4" type="Panel" parent="rules"]
+visible = false
+layout_mode = 0
+offset_left = 109.0
+offset_top = -8.0
+offset_right = 533.0
+offset_bottom = 368.0
+
+[node name="Label" type="Label" parent="rules/rule_4"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -38.5
+offset_right = 38.5
+offset_bottom = 23.0
+grow_horizontal = 2
+text = "Latrunculi XXI"
+
+[node name="RichTextLabel" type="RichTextLabel" parent="rules/rule_4"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 40.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Latrunculi XXI is an advanced variation of the game, designed by Jose Manuel Carrillo-Muniz in 2015.
+In the Basic Lantrunculi rules you cannot force a win on an opponent, and the game can drag on if noone of the players make a serious mistake.
+
+Capturing rules from Basic Plus apply here too, with additional rules, to force any opponents turle position.
+
+In addition, there are new rules on how a pawn can move."
+
+[node name="rule_5" type="Panel" parent="rules"]
+visible = false
+layout_mode = 0
+offset_left = 109.0
+offset_top = -8.0
+offset_right = 533.0
+offset_bottom = 368.0
+
+[node name="Label" type="Label" parent="rules/rule_5"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -38.5
+offset_right = 38.5
+offset_bottom = 23.0
+grow_horizontal = 2
+text = "Latrunculi XXI - Movement"
+
+[node name="RichTextLabel" type="RichTextLabel" parent="rules/rule_5"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 40.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "Pieces can move freely (they cannot jump other units), if they are not in a skirmish.
+A skirmish is define as two oposing pieces being next to eachother. If there are more than two pieces together, its a melee.
+A piece in a skirmish can only move if it performs an offensive move: to capture another piece, or to flank an opponents dux.
+A piece in a skirmish can only move freely, if the opponents piece has other of your pieces around it.
+The dux has special movement rules."
+
+[node name="rule_6" type="Panel" parent="rules"]
+visible = false
+layout_mode = 0
+offset_left = 109.0
+offset_top = -8.0
+offset_right = 533.0
+offset_bottom = 368.0
+
+[node name="Label" type="Label" parent="rules/rule_6"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -38.5
+offset_right = 38.5
+offset_bottom = 23.0
+grow_horizontal = 2
+text = "Latrunculi XXI - Movement"
+
+[node name="RichTextLabel" type="RichTextLabel" parent="rules/rule_6"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 40.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "If a dux is in a skirmish, it can move offensively, or move by just ONE tile.
+If the dux has two adjacent opponent units, it can only move offensively. If the dux is on the border tile, it cannot move.
+If the dux has three adjacent opponet pawns, it cannot move.
+If it has four, game over."
+
+[node name="rule_7" type="Panel" parent="rules"]
+visible = false
+layout_mode = 0
+offset_left = 109.0
+offset_top = -8.0
+offset_right = 533.0
+offset_bottom = 368.0
+
+[node name="Label" type="Label" parent="rules/rule_7"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -38.5
+offset_right = 38.5
+offset_bottom = 23.0
+grow_horizontal = 2
+text = "Latrunculi XXI - Offensive movement"
+
+[node name="RichTextLabel" type="RichTextLabel" parent="rules/rule_7"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 40.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "An offensive movement is one that places the piece next to a dux, or one that captures another piece.
+
+There are several ways you can capture a unit, other than the two in the Basic and Basic Plus rules.
+
+There are:
+- push and crush
+- flank attack
+- phalanx"
+
+[node name="rule_8" type="Panel" parent="rules"]
+visible = false
+layout_mode = 0
+offset_left = 109.0
+offset_top = -8.0
+offset_right = 533.0
+offset_bottom = 368.0
+
+[node name="Label" type="Label" parent="rules/rule_8"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -38.5
+offset_right = 38.5
+offset_bottom = 23.0
+grow_horizontal = 2
+text = "Latrunculi XXI - Offensive movement - Push and crush"
+
+[node name="RichTextLabel" type="RichTextLabel" parent="rules/rule_8"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 40.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "This offensive movement is defined by your piece \"pushing\" a friendly piece and \"crushing\" a opponents piece against another of your pieces, or the border of the game board.The movement of the piece that will be pushing, must be in the same line as the unit its crushing."
+
+[node name="Rule2" type="Sprite2D" parent="rules/rule_8"]
+position = Vector2(219, 264)
+scale = Vector2(0.643963, 0.643963)
+texture = ExtResource("3_gucmy")
+
+[node name="Cross" parent="rules/rule_8/Rule2" instance=ExtResource("4_ii262")]
+position = Vector2(80.75, 59.0096)
+
+[node name="Cross2" parent="rules/rule_8/Rule2" instance=ExtResource("4_ii262")]
+position = Vector2(-159.947, -21.7404)
+
+[node name="Arrow" parent="rules/rule_8/Rule2" instance=ExtResource("5_nj8rq")]
+position = Vector2(-90.0673, 59.0096)
+
+[node name="Arrow2" parent="rules/rule_8/Rule2" instance=ExtResource("5_nj8rq")]
+position = Vector2(49.6924, -12.4231)
+rotation = -3.14159
+
+[node name="rule_9" type="Panel" parent="rules"]
+visible = false
+layout_mode = 0
+offset_left = 109.0
+offset_top = -8.0
+offset_right = 533.0
+offset_bottom = 368.0
+
+[node name="Label" type="Label" parent="rules/rule_9"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -38.5
+offset_right = 38.5
+offset_bottom = 23.0
+grow_horizontal = 2
+text = "Latrunculi XXI - Offensive movement - Flank attack"
+
+[node name="RichTextLabel" type="RichTextLabel" parent="rules/rule_9"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 40.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "This offensive movement is defined by your piece moving next to the last piece in an opponents linear defensive line. This will lead to the capture of the opponents piece. The defensive line can be any pieces long, as long as there is one of your pieces on the other end. The attack movement has to be in the same line as the defensive line."
+
+[node name="Rule2" type="Sprite2D" parent="rules/rule_9"]
+position = Vector2(331, 282)
+scale = Vector2(0.544892, 0.544892)
+texture = ExtResource("6_iy4lo")
+
+[node name="Cross2" parent="rules/rule_9/Rule2" instance=ExtResource("4_ii262")]
+position = Vector2(-40.3749, -23.2933)
+
+[node name="Arrow2" parent="rules/rule_9/Rule2" instance=ExtResource("5_nj8rq")]
+position = Vector2(136.654, -12.4231)
+rotation = -3.14159
+
+[node name="rule_10" type="Panel" parent="rules"]
+visible = false
+layout_mode = 0
+offset_left = 109.0
+offset_top = -8.0
+offset_right = 533.0
+offset_bottom = 368.0
+
+[node name="Label" type="Label" parent="rules/rule_10"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -38.5
+offset_right = 38.5
+offset_bottom = 23.0
+grow_horizontal = 2
+text = "Latrunculi XXI - Offensive movement - Phalanx"
+
+[node name="RichTextLabel" type="RichTextLabel" parent="rules/rule_10"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = 40.0
+offset_bottom = -16.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "This offensive movement is defined by your piece - the Phalanx, moving to complete a Testuto defense position. A Testudo position is any size rectangular group of pieces. This move captures the opponents piece on the other side of the testudo. Your piece has to move in the same line as the opponents piece."
+
+[node name="Rule2" type="Sprite2D" parent="rules/rule_10"]
+position = Vector2(203, 275)
+scale = Vector2(0.594427, 0.594427)
+texture = ExtResource("7_yyr5g")
+
+[node name="Cross2" parent="rules/rule_10/Rule2" instance=ExtResource("4_ii262")]
+position = Vector2(1.14441e-05, -21.8698)
+
+[node name="Cross3" parent="rules/rule_10/Rule2" instance=ExtResource("4_ii262")]
+position = Vector2(80.75, 18.5052)
+
+[node name="Arrow2" parent="rules/rule_10/Rule2" instance=ExtResource("5_nj8rq")]
+position = Vector2(104.302, -149.724)
+rotation = -4.71238
+
+[node name="Arrow3" parent="rules/rule_10/Rule2" instance=ExtResource("5_nj8rq")]
+position = Vector2(15.1406, 153.089)
+rotation = -1.57079
+
+[node name="GridContainer" type="GridContainer" parent="."]
+layout_mode = 1
+anchors_preset = 12
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -53.0
+grow_horizontal = 2
+grow_vertical = 0
+columns = 3
+
+[node name="previous_btn" type="Button" parent="GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Previous"
+
+[node name="closes_btn" type="Button" parent="GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Close"
+
+[node name="next_btn" type="Button" parent="GridContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Next"
+
+[connection signal="pressed" from="GridContainer/previous_btn" to="." method="_on_previous_btn_pressed"]
+[connection signal="pressed" from="GridContainer/closes_btn" to="." method="_on_closes_btn_pressed"]
+[connection signal="pressed" from="GridContainer/next_btn" to="." method="_on_next_btn_pressed"]

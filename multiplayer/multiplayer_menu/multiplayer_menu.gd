@@ -4,10 +4,14 @@ extends Node2D
 
 @onready var main_container = $main_container
 @onready var room_container = $room_container
+@onready var game_container = $game_container
+@onready var game_city = $game_container/CityMultiplayer
+@onready var chat_container = $ui/chat
+@onready var game_ui = $ui/game_ui
 #@onready var chat_container = $chat/base_node/Panel/RichTextLabel
-@onready var msg_log_container = $chat/base_node/Panel/msg_log_cont
+@onready var msg_log_container = $ui/chat/base_node/Panel/msg_log_cont
 
-@onready var chat_insert = $chat/base_node/LineEdit
+@onready var chat_insert = $ui/chat/base_node/LineEdit
 
 
 
@@ -22,6 +26,7 @@ func _ready() -> void:
 	
 	$main_container.multiplayer_s = self.multiplayer_s
 	room_container.multiplayer_s = self.multiplayer_s
+	$ui.multiplayer_s = self.multiplayer_s
 	
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -31,6 +36,9 @@ func _process(delta: float) -> void:
 func show_default_windows():
 	main_container.visible = true
 	room_container.visible = false
+	game_container.visible = false
+	game_ui.visible = false
+	chat_container.visible = true
 
 func insert_message(message):
 	message += "\n"
@@ -55,15 +63,23 @@ func _on_new_room_btn_pressed() -> void:
 func show_room(room_name):
 	main_container.visible = false
 	room_container.visible = true
+	game_container.visible = false
+	game_ui.visible = false
 	msg_log_container.text = ""
 	var color = color_for_username(room_name)
 	var message = "Welcome to [color=#%s]%s[/color] room!" % [color, room_name]
 	insert_message(message)
 
 func show_loby():
-	main_container.visible = true
-	room_container.visible = false
+	show_default_windows()
 	msg_log_container.text = ""
+
+func show_game():
+	room_container.visible = false
+	chat_container.visible = false
+	game_container.visible = true
+	game_ui.visible = true
+	
 
 
 
@@ -71,3 +87,8 @@ func color_for_username(name: String) -> String:
 	var hue := float(abs(hash(name)) % 360) / 360.0
 	var c := Color.from_hsv(hue, 0.65, 1.0)
 	return c.to_html(false)
+
+
+func prepare_game(city_size, players_data, player_turn):
+	game_city.initial_set(city_size, players_data, player_turn)
+	

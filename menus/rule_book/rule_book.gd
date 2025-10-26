@@ -31,3 +31,7 @@ func _on_next_btn_pressed() -> void:
 func hide_all():
 	for rule in all_rules:
 		rule.visible = false
+
+
+func _on_closes_btn_pressed() -> void:
+	self.visible = false

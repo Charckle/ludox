@@ -48,3 +48,24 @@ func leave_room_request(room_id):
 func move_to_loby():
 	m_m.room_id = null
 	multiplayer_menu.show_loby()
+
+@rpc("any_peer", "call_remote", "reliable")
+func start_game(room_id):
+	pass
+
+
+@rpc("authority", "call_remote", "reliable")
+func move_player_to_game(players_data, player_turn, city_size, what):
+	print(players_data)
+	print(player_turn)
+	print(city_size)
+	print(what)
+	if m_m.my_peer_id in players_data:
+		m_m.is_playing = true
+	m_m.player_color = players_data[m_m.my_peer_id]
+	m_m.being_played = true
+	m_m.player_turn = player_turn
+	m_m.city_size = city_size
+	
+	multiplayer_menu.prepare_game(m_m.city_size, m_m.players_data, m_m.player_turn)
+	multiplayer_menu.show_game()

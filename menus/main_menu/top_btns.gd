@@ -25,7 +25,7 @@ func _on_continue_btn_pressed() -> void:
 
 
 func _on_button_pressed() -> void:
-	ContinueGame.load_continue()
+	main_menu.hide_all_oth_containers()
 	$"../../../othr_containers/campaign_pan".visible = true
 	
 

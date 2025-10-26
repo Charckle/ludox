@@ -56,3 +56,7 @@ func _on_rematch_btn_pressed() -> void:
 
 func _on_ai_difficulty_btn_item_selected(index: int) -> void:
 	GlobalSet.settings["ai_lvl"] = $ai_difficulty_btn.selected
+
+
+func _on_rule_book_btn_pressed() -> void:
+	$rule_book.visible = true

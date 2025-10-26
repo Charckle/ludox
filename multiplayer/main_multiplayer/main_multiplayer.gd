@@ -3,10 +3,17 @@ extends Node
 var ADDRESS
 var PORT
 
+var my_peer_id = 0
 var multiplayer_menu = null
 
 var room_id = null
 
+var is_playing = false
+var player_color = null
+var being_played = false
+var city_size = null
+
+var player_turn = null
 
 @onready var rooms_obj = $rooms
 
@@ -40,6 +47,7 @@ func _local_on_connected_ok():
 	#var text_to_display = "Welcome to the lobby."
 	multiplayer_menu.get_node("waiting_conn_pan").visible = false
 	#multiplayer_menu.insert_message(text_to_display)
+	my_peer_id = multiplayer.get_unique_id()
 	
 func _local_on_connected_fail():
 	multiplayer.multiplayer_peer = null

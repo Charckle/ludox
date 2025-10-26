@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://bd367rr8rfijc"]
+[gd_scene load_steps=7 format=3 uid="uid://bd367rr8rfijc"]
 
 [ext_resource type="Script" uid="uid://crlxp5yjng4t4" path="res://objects/levels/basic/basic_lvl.gd" id="1_74g82"]
 [ext_resource type="PackedScene" uid="uid://kvjswh5bloxe" path="res://objects/city/city.tscn" id="1_gvys7"]
 [ext_resource type="Script" uid="uid://cytsq0lr5xxo2" path="res://objects/levels/basic/panel.gd" id="3_4ebhi"]
 [ext_resource type="Texture2D" uid="uid://cjlyfnt6tl4ih" path="res://sprites/images/table.png" id="3_qwom7"]
 [ext_resource type="Script" uid="uid://d008ipc0aadtd" path="res://objects/levels/basic/info_panel.gd" id="4_4ebhi"]
+[ext_resource type="PackedScene" uid="uid://barp2eu1vt3yw" path="res://menus/rule_book/rule_book.tscn" id="4_qtxv8"]
 
 [node name="BasicLvl" type="Node2D"]
 script = ExtResource("1_74g82")
@@ -83,6 +84,29 @@ offset_right = 320.0
 offset_bottom = 367.0
 text = "Re-match"
 
+[node name="rule_book_btn" type="Button" parent="CanvasModulate/Panel"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 0
+offset_left = 64.0
+offset_top = 176.0
+offset_right = 320.0
+offset_bottom = 231.0
+text = "Rule Book"
+
+[node name="rule_book" parent="CanvasModulate/Panel" instance=ExtResource("4_qtxv8")]
+layout_mode = 0
+anchors_preset = 0
+anchor_left = 0.0
+anchor_top = 0.0
+anchor_right = 0.0
+anchor_bottom = 0.0
+offset_left = 32.0
+offset_top = 16.0
+offset_right = 464.0
+offset_bottom = 467.0
+grow_horizontal = 1
+grow_vertical = 1
+
 [node name="info_panel" type="Panel" parent="CanvasModulate"]
 visible = false
 anchors_preset = 8
@@ -124,4 +148,5 @@ texture = ExtResource("3_qwom7")
 [connection signal="item_selected" from="CanvasModulate/Panel/ai_difficulty_btn" to="CanvasModulate/Panel" method="_on_ai_difficulty_btn_item_selected"]
 [connection signal="pressed" from="CanvasModulate/Panel/main_menu_btn" to="CanvasModulate/Panel" method="_on_main_menu_btn_pressed"]
 [connection signal="pressed" from="CanvasModulate/Panel/rematch_btn" to="CanvasModulate/Panel" method="_on_rematch_btn_pressed"]
+[connection signal="pressed" from="CanvasModulate/Panel/rule_book_btn" to="CanvasModulate/Panel" method="_on_rule_book_btn_pressed"]
 [connection signal="pressed" from="CanvasModulate/info_panel/Button" to="CanvasModulate/info_panel" method="_on_button_pressed"]

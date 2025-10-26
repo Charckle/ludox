@@ -1,0 +1,12 @@
+[gd_scene load_steps=2 format=3 uid="uid://cdrr1oyilrq5p"]
+
+[ext_resource type="Script" uid="uid://dy671slcnq35s" path="res://objects/city_multiplayer/city_multiplayer.gd" id="1_uknsr"]
+
+[node name="CityMultiplayer" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_uknsr")
+
+[node name="tiles" type="Node2D" parent="."]
+
+[node name="soldiers" type="Node2D" parent="."]

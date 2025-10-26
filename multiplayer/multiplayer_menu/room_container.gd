@@ -36,3 +36,12 @@ func update_room_data(room_data):
 			cont_playr.add_child(label)
 		else:
 			cont_spect.add_child(label)
+	
+	if room_data["can_start"] == true and room_data["room_id"] == multiplayer_s.my_peer_id:
+		$start_btn.disabled = false
+	else:
+		$start_btn.disabled = true
+
+
+func _on_start_btn_pressed() -> void:
+	multiplayer_s.rooms_obj.rpc_id(1, "start_game", multiplayer_s.room_id)
