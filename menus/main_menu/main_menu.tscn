@@ -170,6 +170,7 @@ offset_bottom = 258.0
 text = "Start Game"
 
 [node name="settings_pan" type="Panel" parent="othr_containers"]
+visible = false
 layout_mode = 0
 offset_left = -360.0
 offset_top = -144.0

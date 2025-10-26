@@ -44,7 +44,7 @@ offset_right = 320.0
 offset_bottom = 87.0
 text = "Undo Move"
 
-[node name="TextureButton" type="Button" parent="CanvasModulate/Panel"]
+[node name="settings_btn" type="Button" parent="CanvasModulate/Panel"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 0
 offset_left = -128.0
@@ -94,6 +94,7 @@ offset_bottom = 231.0
 text = "Rule Book"
 
 [node name="rule_book" parent="CanvasModulate/Panel" instance=ExtResource("4_qtxv8")]
+visible = false
 layout_mode = 0
 anchors_preset = 0
 anchor_left = 0.0
@@ -144,7 +145,7 @@ scale = Vector2(0.5625, 0.5625)
 texture = ExtResource("3_qwom7")
 
 [connection signal="pressed" from="CanvasModulate/Panel/undo_btn" to="." method="_on_undo_btn_pressed"]
-[connection signal="pressed" from="CanvasModulate/Panel/TextureButton" to="CanvasModulate/Panel" method="_on_texture_button_pressed"]
+[connection signal="pressed" from="CanvasModulate/Panel/settings_btn" to="CanvasModulate/Panel" method="_on_texture_button_pressed"]
 [connection signal="item_selected" from="CanvasModulate/Panel/ai_difficulty_btn" to="CanvasModulate/Panel" method="_on_ai_difficulty_btn_item_selected"]
 [connection signal="pressed" from="CanvasModulate/Panel/main_menu_btn" to="CanvasModulate/Panel" method="_on_main_menu_btn_pressed"]
 [connection signal="pressed" from="CanvasModulate/Panel/rematch_btn" to="CanvasModulate/Panel" method="_on_rematch_btn_pressed"]

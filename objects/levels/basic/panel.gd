@@ -42,8 +42,8 @@ func toggle_console():
 
 
 func _on_texture_button_pressed() -> void:
-	if city.can_interact:
-		toggle_console()
+	toggle_console()
+	city.can_interact = !city.can_interact
 
 
 func _on_main_menu_btn_pressed() -> void:
