@@ -60,10 +60,10 @@ func move_player_to_game(players_data, player_turn, city_size):
 	
 	if m_m.my_peer_id in players_data:
 		m_m.is_playing = true
-	m_m.player_color = players_data[m_m.my_peer_id]
+	m_m.my_player = players_data[m_m.my_peer_id]
 	m_m.being_played = true
 	m_m.player_turn = player_turn
 	m_m.city_size = city_size
 	
-	multiplayer_menu.prepare_game(m_m.city_size, players_data, m_m.player_turn)
+	multiplayer_menu.prepare_game(m_m.my_player, m_m.city_size, players_data, m_m.player_turn)
 	multiplayer_menu.show_game()

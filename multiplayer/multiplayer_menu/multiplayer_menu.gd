@@ -89,6 +89,6 @@ func color_for_username(name: String) -> String:
 	return c.to_html(false)
 
 
-func prepare_game(city_size, players_data, player_turn):
-	game_city.initial_set(my_player, city_size, players_data, player_turn)
+func prepare_game(my_player, city_size, players_data, player_turn):
+	game_city.initial_multiplayer_set(my_player, city_size, players_data, player_turn)
 	

@@ -10,6 +10,7 @@ var all_board_positions
 var corners
 var border_tiles
 
+var my_player = 3 # for multiplayer
 var player_turn = 2
 
 var board_size = GlobalSet.settings["board_size"]
@@ -75,6 +76,11 @@ var SlainScene = preload("res://objects/soldier/slain_anim/slain_anim.tscn")
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	initialize_city()
+
+func initial_multiplayer_set(my_player_, city_size, players_data, player_turn_):
+	self.my_player = my_player_
+	self.player_turn = player_turn_
+	initialize_city(city_size)
 
 func initialize_city(board_size_=board_size):
 	if board_size_ == 1:
@@ -186,10 +192,11 @@ func center_board():
 	# position of top-left corner so it's centered
 	#var top_left = (viewport_size - board_size) / 2.0
 	
-	self.position = top_left - (board_size_ / 2.0)
+	self.global_position = top_left - (board_size_ / 2.0)
 	
-	if board_size == 1:
-		self.position.x -= 30
+	# because of scale
+	self.global_position.x -= 70
+	self.global_position.y -= 45
 
 func set_city_for_calc():
 	var valu = 1
@@ -202,6 +209,8 @@ func set_city_for_calc():
 		
 		vcb[valu] = new_unit
 		valu = valu + 1
+
+
 
 func _input(event):
 	# Mouse in viewport coordinates.

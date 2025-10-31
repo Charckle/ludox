@@ -9,10 +9,10 @@ var multiplayer_menu = null
 var room_id = null
 
 var is_playing = false
-var player_color = null
 var being_played = false
 var city_size = null
 
+var my_player = null
 var player_turn = null
 
 var players_data = null

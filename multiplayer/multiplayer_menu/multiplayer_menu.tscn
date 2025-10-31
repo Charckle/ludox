@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://46kpgufpnq4y" path="res://multiplayer/multiplayer_menu/main_container.gd" id="1_do8j0"]
 [ext_resource type="Texture2D" uid="uid://wsvsgsnc3sus" path="res://sprites/images/table_tournament.png" id="1_qb1go"]
 [ext_resource type="Script" uid="uid://bu1ycm1vxapkv" path="res://multiplayer/multiplayer_menu/room_container.gd" id="3_5pcwm"]
-[ext_resource type="PackedScene" uid="uid://cdrr1oyilrq5p" path="res://objects/city_multiplayer/city_multiplayer.tscn" id="5_b2214"]
+[ext_resource type="PackedScene" uid="uid://kvjswh5bloxe" path="res://objects/city/city.tscn" id="5_of7n4"]
 [ext_resource type="Texture2D" uid="uid://bmb05dgdvgml8" path="res://icon.svg" id="6_1rj7s"]
 [ext_resource type="Script" uid="uid://b404jc6byw5vm" path="res://multiplayer/multiplayer_menu/ui.gd" id="6_r56x7"]
 [ext_resource type="PackedScene" uid="uid://barp2eu1vt3yw" path="res://menus/rule_book/rule_book.tscn" id="8_oh6t8"]
@@ -136,13 +136,12 @@ text = "Spectators:"
 layout_mode = 2
 
 [node name="game_container" type="Panel" parent="."]
-visible = false
-offset_left = -424.0
+offset_left = -425.0
 offset_top = -240.0
-offset_right = 432.0
+offset_right = 431.0
 offset_bottom = 240.0
 
-[node name="CityMultiplayer" parent="game_container" instance=ExtResource("5_b2214")]
+[node name="CityMultiplayer" parent="game_container" instance=ExtResource("5_of7n4")]
 layout_mode = 1
 anchors_preset = 8
 anchor_left = 0.5
