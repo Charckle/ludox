@@ -22,12 +22,15 @@ func populate_settings():
 	else:
 		$ai_lvl_btn.visible = false
 	$ai_lvl_btn.selected = int(GlobalSet.settings["ai_lvl"])
+	$city_size_btn.selected = int(GlobalSet.settings["board_size"])
+	
 	
 
 func _on_start_g_btn_pressed() -> void:
 	GlobalSet.settings["game_rules"] = $game_rules_btn.selected
 	GlobalSet.settings["game_type"] = $game_type_btn.selected
 	GlobalSet.settings["ai_lvl"] = $ai_lvl_btn.selected
+	GlobalSet.settings["board_size"] = $city_size_btn.selected
 	SettingsLoad.save_settings()
 	get_tree().change_scene_to_file("res://objects/levels/basic/basic_lvl.tscn")
 

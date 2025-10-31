@@ -27,7 +27,7 @@ func get_moves(soldier_pos, dryrun=false, simulation=false):
 	# check enemies around you
 	var current_unit = city.get_soldier_on_position(soldier_pos, simulation)
 	
-	var blocking_tiles = current_unit.get_blocking_tiles(city, true, simulation)
+	var blocking_tiles = city.get_blocking_tiles(soldier_pos, current_unit["player"], true, simulation)
 	var blocking_enemy_units = blocking_tiles[0]
 	var all_tiles_coord = blocking_tiles[1]
 	var all_free_tiles_coord = blocking_tiles[2]
@@ -39,9 +39,9 @@ func get_moves(soldier_pos, dryrun=false, simulation=false):
 	if len(blocking_enemy_units) == 0:
 		_possible_moves_local = possible_basic_moves
 	# if there are enemies, check if they have at least another unit next to them
-	elif current_unit.dux:
+	elif current_unit["dux"]:
 		if len(blocking_enemy_units) == 1: 
-			if not current_unit.position_grid in city.corners["all"]:
+			if not current_unit["pg"] in city.corners["all"]:
 				for tile_pos in all_free_tiles_coord:
 					possible_moves.append(tile_pos)
 			# can move to dux
@@ -51,13 +51,13 @@ func get_moves(soldier_pos, dryrun=false, simulation=false):
 				possible_moves.append(pos)
 			# add to all those, that would attack another unit
 			for pos in possible_basic_moves:
-				if self.eatable_rules(current_unit.player, soldier_pos, pos, true, simulation):
+				if self.eatable_rules(current_unit["player"], soldier_pos, pos, true, simulation):
 					possible_moves.append(pos)
 					
 			_possible_moves_local = possible_moves
 			
 		elif len(blocking_enemy_units) == 2: 
-			if current_unit.position_grid in city.border_tiles:
+			if current_unit["pg"] in city.border_tiles:
 				possible_moves = []
 			else:
 				# can move to dux
@@ -68,27 +68,28 @@ func get_moves(soldier_pos, dryrun=false, simulation=false):
 					possible_moves.append(pos)
 				# add to all those, that would attack another unit
 				for pos in possible_basic_moves:
-					if self.eatable_rules(current_unit.player, soldier_pos, pos, true, simulation):
+					if self.eatable_rules(current_unit["player"], soldier_pos, pos, true, simulation):
 						possible_moves.append(pos)
 						
 				_possible_moves_local = possible_moves
 	else:
 		for adj_enemy in blocking_enemy_units:
-			var blocking_tiles_enemy = adj_enemy.get_blocking_tiles(city, true, simulation)
+			var blocking_tiles_enemy = city.get_blocking_tiles(adj_enemy["pg"], adj_enemy["player"], 
+															true, simulation)
 			var blocking_enemy_units_enemy = blocking_tiles_enemy[0]
 			var all_tiles_coord_enemy = blocking_tiles_enemy[1]
 			
 			if len(blocking_enemy_units_enemy) == 1:
 				# add to the possible moves all those, that are next to an enemy dux
 				var dux_pos = get_coord_nxt_to_dux(soldier_pos, possible_basic_moves, 
-				blocking_enemy_units[0].player, simulation)
+				blocking_enemy_units[0]["player"], simulation)
 				
 				for pos in dux_pos:
 					possible_moves.append(pos)
 
 				# add to all those, that would attack another unit
 				for pos in possible_basic_moves:
-					if self.eatable_rules(current_unit.player, soldier_pos, pos, true, simulation):
+					if self.eatable_rules(current_unit["player"], soldier_pos, pos, true, simulation):
 						possible_moves.append(pos)
 						
 				_possible_moves_local = possible_moves
@@ -174,19 +175,19 @@ func push_and_crush(where, my_player, start_coord, target_pos, dryrun=false,
 	position_to_check[axis] = position_to_check[axis] + up
 	
 	var unit_r = city.get_soldier_on_position(position_to_check, simulation)
-	if unit_r != null and unit_r.player == my_player:
-		if unit_r.position_grid == start_coord:
+	if unit_r != null and unit_r["player"] == my_player:
+		if unit_r["pg"] == start_coord:
 			pass
 		
-		position_to_check = unit_r.position_grid
+		position_to_check = unit_r["pg"]
 		position_to_check[axis] = position_to_check[axis] + up
 		var unit_rr = city.get_soldier_on_position(position_to_check, simulation)
 
 		if unit_rr != null:
 			# if the unit is on the edge of the city
-			if unit_rr.player != my_player:
-				if unit_rr.position_grid in city.border_tiles:
-					position_to_check = unit_rr.position_grid
+			if unit_rr["player"] != my_player:
+				if unit_rr["pg"] in city.border_tiles:
+					position_to_check = unit_rr["pg"]
 					position_to_check[axis] = position_to_check[axis] + up
 					var tile_ = city.get_tile_on_position(position_to_check)
 					
@@ -195,19 +196,19 @@ func push_and_crush(where, my_player, start_coord, target_pos, dryrun=false,
 							if dryrun:
 								can_eat.append([start_coord, target_pos, position_to_check])
 							else:
-								city.eat_unit(unit_rr)
+								city.eat_unit(unit_rr["pg"])
 				# if the unit is squashed between two other
 				else:
-					position_to_check = unit_rr.position_grid
+					position_to_check = unit_rr["pg"]
 					position_to_check[axis] = position_to_check[axis] + up
 					var unit_rrr = city.get_soldier_on_position(position_to_check, simulation)
 					
-					if unit_rrr != null and unit_rrr.player == my_player:
-						if not unit_rr.dux:
+					if unit_rrr != null and unit_rrr["player"] == my_player:
+						if not unit_rr["dux"]:
 							if dryrun:
 								can_eat.append([start_coord, target_pos, position_to_check])
 							else:
-								city.eat_unit(unit_rr)
+								city.eat_unit(unit_rr["pg"])
 	
 	return can_eat
 
@@ -263,7 +264,7 @@ func flank_nomnom(where, my_player, start_coord, target_pos, dryrun=false,
 	
 	var enemy_unit_exists = false
 	
-	if unit_r != null and unit_r.player != my_player:
+	if unit_r != null and unit_r["player"] != my_player:
 		enemy_unit_exists = true
 
 	
@@ -276,12 +277,12 @@ func flank_nomnom(where, my_player, start_coord, target_pos, dryrun=false,
 			if position_to_check not in city.all_board_positions or next_unit == null:
 				break
 			
-			if next_unit.player == my_player:
-				if not unit_r.dux:
+			if next_unit["player"] == my_player:
+				if not unit_r["dux"]:
 					if dryrun:
 						can_eat.append([start_coord, target_pos, position_to_check])
 					else:
-						city.eat_unit(unit_r)
+						city.eat_unit(unit_r["pg"])
 	
 	return can_eat
 
@@ -294,16 +295,16 @@ func eat_phalanx_attack(my_player, start_coord, pos_coord, dryrun=false,
 	var direction_ = get_direction(start_coord, pos_coord)
 
 	match direction_:
-		"right":
+		"right_":
 			can_eat.append_array(phalanx_attack(Where.RIGHT, my_player, start_coord, 
 						pos_coord, dryrun, simulation))
-		"down":
+		"down_":
 			can_eat.append_array(phalanx_attack(Where.BOTTOM, my_player, start_coord, 
 						pos_coord, dryrun, simulation))
 		"up":
 			can_eat.append_array(phalanx_attack(Where.TOP, my_player, start_coord, 
 						pos_coord, dryrun, simulation))
-		"left":
+		"left_":
 			can_eat.append_array(phalanx_attack(Where.LEFT, my_player, start_coord, 
 						pos_coord, dryrun, simulation))
 
@@ -336,13 +337,14 @@ func phalanx_attack(where, my_player, start_coord, target_pos, dryrun=false,
 	var unit = city.get_soldier_on_position(next_position, simulation)
 	var first_unit = false
 	
-	if unit != null and unit.player == my_player:
+	if unit != null and unit["player"] == my_player:
 		first_unit = true
 	
 	# if the first unit is the one your are moving, shit is afoot, stop
 	if next_position == start_coord:
 		return can_eat
 	if first_unit:
+		print("first_unit")
 		# check on which side your units are
 		# get left and right tiles
 		var tile = city.get_tile_on_position(target_pos)
@@ -351,7 +353,7 @@ func phalanx_attack(where, my_player, start_coord, target_pos, dryrun=false,
 
 		var xyz_pos = target_pos
 		xyz_pos[axis] = xyz_pos[axis] + up
-
+		
 		unit_sourounding_tiles.erase(target_pos)
 		# erase one in the back
 		xyz_pos = target_pos
@@ -361,6 +363,7 @@ func phalanx_attack(where, my_player, start_coord, target_pos, dryrun=false,
 		unit_sourounding_tiles.erase(next_position)
 
 		var diff_vector = null
+		
 		if len(unit_sourounding_tiles) > 1:
 			var left_side_pos = unit_sourounding_tiles[0]
 			var right_side_pos = unit_sourounding_tiles[1]
@@ -373,13 +376,13 @@ func phalanx_attack(where, my_player, start_coord, target_pos, dryrun=false,
 
 			if mlist.has(null) and mlist.count(null) < mlist.size():
 				if unit_l == null:
-					if unit_r.player == my_player and unit_r.position_grid != start_coord:
+					if unit_r["player"] == my_player and unit_r["pg"] != start_coord:
 						testudo_side = right_side_pos # position of the unit
 				elif unit_r == null:
-					if unit_l.player == my_player and unit_l.position_grid != start_coord:
+					if unit_l["player"] == my_player and unit_l["pg"] != start_coord:
 						testudo_side = left_side_pos # position of the unit
 				# get the vector to which you add the central to get hte periferal vector
-				diff_vector = signed_axis(right_side_pos, left_side_pos)
+				diff_vector = signed_axis(target_pos, testudo_side)
 		
 		
 		if testudo_side:
@@ -388,8 +391,8 @@ func phalanx_attack(where, my_player, start_coord, target_pos, dryrun=false,
 			var unit_opos_testudo_side = next_position - diff_vector
 			var test_yes_unit = city.get_soldier_on_position(unit_pos_testudo_side, simulation)
 			var test_no_unit = city.get_soldier_on_position(unit_opos_testudo_side, simulation)
-
-			if test_no_unit != null or test_yes_unit == null or test_yes_unit.player != my_player:
+			
+			if test_no_unit != null or test_yes_unit == null or test_yes_unit["player"] != my_player:
 				testudo_side = false
 				first_unit = false
 			#if start_coord in [unit_pos_testudo_side, unit_opos_testudo_side]:
@@ -401,21 +404,21 @@ func phalanx_attack(where, my_player, start_coord, target_pos, dryrun=false,
 			next_position[axis] = next_position[axis] + up
 			var unit_r = city.get_soldier_on_position(next_position, simulation)
 
-			if unit_r != null and unit_r.player != my_player:
+			if unit_r != null and unit_r["player"] != my_player:
 				
-				if not unit_r.dux:
+				if not unit_r["dux"]:
 					if dryrun:
 						can_eat.append([start_coord, target_pos, next_position])
 					else:
-						city.eat_unit(unit_r)
+						city.eat_unit(unit_r["pg"])
 						
 				break
-			elif unit_r != null and unit_r.player == my_player:
+			elif unit_r != null and unit_r["player"] == my_player:
 				var unit_pos_testudo_side = next_position + testudo_side
 				var unit_opos_testudo_side = next_position - testudo_side
 				var test_no_unit = city.get_soldier_on_position(unit_pos_testudo_side, simulation)
 				var test_yes_unit = city.get_soldier_on_position(unit_opos_testudo_side, simulation)
-				if test_no_unit != null and (test_yes_unit == null or test_yes_unit.player != my_player):
+				if test_no_unit != null and (test_yes_unit == null or test_yes_unit["player"] != my_player):
 					break
 			else:
 				break

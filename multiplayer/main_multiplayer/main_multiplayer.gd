@@ -15,6 +15,8 @@ var city_size = null
 
 var player_turn = null
 
+var players_data = null
+
 @onready var rooms_obj = $rooms
 
 # Called when the node enters the scene tree for the first time.

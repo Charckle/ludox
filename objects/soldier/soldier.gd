@@ -39,50 +39,6 @@ func set_moved(yes_no):
 	else:
 		$moved.visible = false
 
-func get_adjacent_tiles(city):
-	var top = position_grid + Vector2i(0,1)
-	var bottom = position_grid + Vector2i(0,-1)
-	var left = position_grid + Vector2i(-1,0)
-	var right = position_grid + Vector2i(1,0)
-	
-	var adj_tiles = [top, bottom, left, right]
-	for c_tile in adj_tiles:
-		if c_tile not in city.all_board_positions:
-			adj_tiles.erase(c_tile)
-
-	return adj_tiles
-
-func get_blocking_tiles(city, foes_only=false, simulation=false):
-	var pool = "soldiers"
-	
-	if simulation == true:
-		pool = "simulation"
-		
-	var adj_units = []
-	var adj_tiles = self.get_adjacent_tiles(city)
-	var adj_free_tile_pos = adj_tiles.duplicate() 
-	
-	for c_tile in adj_tiles:
-		if c_tile not in city.all_board_positions:
-			adj_tiles.erase(c_tile)
-	
-	for unit_ in city.get_node(pool).get_children():
-		var unit_pos = unit_.position_grid
-
-		if unit_pos in adj_tiles and unit_.captured == false:
-			adj_free_tile_pos.erase(unit_pos)
-			if not foes_only:
-				adj_units.append(unit_)
-			elif unit_.player != self.player:
-				adj_units.append(unit_)
-
-	var blocking_tiles = []
-		
-	for cord in adj_tiles:
-		if cord not in adj_free_tile_pos:
-			blocking_tiles.append(cord)
-	
-	return [adj_units, adj_tiles, adj_free_tile_pos, blocking_tiles]
 
 func set_lost():
 	$ColorRect.color = Color.BLACK

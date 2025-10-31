@@ -90,5 +90,5 @@ func color_for_username(name: String) -> String:
 
 
 func prepare_game(city_size, players_data, player_turn):
-	game_city.initial_set(city_size, players_data, player_turn)
+	game_city.initial_set(my_player, city_size, players_data, player_turn)
 	

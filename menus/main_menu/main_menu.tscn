@@ -88,10 +88,9 @@ offset_right = 40.0
 offset_bottom = 40.0
 
 [node name="new_game_pan" type="Panel" parent="othr_containers"]
-visible = false
 layout_mode = 0
 offset_left = -312.0
-offset_top = -136.0
+offset_top = -120.0
 offset_bottom = 136.0
 script = ExtResource("3_vu5tu")
 
@@ -140,7 +139,6 @@ popup/item_1/text = "Player VS AI"
 popup/item_1/id = 1
 
 [node name="ai_lvl_btn" type="OptionButton" parent="othr_containers/new_game_pan"]
-visible = false
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 1
 anchors_preset = 14
@@ -160,13 +158,27 @@ popup/item_0/id = 0
 popup/item_1/text = "Normal"
 popup/item_1/id = 1
 
+[node name="city_size_btn" type="OptionButton" parent="othr_containers/new_game_pan"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 0
+offset_left = 176.0
+offset_top = 128.0
+offset_right = 296.0
+offset_bottom = 178.0
+selected = 0
+item_count = 2
+popup/item_0/text = "8x8"
+popup/item_0/id = 0
+popup/item_1/text = "12x8"
+popup/item_1/id = 1
+
 [node name="start_g_btn" type="Button" parent="othr_containers/new_game_pan"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 offset_left = 16.0
-offset_top = 208.0
+offset_top = 192.0
 offset_right = 296.0
-offset_bottom = 258.0
+offset_bottom = 242.0
 text = "Start Game"
 
 [node name="settings_pan" type="Panel" parent="othr_containers"]

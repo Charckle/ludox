@@ -1,11 +1,21 @@
 extends Control
 
+
+@onready var all_tiles = $tiles
+@onready var all_soldiers = $soldiers
+
+var tile_size = Vector2i(40,40)
+
 var all_board_positions
 var corners
 var border_tiles
 
 var player_turn = 2
 
+var board_size = GlobalSet.settings["board_size"]
+var city_size: Vector2i = Vector2(8, 8)
+var default_scale = Vector2(1.3, 1.3)
+ 
 var can_interact = true
 
 var tile_selected = null
@@ -22,6 +32,14 @@ var moves_to_draw = 50
 var all_units = []
 
 
+# virtualization
+var vcb = {} # virtual city board
+# {1: {"pg": Vector2i(4,2),
+#	"player": 2,
+#	"dux": true,
+#	"id": 1
+#  }}
+var vcb_sim = {}
 
 
 
@@ -49,17 +67,29 @@ var game_move_states = []
 
 @onready var lvl_ = get_parent()
 
-var SoldierUnitScene = preload("res://objects/soldier/soldier.tscn")
+var Soldier = preload("res://objects/soldier/soldier.tscn")
+var Tile = preload("res://objects/tile/base_tile.tscn")
 var SlainScene = preload("res://objects/soldier/slain_anim/slain_anim.tscn")
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	initialize_city()
+
+func initialize_city(board_size_=board_size):
+	if board_size_ == 1:
+		city_size = Vector2(12, 8)
+	remove_all_units()
+	remove_all_tiles()
 	rules = GlobalSet.settings["game_rules"]
 	#GlobalSet.game_type = $game_type_btn.selected
 	#GlobalSet.ai_lvl = $ai_lvl_btn.select
 	#pivot_offset = size * 0.5
-	scale = Vector2(1.3, 1.3)
+	scale = default_scale
+	
+	
+	if board_size != 99:
+		createboard()
 	
 	all_board_positions = blank_board()
 	corners = get_corners()
@@ -72,11 +102,106 @@ func _ready() -> void:
 		show_pieces_turn()
 		save_move_state()
 
-
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	pass
 
+
+func createboard():
+	for y in range(city_size.y):
+		for x in range(city_size.x):
+			var tile_ = Tile.instantiate()
+			#var my_size = tile_.my_size
+			all_tiles.add_child(tile_)
+			tile_.position = Vector2i(x, y) * tile_.my_size
+			tile_.position_grid = Vector2i(x, y)
+	
+	for x in range(city_size.x):
+		var unit_ = Soldier.instantiate()
+	
+		#var my_size = tile_.my_size
+		unit_.player = 1
+		all_soldiers.add_child(unit_)
+		unit_.position = Vector2i(x, 0) * unit_.my_size
+		
+		unit_.position_grid = Vector2i(x, 0)
+	
+	var max_y = city_size.y - 1
+
+	for x in range(city_size.x):
+		var unit_ = Soldier.instantiate()
+		#var my_size = tile_.my_size
+		unit_.player = 2
+		all_soldiers.add_child(unit_)
+		unit_.position = Vector2i(x, max_y) * unit_.my_size
+		
+		unit_.position_grid = Vector2i(x, max_y)
+
+		
+	
+	# set city_tile_size
+	tile_size = all_tiles.get_child(0).my_size
+	
+	# place duxes
+	place_dux()
+	set_city_for_calc()
+	get_city_size()
+	center_board()
+
+func get_city_size():
+	var s_size = city_size * tile_size
+
+func place_dux():
+	var half_city = city_size.x / 2
+	var max_y = city_size.y - 1
+	
+	# bottom player 2
+	var unit_ = Soldier.instantiate()
+	unit_.player = 2
+	unit_.dux = true
+	all_soldiers.add_child(unit_)
+	unit_.position = Vector2i(half_city, max_y -1) * unit_.my_size
+	unit_.position_grid = Vector2i(half_city, max_y -1)
+	
+	# top player 1
+	var unit_2 = Soldier.instantiate()
+	unit_2.player = 1
+	unit_2.dux = true
+	all_soldiers.add_child(unit_2)
+	unit_2.position = Vector2i(half_city -1, 1) * unit_2.my_size
+	unit_2.position_grid = Vector2i(half_city -1, 1)
+	
+func center_board():
+	var viewport := get_viewport()
+	var viewport_rect := viewport.get_visible_rect()
+	var top_left := viewport_rect.position
+	#var viewport_size = get_viewport_rect().size
+
+	# total board size
+	var board_size_ = Vector2(
+		city_size.x * tile_size.x,
+		city_size.y * tile_size.y
+	)
+
+	# position of top-left corner so it's centered
+	#var top_left = (viewport_size - board_size) / 2.0
+	
+	self.position = top_left - (board_size_ / 2.0)
+	
+	if board_size == 1:
+		self.position.x -= 30
+
+func set_city_for_calc():
+	var valu = 1
+	for unit in all_soldiers.get_children():
+		
+		var new_unit = {"pg": unit.position_grid,
+						"player": unit.player,
+						"dux": unit.dux,
+						"id": valu}
+		
+		vcb[valu] = new_unit
+		valu = valu + 1
 
 func _input(event):
 	# Mouse in viewport coordinates.
@@ -88,17 +213,18 @@ func _input(event):
 
 func check_tile(mouse_pos):
 	var my_player = self.player_turn
-	for tile in $tiles.get_children():
+	for tile in all_tiles.get_children():
 		if tile.get_child(0).get_global_rect().has_point(mouse_pos):
 			#print("Clicked on:", tile.name)
 			var tile_coord = tile.position_grid
 			var soldier_on_pos = get_soldier_on_position(tile_coord)
-			
+			#print("bana")
 			# if there is a soldier on that position
 			if soldier_on_pos != null:
-				if soldier_on_pos.player == my_player:
-					select_soldier(soldier_on_pos)
-					show_selected_piece(soldier_on_pos)
+				
+				if soldier_on_pos["player"] == my_player:
+					select_soldier(soldier_on_pos["pg"])
+					show_selected_piece(soldier_on_pos["pg"])
 					tile_selected = tile
 					#print("Selected tile:", tile_selected.position_grid)
 			else:
@@ -109,7 +235,21 @@ func check_tile(mouse_pos):
 				
 
 func get_soldier_on_position(pos_coord, simulation=false):
-	var pool = $soldiers
+	var soldier_on_pos = null
+	
+	var pool = vcb
+	
+	if simulation == true:
+		pool = vcb_sim
+	
+	for soldier in pool.values():
+		if soldier["pg"] == pos_coord:
+			soldier_on_pos = soldier
+	
+	return soldier_on_pos
+
+func _get_soldier_on_position(pos_coord, simulation=false):
+	var pool = all_soldiers
 	
 	if simulation == true:
 		pool = $simulation
@@ -123,20 +263,21 @@ func get_soldier_on_position(pos_coord, simulation=false):
 
 func get_tile_on_position(pos_coord):
 	var tile_on_pos = null
-	for tile in $tiles.get_children():
+	for tile in all_tiles.get_children():
 		if tile.position_grid == pos_coord:
 			tile_on_pos = tile
 	
 	return tile_on_pos
 
-func select_soldier(soldier):
-	#soldier.set_selected(true)
-	get_possible_moves(soldier.position_grid)
+
+func select_soldier(soldier_coord):
+	get_possible_moves(soldier_coord)
 	
 	show_where_can_move(true)
+	
 
 func show_where_can_move(yes=false):
-	var tiles = $tiles.get_children()
+	var tiles = all_tiles.get_children()
 
 	for tile in tiles:
 		tile.dim(false)
@@ -146,17 +287,17 @@ func show_where_can_move(yes=false):
 				tile.dim(yes)
 
 func show_pieces_turn():
-	var units = $soldiers.get_children()
+	var units = all_soldiers.get_children()
 	for unit in units:
 		if unit.player == player_turn:
 			unit.set_pieces_turn(true)
 		else:
 			unit.set_pieces_turn(false)
 
-func show_selected_piece(unit_=null):
-	var units = $soldiers.get_children()
+func show_selected_piece(unit_position=null):
+	var units = all_soldiers.get_children()
 	for unit in units:
-		if unit == unit_:
+		if unit.position_grid == unit_position:
 			unit.set_selected(true)
 		else:
 			unit.set_selected(false)
@@ -181,10 +322,13 @@ func get_possible_moves(soldier_pos, dryrun=false, simulation=false):
 
 
 
-func blank_board():
+func blank_board(city_size=0):
 	var positions: Array = []
-
-	for x in range(8):
+	var iks = 8
+	if city_size == 1:
+		iks = 12
+	
+	for x in range(iks):
 		for y in range(8):
 			positions.append(Vector2i(x, y))
 	
@@ -254,11 +398,14 @@ func get_border_tiles(all_positions = null):
 
 func move_unit(my_player, start_pos, end_pos):
 	can_interact = false
-	var unit = get_soldier_on_position(start_pos)
+	var unit_v = get_soldier_on_position(start_pos)
+	var unit = _get_soldier_on_position(start_pos)
+	
 	var start_tile = get_tile_on_position(start_pos)
 	var tile = get_tile_on_position(end_pos)
 	
-	
+	unit_v["pg"] = end_pos
+	vcb[unit_v["id"]] = unit_v
 	unit.position_grid = end_pos
 	
 	# set last moved	
@@ -308,13 +455,28 @@ func check_if_eatable(my_player, start_coord, pos_coord, dryrun=false, simulatio
 
 
 
-func eat_unit(unit):
+func eat_unit(position_grid, simulation=false, inplace=false):
+	var pool = vcb
+	
+	if simulation == true:
+		pool = vcb_sim
+	
+	var unit_v = get_soldier_on_position(position_grid, simulation)
+	var unit = _get_soldier_on_position(position_grid, simulation)
+	
 	unit.captured = true
-	unit.queue_free()
+	
+	if unit_v != null:
+		pool.erase(unit_v["id"])
 	self.since_last_eat = -1
 	
 	if GlobalSet.settings["animation"] == 1:
 		spawn_slain_anim(unit.global_position)
+	
+	if inplace:
+		unit.free()
+	else:
+		unit.queue_free()
 
 func spawn_slain_anim(gb):
 	var fx = SlainScene.instantiate()
@@ -330,7 +492,7 @@ func where_can_player_move(player, simulation=false):
 	var possible_moves = []
 	
 	for unit in soldiers:
-		var start_coord = unit.position_grid
+		var start_coord = unit["pg"]
 		var poss_moves = self.get_possible_moves(start_coord, true, simulation)
 		
 		for move in poss_moves:
@@ -344,7 +506,7 @@ func where_can_player_move(player, simulation=false):
 				units_with_possible_eat.append_array(is_eatable)
 				
 			if tile.do_adj_dux(self, self.get_enemy_pid(player), simulation):
-				units_att_dux.append([unit.position_grid, move])
+				units_att_dux.append([unit["pg"], move])
 	
 	if not units_with_possible_eat and not units_att_dux and not possible_moves:
 		can_move = false
@@ -358,8 +520,54 @@ func where_can_player_move(player, simulation=false):
 	
 	return result
 
+func get_adjacent_tiles(position_grid):
+	var top = position_grid + Vector2i(0,1)
+	var bottom = position_grid + Vector2i(0,-1)
+	var left = position_grid + Vector2i(-1,0)
+	var right = position_grid + Vector2i(1,0)
+	
+	var adj_tiles = [top, bottom, left, right]
+	for c_tile in adj_tiles:
+		if c_tile not in self.all_board_positions:
+			adj_tiles.erase(c_tile)
+
+	return adj_tiles
 
 
+func get_blocking_tiles(position_grid, player, foes_only=false, simulation=false):
+	var pool = vcb
+	
+	if simulation == true:
+		pool = vcb_sim
+		
+	var adj_units = []
+	var adj_tiles = self.get_adjacent_tiles(position_grid)
+	var adj_free_tile_pos = adj_tiles.duplicate() 
+	
+	for c_tile in adj_tiles:
+		if c_tile not in self.all_board_positions:
+			adj_tiles.erase(c_tile)
+	
+	for unit_ in pool.values():
+		var unit_pos = unit_["pg"]
+		
+		if unit_pos in adj_tiles:
+			adj_free_tile_pos.erase(unit_pos)
+			if not foes_only:
+				adj_units.append(unit_)
+			elif unit_["player"] != player:
+				adj_units.append(unit_)
+
+	var blocking_tiles = []
+		
+	for cord in adj_tiles:
+		if cord not in adj_free_tile_pos:
+			blocking_tiles.append(cord)
+	
+	return [adj_units, adj_tiles, adj_free_tile_pos, blocking_tiles]
+	
+	
+	
 
 
 func end_turn():
@@ -389,30 +597,30 @@ func end_turn():
 
 
 func get_soldiers(player=false, simulation=false):
-	var pool = $soldiers
+	var pool = vcb
 	
 	if simulation == true:
-		pool = $simulation
+		pool = vcb_sim
 	
 	if player:
 		var units = []
-		for unit in pool.get_children():
-			if unit.player == player and unit.captured == false:
+		for unit in pool.values():
+			if unit["player"] == player:
 				units.append(unit)
 		return units
 	else:
-		return pool.get_children()
+		return pool.values()
 
 func clear_all_last_moved():
-	for tile in $tiles.get_children():
+	for tile in all_tiles.get_children():
 		tile.last_moved(false)
-	for unit in $soldiers.get_children():
+	for unit in all_soldiers.get_children():
 		unit.set_moved(false)
 
 func set_all_last_moved():
 	clear_all_last_moved()
 	var tile =  get_tile_on_position(self.previous_tile)
-	var soldier = get_soldier_on_position(self.moved_to_tile)
+	var soldier = _get_soldier_on_position(self.moved_to_tile)
 
 	if tile != null:
 		tile.last_moved(true)
@@ -424,9 +632,9 @@ func check_win():
 	# check if both have any units left
 	var score = {1: 0, 2: 0}
 	
-	for unit_ in $soldiers.get_children():
-		if unit_.dux == false and unit_.captured == false:
-			score[unit_.player] = score[unit_.player] + 1 
+	for unit_ in vcb.values():
+		if unit_["dux"] == false:
+			score[unit_["player"]] = score[unit_["player"]] + 1 
 	
 	var winner_ = 0
 	
@@ -442,14 +650,15 @@ func check_win():
 		return true
 	
 	# check for dux
-	for unit_ in $soldiers.get_children():
-		if unit_.dux == true:
-			var blocking_tiles = unit_.get_blocking_tiles(self)
+	for unit_ in vcb.values():
+		
+		if unit_["dux"] == true:
+			var blocking_tiles = self.get_blocking_tiles(unit_["pg"],unit_["player"])
 			var blocking_units = blocking_tiles[0]
 			var all_tiles = blocking_tiles[1]
 			
 			if len(blocking_units) == len(all_tiles):
-				var winner = get_enemy_pid(unit_.player)
+				var winner = get_enemy_pid(unit_["player"])
 				var text_ = get_winner_text(winner) + " won the day!\nThe dux is sorounded."
 				lvl_.show_info_pan(text_)
 				set_winner(winner)
@@ -478,7 +687,7 @@ func check_win():
 func set_winner(player_n):
 	player_turn = 3
 	
-	for unit_ in $soldiers.get_children():
+	for unit_ in all_soldiers.get_children():
 		if unit_.player != player_n:
 			unit_.set_lost()
 	
@@ -494,7 +703,9 @@ func get_current_game_state():
 		"moved_to_tile": v_t_l(self.moved_to_tile),
 		"all_units": get_all_units_for_bckup(),
 		"since_last_eat": self.since_last_eat,
-		"all_moves": self.all_moves
+		"all_moves": self.all_moves,
+		"moves_till_attack_dux_ai": self.moves_till_attack_dux_ai,
+		"board_size": self.board_size
 	}
 	return game_state
 
@@ -508,7 +719,7 @@ func l_t_v(list_):
 
 func get_all_units_for_bckup():
 	var all_units = []
-	for unit in $soldiers.get_children():
+	for unit in all_soldiers.get_children():
 		all_units.append([
 			v_t_l(unit.position_grid),
 			v_t_l(unit.global_position),
@@ -546,6 +757,8 @@ func load_game_state(game_state):
 	self.all_units = game_state["all_units"]
 	self.since_last_eat = int( game_state["since_last_eat"])
 	self.all_moves = int(game_state["all_moves"])
+	self.moves_till_attack_dux_ai = int(game_state["moves_till_attack_dux_ai"])
+	self.board_size = int(game_state["board_size"])
 
 	remove_all_units()
 	
@@ -563,25 +776,36 @@ func load_game_state(game_state):
 	set_all_last_moved()
 	print("Undone")
 
+func remove_all_tiles():
+	for tile_ in all_tiles.get_children():
+		tile_.queue_free()
 
 
 func remove_all_units():
-	for unit in $soldiers.get_children():
-		eat_unit(unit)
+	for unit in all_soldiers.get_children():
+		eat_unit(unit.position_grid, false, true)
 
 
 func restore_unit(unit_data):
-	var unit = SoldierUnitScene.instantiate()
+	var unit = Soldier.instantiate()
 	var position_grid = l_t_v(unit_data[0])
 	var global_pos = l_t_v(unit_data[1])
 	
 	unit.player = unit_data[2]
 	unit.dux = unit_data[3]
-	$soldiers.add_child(unit)
+	all_soldiers.add_child(unit)
 	unit.global_position = global_pos
 	#unit.set_position_grid()
 	unit.position_grid = position_grid
-
+	
+	var valu = len(vcb) + 1
+	
+	var new_unit = {"pg": unit.position_grid,
+						"player": unit.player,
+						"dux": unit.dux,
+						"id": valu}
+	
+	vcb[valu] = new_unit
 
 func get_enemy_pid(manual_player = null):
 	if manual_player == null:

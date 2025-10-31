@@ -20,7 +20,8 @@ var settings = {
 	"music": 0,
 	"game_rules": Rules.XXI,
 	"game_type": 0,
-	"ai_lvl": 0
+	"ai_lvl": 0,
+	"board_size": 0
 }
 
 

@@ -2,6 +2,7 @@ extends CanvasModulate
 
 @onready var chat_btn =  $game_ui/chat_btn
 @onready var option_panel =  $game_ui/option_panel
+@onready var rule_book =  $game_ui/rule_book
 
 var multiplayer_s = null
 
@@ -36,3 +37,7 @@ func _on_options_btn_pressed() -> void:
 
 func _on_leave_btn_pressed() -> void:
 	multiplayer_s.rooms_obj.rpc_id(1, "leave_room_request", multiplayer_s.room_id)
+
+
+func _on_rules_btn_pressed() -> void:
+	rule_book.visible = true

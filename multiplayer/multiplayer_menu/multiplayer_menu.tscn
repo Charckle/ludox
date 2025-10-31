@@ -242,7 +242,6 @@ offset_left = 24.0
 offset_top = 272.0
 offset_right = 384.0
 offset_bottom = 322.0
-disabled = true
 text = "Rule Book"
 
 [node name="surrender_btn" type="Button" parent="ui/game_ui/option_panel"]
@@ -265,11 +264,12 @@ offset_bottom = 426.0
 text = "Leave game"
 
 [node name="rule_book" parent="ui/game_ui" instance=ExtResource("8_oh6t8")]
+visible = false
 layout_mode = 1
-offset_left = 404.0
-offset_top = -252.0
-offset_right = 836.0
-offset_bottom = 199.0
+offset_left = -268.0
+offset_top = -244.0
+offset_right = 164.0
+offset_bottom = 207.0
 
 [node name="waiting_conn_pan" type="Panel" parent="."]
 visible = false
@@ -323,5 +323,6 @@ text = "Cancel"
 [connection signal="text_submitted" from="ui/chat/base_node/LineEdit" to="." method="_on_line_edit_text_submitted"]
 [connection signal="pressed" from="ui/game_ui/chat_btn" to="ui" method="_on_chat_btn_pressed"]
 [connection signal="pressed" from="ui/game_ui/option_panel/options_btn" to="ui" method="_on_options_btn_pressed"]
+[connection signal="pressed" from="ui/game_ui/option_panel/rules_btn" to="ui" method="_on_rules_btn_pressed"]
 [connection signal="pressed" from="ui/game_ui/option_panel/leave_btn" to="ui" method="_on_leave_btn_pressed"]
 [connection signal="pressed" from="waiting_conn_pan/wait_conn_btn" to="." method="exit_multiplayer"]

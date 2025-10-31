@@ -4,6 +4,8 @@
 
 [node name="Soldier" type="Node2D"]
 script = ExtResource("1_oixgj")
+player = null
+dux = null
 
 [node name="myturn" type="ColorRect" parent="."]
 visible = false

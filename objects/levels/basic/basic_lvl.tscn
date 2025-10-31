@@ -47,7 +47,7 @@ text = "Undo Move"
 [node name="settings_btn" type="Button" parent="CanvasModulate/Panel"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 0
-offset_left = -128.0
+offset_left = -88.0
 offset_top = 424.0
 offset_bottom = 474.0
 text = "Settings"

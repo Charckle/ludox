@@ -1,6 +1,8 @@
-[gd_scene load_steps=2 format=3 uid="uid://cdrr1oyilrq5p"]
+[gd_scene load_steps=4 format=3 uid="uid://cdrr1oyilrq5p"]
 
 [ext_resource type="Script" uid="uid://dy671slcnq35s" path="res://objects/city_multiplayer/city_multiplayer.gd" id="1_uknsr"]
+[ext_resource type="Script" uid="uid://5ncbttvc8mlt" path="res://objects/city_multiplayer/gameplay.gd" id="2_78jl2"]
+[ext_resource type="PackedScene" uid="uid://kvjswh5bloxe" path="res://objects/city/city.tscn" id="3_0yok1"]
 
 [node name="CityMultiplayer" type="Control"]
 layout_mode = 3
@@ -10,3 +12,9 @@ script = ExtResource("1_uknsr")
 [node name="tiles" type="Node2D" parent="."]
 
 [node name="soldiers" type="Node2D" parent="."]
+
+[node name="gameplay" type="Node" parent="."]
+script = ExtResource("2_78jl2")
+
+[node name="City" parent="." instance=ExtResource("3_0yok1")]
+visible = false

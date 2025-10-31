@@ -3,9 +3,14 @@ extends Control
 var city_size: Vector2i = Vector2(8, 8)
 @onready var all_tiles = $tiles
 @onready var all_soldiers = $soldiers
+@onready var city_fc = $City
 var tile_size = Vector2i(40,40)
 
-var players_data = null
+var players_data = []
+
+var my_player = null
+
+
 
 var Soldier = preload("res://objects/soldier/soldier.tscn")
 var Tile = preload("res://objects/tile/base_tile.tscn")
@@ -60,7 +65,7 @@ func createboard(size=null):
 	
 	# place duxes
 	place_dux()
-	
+
 	center_board()
 
 func get_city_size():
@@ -101,17 +106,30 @@ func center_board():
 	self.position = top_left
 
 
-func initial_set(city_size, players_data, player_turn):
-	self.createboard(size)
-	
+func initial_set(my_player_, city_size, players_data, player_turn):
+	self.my_player = my_player_
+	self.createboard(city_size)
 	
 	self.players_data = players_data
 	
 	self.set_players_turn(player_turn)
-
-func set_players_turn(my_player):
-	var player_color = players_data[my_player]
 	
-	for soldier in all_soldiers:
+	self.set_city_for_calc()
+
+func set_city_for_calc():
+	var valu = 1
+	for unit in all_soldiers.get_children():
+		var new_unit = {"pg": unit.position_grid,
+						"player": unit.player,
+						"dux": unit.dux,
+						"id": valu}
+		
+		city_fc.vcb[valu] = new_unit
+		valu = valu + 1
+
+func set_players_turn(player_id):
+	var player_color = players_data[player_id]
+	
+	for soldier in all_soldiers.get_children():
 		if soldier.player == player_color:
 			soldier.set_pieces_turn(true)
