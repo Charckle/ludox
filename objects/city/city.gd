@@ -331,11 +331,10 @@ func get_possible_moves(soldier_pos, dryrun=false, simulation=false):
 
 
 
-func blank_board(city_size=0):
+func blank_board():
 	var positions: Array = []
 	var iks = 8
-	if city_size == 1:
-		iks = 12
+	iks = city_size.x
 	
 	for x in range(iks):
 		for y in range(8):
