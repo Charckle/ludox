@@ -66,6 +66,9 @@ var rules
 
 var game_move_states = []
 
+var m_m = null
+var multi_play = false
+
 @onready var lvl_ = get_parent()
 
 var Soldier = preload("res://objects/soldier/soldier.tscn")
@@ -77,17 +80,25 @@ var SlainScene = preload("res://objects/soldier/slain_anim/slain_anim.tscn")
 func _ready() -> void:
 	initialize_city()
 
-func initial_multiplayer_set(my_player_, city_size, players_data, player_turn_):
-	self.my_player = my_player_
-	self.player_turn = player_turn_
-	initialize_city(city_size)
+func initial_multiplayer_set(m_m_, players_data):
+	self.m_m = m_m_
+	
+	self.multi_play = true
+	self.my_player = m_m.my_player
+	# player_tunr is the player ID, not his color
+	self.player_turn = players_data[m_m.player_turn]
+	if self.my_player != players_data[m_m.player_turn]:
+		can_interact = false
 
-func initialize_city(board_size_=board_size):
+	initialize_city(m_m.city_size, m_m.rules)
+	
+
+func initialize_city(board_size_=board_size, rules_=int(GlobalSet.settings["game_rules"])):
 	if board_size_ == 1:
 		city_size = Vector2(12, 8)
 	remove_all_units()
 	remove_all_tiles()
-	rules = GlobalSet.settings["game_rules"]
+	rules = rules_
 	#GlobalSet.game_type = $game_type_btn.selected
 	#GlobalSet.ai_lvl = $ai_lvl_btn.select
 	#pivot_offset = size * 0.5
@@ -221,7 +232,9 @@ func _input(event):
 
 
 func check_tile(mouse_pos):
-	var my_player = self.player_turn
+	# set if multiplayer or not
+	if not multi_play:
+		my_player = self.player_turn
 	for tile in all_tiles.get_children():
 		if tile.get_child(0).get_global_rect().has_point(mouse_pos):
 			#print("Clicked on:", tile.name)
@@ -230,7 +243,6 @@ func check_tile(mouse_pos):
 			#print("bana")
 			# if there is a soldier on that position
 			if soldier_on_pos != null:
-				
 				if soldier_on_pos["player"] == my_player:
 					select_soldier(soldier_on_pos["pg"])
 					show_selected_piece(soldier_on_pos["pg"])
@@ -240,7 +252,11 @@ func check_tile(mouse_pos):
 				if tile_selected != null:
 					if tile.position_grid in possible_moves:
 						# move selcted unit to position
-						self.move_unit(my_player, tile_selected.position_grid, tile.position_grid)
+						if multi_play:
+							m_m.game.rpc_id(1, "send_move", m_m.room_id,
+												tile_selected.position_grid, tile.position_grid)
+						else:
+							self.move_unit(my_player, tile_selected.position_grid, tile.position_grid)
 				
 
 func get_soldier_on_position(pos_coord, simulation=false):

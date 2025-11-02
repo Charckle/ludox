@@ -1,10 +1,14 @@
-[gd_scene load_steps=3 format=3 uid="uid://caylg8mg6vsoc"]
+[gd_scene load_steps=4 format=3 uid="uid://caylg8mg6vsoc"]
 
 [ext_resource type="Script" uid="uid://c8wta48lia3aq" path="res://multiplayer/main_multiplayer/main_multiplayer.gd" id="1_8yqgl"]
 [ext_resource type="Script" uid="uid://bfhubvrfkctau" path="res://multiplayer/main_multiplayer/rooms.gd" id="2_nrcka"]
+[ext_resource type="Script" uid="uid://kpptgy18quy4" path="res://multiplayer/main_multiplayer/game.gd" id="3_fjlwr"]
 
 [node name="Main-multiplayer" type="Node"]
 script = ExtResource("1_8yqgl")
 
 [node name="rooms" type="Node" parent="."]
 script = ExtResource("2_nrcka")
+
+[node name="game" type="Node" parent="."]
+script = ExtResource("3_fjlwr")

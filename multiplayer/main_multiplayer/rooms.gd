@@ -33,6 +33,7 @@ func update_room_list(room_data):
 
 @rpc("authority", "call_remote", "reliable")
 func update_room_data(room_data):
+	m_m.rules = room_data["rules"]
 	multiplayer_menu.room_container.update_room_data(room_data)
 
 @rpc("any_peer", "call_remote", "reliable")
@@ -65,5 +66,5 @@ func move_player_to_game(players_data, player_turn, city_size):
 	m_m.player_turn = player_turn
 	m_m.city_size = city_size
 	
-	multiplayer_menu.prepare_game(m_m.my_player, m_m.city_size, players_data, m_m.player_turn)
+	multiplayer_menu.prepare_game(m_m, players_data)
 	multiplayer_menu.show_game()

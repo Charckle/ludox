@@ -7,6 +7,7 @@ var my_peer_id = 0
 var multiplayer_menu = null
 
 var room_id = null
+var rules = null
 
 var is_playing = false
 var being_played = false
@@ -18,6 +19,7 @@ var player_turn = null
 var players_data = null
 
 @onready var rooms_obj = $rooms
+@onready var game_obj = $game
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:

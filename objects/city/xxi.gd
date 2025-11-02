@@ -295,16 +295,16 @@ func eat_phalanx_attack(my_player, start_coord, pos_coord, dryrun=false,
 	var direction_ = get_direction(start_coord, pos_coord)
 
 	match direction_:
-		"right_":
+		"right":
 			can_eat.append_array(phalanx_attack(Where.RIGHT, my_player, start_coord, 
 						pos_coord, dryrun, simulation))
-		"down_":
+		"down":
 			can_eat.append_array(phalanx_attack(Where.BOTTOM, my_player, start_coord, 
 						pos_coord, dryrun, simulation))
 		"up":
 			can_eat.append_array(phalanx_attack(Where.TOP, my_player, start_coord, 
 						pos_coord, dryrun, simulation))
-		"left_":
+		"left":
 			can_eat.append_array(phalanx_attack(Where.LEFT, my_player, start_coord, 
 						pos_coord, dryrun, simulation))
 
@@ -344,7 +344,6 @@ func phalanx_attack(where, my_player, start_coord, target_pos, dryrun=false,
 	if next_position == start_coord:
 		return can_eat
 	if first_unit:
-		print("first_unit")
 		# check on which side your units are
 		# get left and right tiles
 		var tile = city.get_tile_on_position(target_pos)
@@ -381,8 +380,9 @@ func phalanx_attack(where, my_player, start_coord, target_pos, dryrun=false,
 				elif unit_r == null:
 					if unit_l["player"] == my_player and unit_l["pg"] != start_coord:
 						testudo_side = left_side_pos # position of the unit
-				# get the vector to which you add the central to get hte periferal vector
-				diff_vector = signed_axis(target_pos, testudo_side)
+				if testudo_side is not bool:
+					# get the vector to which you add the central to get hte periferal vector
+					diff_vector = signed_axis(target_pos, testudo_side)
 		
 		
 		if testudo_side:
