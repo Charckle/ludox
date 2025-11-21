@@ -68,6 +68,7 @@ var game_move_states = []
 
 var m_m = null
 var multi_play = false
+var multi_play_menu_open = false
 
 @onready var lvl_ = get_parent()
 
@@ -75,6 +76,12 @@ var Soldier = preload("res://objects/soldier/soldier.tscn")
 var Tile = preload("res://objects/tile/base_tile.tscn")
 var SlainScene = preload("res://objects/soldier/slain_anim/slain_anim.tscn")
 
+
+func can_interact_():
+	if multi_play_menu_open == false and can_interact:
+		return true
+	else:
+		false
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -227,7 +234,7 @@ func _input(event):
 	# Mouse in viewport coordinates.
 	if event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT and event.pressed:
 		#print("Mouse Click/Unclick at: ", event.position)
-		if can_interact:
+		if can_interact_():
 			check_tile(get_global_mouse_position())
 
 

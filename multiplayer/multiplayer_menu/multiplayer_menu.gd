@@ -20,6 +20,7 @@ func _ready() -> void:
 	multiplayer_s.multiplayer_menu = self
 	multiplayer_s.rooms_obj.multiplayer_menu = self
 	multiplayer_s.game_obj.multiplayer_menu = self
+	$ui.multiplayer_menu = self
 	
 	multiplayer_s.try_connect()
 	$background.visible = true
@@ -62,15 +63,19 @@ func _on_new_room_btn_pressed() -> void:
 	multiplayer_s.rooms_obj.rpc_id(1, "create_room")
 
 
-func show_room(room_name):
+func show_room(room_name, msg=null):
 	main_container.visible = false
 	room_container.visible = true
 	game_container.visible = false
 	game_ui.visible = false
-	msg_log_container.text = ""
-	var color = color_for_username(room_name)
-	var message = "Welcome to [color=#%s]%s[/color] room!" % [color, room_name]
-	insert_message(message)
+	chat_container.visible = true
+	
+	if msg == null:
+		msg_log_container.text = ""
+		var color = color_for_username(room_name)
+		msg = "Welcome to [color=#%s]%s[/color] room!" % [color, room_name]
+		
+	insert_message(msg)
 
 func show_loby():
 	show_default_windows()

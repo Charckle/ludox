@@ -253,13 +253,22 @@ offset_bottom = 74.0
 disabled = true
 text = "Surrender Victory"
 
+[node name="to_loby_btn" type="Button" parent="ui/game_ui/option_panel"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 0
+offset_left = 168.0
+offset_top = 368.0
+offset_right = 384.0
+offset_bottom = 418.0
+text = "To game room"
+
 [node name="leave_btn" type="Button" parent="ui/game_ui/option_panel"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 0
-offset_left = 256.0
-offset_top = 376.0
-offset_right = 392.0
-offset_bottom = 426.0
+offset_left = 24.0
+offset_top = 368.0
+offset_right = 160.0
+offset_bottom = 418.0
 text = "Leave game"
 
 [node name="rule_book" parent="ui/game_ui" instance=ExtResource("8_oh6t8")]
@@ -271,6 +280,7 @@ offset_right = 164.0
 offset_bottom = 207.0
 
 [node name="who_won_msg" type="Panel" parent="ui/game_ui"]
+visible = false
 layout_mode = 0
 offset_left = -144.0
 offset_top = -48.0
@@ -291,6 +301,7 @@ offset_right = 128.0
 offset_bottom = 8.0
 grow_horizontal = 2
 grow_vertical = 2
+bbcode_enabled = true
 text = "WHO DON IT?"
 
 [node name="close_won_txt_btn" type="Button" parent="ui/game_ui/who_won_msg"]
@@ -354,6 +365,7 @@ text = "Cancel"
 [connection signal="pressed" from="ui/game_ui/chat_btn" to="ui" method="_on_chat_btn_pressed"]
 [connection signal="pressed" from="ui/game_ui/option_panel/options_btn" to="ui" method="_on_options_btn_pressed"]
 [connection signal="pressed" from="ui/game_ui/option_panel/rules_btn" to="ui" method="_on_rules_btn_pressed"]
+[connection signal="pressed" from="ui/game_ui/option_panel/to_loby_btn" to="ui" method="_on_to_loby_btn_pressed"]
 [connection signal="pressed" from="ui/game_ui/option_panel/leave_btn" to="ui" method="_on_leave_btn_pressed"]
 [connection signal="pressed" from="ui/game_ui/who_won_msg/close_won_txt_btn" to="ui" method="_on_close_won_txt_btn_pressed"]
 [connection signal="pressed" from="waiting_conn_pan/wait_conn_btn" to="." method="exit_multiplayer"]

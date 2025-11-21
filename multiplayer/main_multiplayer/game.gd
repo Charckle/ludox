@@ -46,5 +46,16 @@ func send_won_msg(player_data):
 	# display won pieces
 	multiplayer_menu.game_city.set_winner(player_data["player_color"])
 	#display message who won
-	var text_ = "banana"
-	multiplayer_menu.show_who_won(text_)
+	var username = player_data["username"]
+	var color = color_for_username(username)
+	if m_m.my_peer_id == player_data["id"]:
+		username = "You"
+	var message = "won!"
+	var msg = "[color=#%s]%s[/color] %s" % [color, username, message]
+	
+	multiplayer_menu.show_who_won(msg)
+
+func color_for_username(name: String) -> String:
+	var hue := float(abs(hash(name)) % 360) / 360.0
+	var c := Color.from_hsv(hue, 0.65, 1.0)
+	return c.to_html(false)

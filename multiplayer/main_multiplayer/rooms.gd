@@ -22,9 +22,9 @@ func create_room():
 
 
 @rpc("authority", "call_remote", "reliable")
-func move_to_room(room_id, room_name):
+func move_to_room(room_id, room_name, msg=null):
 	m_m.room_id = room_id
-	multiplayer_menu.show_room(room_name)
+	multiplayer_menu.show_room(room_name, msg)
 
 
 @rpc("authority", "call_remote", "reliable")
@@ -44,6 +44,11 @@ func join_room_request(room_id):
 func leave_room_request(room_id):
 	pass
 
+@rpc("any_peer", "call_remote", "reliable")
+func move_back_room_request(room_id):
+	pass
+
+
 
 @rpc("authority", "call_remote", "reliable")
 func move_to_loby():
@@ -61,6 +66,7 @@ func move_player_to_game(players_data, player_turn, city_size):
 	
 	if m_m.my_peer_id in players_data:
 		m_m.is_playing = true
+		multiplayer_menu.can_move_units()
 	m_m.my_player = players_data[m_m.my_peer_id]
 	m_m.being_played = true
 	m_m.player_turn = player_turn

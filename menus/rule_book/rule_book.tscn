@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://barp2eu1vt3yw"]
+[gd_scene load_steps=9 format=3 uid="uid://barp2eu1vt3yw"]
 
 [ext_resource type="Script" uid="uid://bq1g5ht65oheh" path="res://menus/rule_book/rule_book.gd" id="1_swpd8"]
 [ext_resource type="Texture2D" uid="uid://dp05tqo7p4o03" path="res://rulebook/rule_1.png" id="2_vr6pg"]
@@ -7,6 +7,8 @@
 [ext_resource type="PackedScene" uid="uid://fv1fk5ro8xmt" path="res://rulebook/arrow.tscn" id="5_nj8rq"]
 [ext_resource type="Texture2D" uid="uid://coar21qa72561" path="res://rulebook/rule_3.png" id="6_iy4lo"]
 [ext_resource type="Texture2D" uid="uid://bl7qw12331oqi" path="res://rulebook/rule_4.png" id="7_yyr5g"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_swpd8"]
 
 [node name="rule_book" type="Panel"]
 anchors_preset = 8
@@ -20,6 +22,7 @@ offset_right = 216.0
 offset_bottom = 225.5
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_swpd8")
 script = ExtResource("1_swpd8")
 
 [node name="rules" type="Control" parent="."]
