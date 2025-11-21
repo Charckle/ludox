@@ -1,7 +1,7 @@
 extends Node
 
 @onready var m_m = get_parent()
-#var multiplayer_menu = null
+var multiplayer_menu = null
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -20,4 +20,23 @@ func send_move(room_id, start_pos, end_pos):
 
 @rpc("authority", "call_remote", "reliable")
 func move_unit(start_pos, end_pos):
+	multiplayer_menu.game_city.move_unit(34, start_pos, end_pos)
+
+
+@rpc("authority", "call_remote", "reliable")
+func can_move_unit():
+	multiplayer_menu.can_move_units()
+
+@rpc("any_peer", "call_remote", "reliable")
+func unit_moved(room_id):
 	pass
+
+@rpc("authority", "call_remote", "reliable")
+func remove_this_units(units):
+	for unit in units:
+		var to_delete_pg = unit[2]
+		multiplayer_menu.game_city.eat_unit(to_delete_pg, false, true)
+
+@rpc("authority", "call_remote", "reliable")
+func endturn(player_turn):
+	multiplayer_menu.game_city.end_turn_multiplayer()

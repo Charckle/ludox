@@ -253,7 +253,8 @@ func check_tile(mouse_pos):
 					if tile.position_grid in possible_moves:
 						# move selcted unit to position
 						if multi_play:
-							m_m.game.rpc_id(1, "send_move", m_m.room_id,
+							can_interact = false
+							m_m.get_node("game").rpc_id(1, "send_move", m_m.room_id,
 												tile_selected.position_grid, tile.position_grid)
 						else:
 							self.move_unit(my_player, tile_selected.position_grid, tile.position_grid)
@@ -443,21 +444,22 @@ func move_unit(my_player, start_pos, end_pos):
 	self.all_moves = all_moves + 1
 	
 	# move and end turn
-	if GlobalSet.settings["animation"] == 0:
+	if GlobalSet.settings["animation"] == 0 and not multi_play:
 		unit.global_position = tile.global_position
 		unit_stopped_moving(my_player, start_pos, end_pos)
 	else:
 		unit.tween_to_global_and_resume(tile.global_position, self, start_pos, end_pos)
 	
-	
-	
 
 func unit_stopped_moving(my_player, start_pos, end_pos):
-	# check if you eat anything
-	check_if_eatable(my_player, start_pos, end_pos)
-	can_interact = true
-	
-	end_turn()
+	if not multi_play:
+		# check if you eat anything
+		check_if_eatable(my_player, start_pos, end_pos)
+		can_interact = true
+		
+		end_turn()
+	else:
+		m_m.get_node("game").rpc_id(1, "unit_moved", m_m.room_id)
 
 func check_if_eatable(my_player, start_coord, pos_coord, dryrun=false, simulation=false):
 	var can_eat = []
@@ -619,6 +621,22 @@ func end_turn():
 			if player_turn != 2:
 				$ai.execute_move(self.player_turn)
 
+func end_turn_multiplayer():
+	# clear display where can move
+	show_where_can_move()
+	
+	if player_turn == 1:
+		player_turn = 2
+	else:
+		player_turn = 1
+	
+	# show whos pieces turn is
+	show_pieces_turn()
+	show_selected_piece()
+
+	tile_selected = null
+	possible_moves = []
+	tile_target = null
 
 func get_soldiers(player=false, simulation=false):
 	var pool = vcb

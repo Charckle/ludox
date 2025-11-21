@@ -19,6 +19,8 @@ extends Node2D
 func _ready() -> void:
 	multiplayer_s.multiplayer_menu = self
 	multiplayer_s.rooms_obj.multiplayer_menu = self
+	multiplayer_s.game_obj.multiplayer_menu = self
+	
 	multiplayer_s.try_connect()
 	$background.visible = true
 	$waiting_conn_pan.visible = true
@@ -92,3 +94,5 @@ func color_for_username(name: String) -> String:
 func prepare_game(m_m, players_data):
 	game_city.initial_multiplayer_set(m_m, players_data)
 	
+func can_move_units(can=true):
+	game_city.can_interact = can
