@@ -40,3 +40,11 @@ func remove_this_units(units):
 @rpc("authority", "call_remote", "reliable")
 func endturn(player_turn):
 	multiplayer_menu.game_city.end_turn_multiplayer()
+
+@rpc("authority", "call_remote", "reliable")
+func send_won_msg(player_data):
+	# display won pieces
+	multiplayer_menu.game_city.set_winner(player_data["player_color"])
+	#display message who won
+	var text_ = "banana"
+	multiplayer_menu.show_who_won(text_)

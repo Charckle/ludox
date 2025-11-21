@@ -270,6 +270,37 @@ offset_top = -244.0
 offset_right = 164.0
 offset_bottom = 207.0
 
+[node name="who_won_msg" type="Panel" parent="ui/game_ui"]
+layout_mode = 0
+offset_left = -144.0
+offset_top = -48.0
+offset_right = 144.0
+offset_bottom = 64.0
+size_flags_horizontal = 4
+
+[node name="RichTextLabel" type="RichTextLabel" parent="ui/game_ui/who_won_msg"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -128.0
+offset_top = -48.0
+offset_right = 128.0
+offset_bottom = 8.0
+grow_horizontal = 2
+grow_vertical = 2
+text = "WHO DON IT?"
+
+[node name="close_won_txt_btn" type="Button" parent="ui/game_ui/who_won_msg"]
+layout_mode = 0
+offset_left = 24.0
+offset_top = 72.0
+offset_right = 280.0
+offset_bottom = 104.0
+text = "OK"
+
 [node name="waiting_conn_pan" type="Panel" parent="."]
 visible = false
 anchors_preset = 8
@@ -324,4 +355,5 @@ text = "Cancel"
 [connection signal="pressed" from="ui/game_ui/option_panel/options_btn" to="ui" method="_on_options_btn_pressed"]
 [connection signal="pressed" from="ui/game_ui/option_panel/rules_btn" to="ui" method="_on_rules_btn_pressed"]
 [connection signal="pressed" from="ui/game_ui/option_panel/leave_btn" to="ui" method="_on_leave_btn_pressed"]
+[connection signal="pressed" from="ui/game_ui/who_won_msg/close_won_txt_btn" to="ui" method="_on_close_won_txt_btn_pressed"]
 [connection signal="pressed" from="waiting_conn_pan/wait_conn_btn" to="." method="exit_multiplayer"]

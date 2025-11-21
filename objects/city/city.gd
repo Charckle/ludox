@@ -733,7 +733,8 @@ func set_winner(player_n):
 		if unit_.player != player_n:
 			unit_.set_lost()
 	
-	ContinueGame.delete_continue()
+	if not multi_play:
+		ContinueGame.delete_continue()
 
 func get_current_game_state():
 	var game_state = {

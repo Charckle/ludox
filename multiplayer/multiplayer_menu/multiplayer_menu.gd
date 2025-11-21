@@ -81,8 +81,12 @@ func show_game():
 	chat_container.visible = false
 	game_container.visible = true
 	game_ui.visible = true
+	game_ui.get_node("who_won_msg").visible = false
 	
 
+func show_who_won(text_):
+	game_ui.get_node("who_won_msg").get_node("RichTextLabel").text = text_
+	game_ui.get_node("who_won_msg").visible = true
 
 
 func color_for_username(name: String) -> String:

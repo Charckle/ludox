@@ -41,3 +41,7 @@ func _on_leave_btn_pressed() -> void:
 
 func _on_rules_btn_pressed() -> void:
 	rule_book.visible = true
+
+
+func _on_close_won_txt_btn_pressed() -> void:
+	$game_ui/who_won_msg.visible = false
