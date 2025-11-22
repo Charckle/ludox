@@ -15,6 +15,7 @@ script = ExtResource("1_bd2p5")
 [node name="Camera2D" type="Camera2D" parent="."]
 
 [node name="main_container" type="PanelContainer" parent="."]
+visible = false
 anchors_preset = 6
 anchor_left = 1.0
 anchor_top = 0.5
@@ -70,7 +71,6 @@ layout_mode = 2
 text = "Leave multiplayer"
 
 [node name="room_container" type="Panel" parent="."]
-visible = false
 anchors_preset = 6
 anchor_left = 1.0
 anchor_top = 0.5
@@ -94,14 +94,35 @@ offset_bottom = 80.0
 disabled = true
 text = "Start"
 
-[node name="settings" type="Button" parent="room_container"]
+[node name="size_btn" type="OptionButton" parent="room_container"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 offset_left = 16.0
 offset_top = 272.0
+offset_right = 112.0
+offset_bottom = 322.0
+selected = 0
+item_count = 2
+popup/item_0/text = "8x8"
+popup/item_0/id = 0
+popup/item_1/text = "12x8"
+popup/item_1/id = 1
+
+[node name="rules_btn" type="OptionButton" parent="room_container"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+offset_left = 128.0
+offset_top = 272.0
 offset_right = 304.0
 offset_bottom = 322.0
-text = "Settings"
+selected = 0
+item_count = 3
+popup/item_0/text = "Classic Rules"
+popup/item_0/id = 0
+popup/item_1/text = "Classic Plus"
+popup/item_1/id = 1
+popup/item_2/text = "XXI"
+popup/item_2/id = 2
 
 [node name="leave_btn" type="Button" parent="room_container"]
 custom_minimum_size = Vector2(0, 50)
@@ -136,6 +157,7 @@ text = "Spectators:"
 layout_mode = 2
 
 [node name="game_container" type="Panel" parent="."]
+visible = false
 offset_left = -425.0
 offset_top = -240.0
 offset_right = 431.0
@@ -242,16 +264,6 @@ offset_top = 272.0
 offset_right = 384.0
 offset_bottom = 322.0
 text = "Rule Book"
-
-[node name="surrender_btn" type="Button" parent="ui/game_ui/option_panel"]
-custom_minimum_size = Vector2(0, 50)
-layout_mode = 0
-offset_left = 24.0
-offset_top = 24.0
-offset_right = 384.0
-offset_bottom = 74.0
-disabled = true
-text = "Surrender Victory"
 
 [node name="to_loby_btn" type="Button" parent="ui/game_ui/option_panel"]
 custom_minimum_size = Vector2(0, 50)
@@ -360,6 +372,8 @@ text = "Cancel"
 [connection signal="pressed" from="main_container/top_cont/HBoxContainer/new_room_btn" to="." method="_on_new_room_btn_pressed"]
 [connection signal="pressed" from="main_container/top_cont/HBoxContainer/leave_btn" to="." method="exit_multiplayer"]
 [connection signal="pressed" from="room_container/start_btn" to="room_container" method="_on_start_btn_pressed"]
+[connection signal="item_selected" from="room_container/size_btn" to="room_container" method="_on_size_btn_item_selected"]
+[connection signal="item_selected" from="room_container/rules_btn" to="room_container" method="_on_rules_btn_item_selected"]
 [connection signal="pressed" from="room_container/leave_btn" to="room_container" method="_on_leave_btn_pressed"]
 [connection signal="text_submitted" from="ui/chat/base_node/LineEdit" to="." method="_on_line_edit_text_submitted"]
 [connection signal="pressed" from="ui/game_ui/chat_btn" to="ui" method="_on_chat_btn_pressed"]

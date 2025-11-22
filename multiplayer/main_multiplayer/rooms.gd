@@ -37,6 +37,10 @@ func update_room_data(room_data):
 	multiplayer_menu.room_container.update_room_data(room_data)
 
 @rpc("any_peer", "call_remote", "reliable")
+func push_room_settings(room_id, room_data):
+	pass
+
+@rpc("any_peer", "call_remote", "reliable")
 func join_room_request(room_id):
 	pass
 

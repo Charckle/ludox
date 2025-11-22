@@ -41,7 +41,26 @@ func update_room_data(room_data):
 		$start_btn.disabled = false
 	else:
 		$start_btn.disabled = true
+	
+	$size_btn.selected = $size_btn.get_item_index(room_data["city_size"])
+	$rules_btn.selected = $rules_btn.get_item_index(room_data["rules"])
+
 
 
 func _on_start_btn_pressed() -> void:
 	multiplayer_s.rooms_obj.rpc_id(1, "start_game", multiplayer_s.room_id)
+
+
+func _on_size_btn_item_selected(index: int) -> void:
+	push_settings()
+
+
+func _on_rules_btn_item_selected(index: int) -> void:
+	push_settings()
+
+
+func push_settings():
+	var room_data = {"city_size": $size_btn.get_selected_id(),
+						"rules": $rules_btn.get_selected_id()}
+
+	multiplayer_s.rooms_obj.rpc_id(1, "push_room_settings", multiplayer_s.room_id, room_data)
