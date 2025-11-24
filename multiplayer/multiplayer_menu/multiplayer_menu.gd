@@ -70,6 +70,13 @@ func show_room(room_name, msg=null):
 	game_ui.visible = false
 	chat_container.visible = true
 	
+	# enable settigns buttons for OP
+	var settings_status = true
+	if multiplayer_s.am_I_room_owner():
+		settings_status = false
+	$room_container/size_btn.disabled = settings_status
+	$room_container/rules_btn.disabled = settings_status
+	
 	if msg == null:
 		msg_log_container.text = ""
 		var color = color_for_username(room_name)

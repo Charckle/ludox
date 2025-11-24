@@ -132,3 +132,9 @@ func receive_chat_message(message: String):
 func _register_player_on_server(new_player_info):
 	pass
 	
+
+func am_I_room_owner():
+	if room_id == my_peer_id:
+		return true
+	else:
+		return false
