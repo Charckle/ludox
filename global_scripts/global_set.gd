@@ -13,16 +13,7 @@ var load_saved_continue = false
 #var ai_lvl = 0
 
 
-var settings = {
-	"animation": 0,
-	"movement_highlight": 0,
-	"movement_suggestion": 0,
-	"music": 0,
-	"game_rules": Rules.XXI,
-	"game_type": 0,
-	"ai_lvl": 0,
-	"board_size": 0
-}
+var settings
 
 
 

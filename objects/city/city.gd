@@ -857,6 +857,17 @@ func restore_unit(unit_data):
 	
 	vcb[valu] = new_unit
 
+func check_adj_enemy_dux_of(position_grid, player, simulation):
+	var enemy_pid = get_enemy_pid(player)
+	var adj_tiles = get_adjacent_tiles(position_grid)
+	var soldiers = self.get_soldiers(enemy_pid, simulation)
+	
+	for soldier in soldiers:
+		if soldier["pg"] in adj_tiles and soldier["dux"] == true:
+			return true
+	
+	return false
+
 func get_enemy_pid(manual_player = null):
 	if manual_player == null:
 		manual_player = player_turn

@@ -5,6 +5,8 @@ var MultiplayerScene = preload("res://multiplayer/main_multiplayer/main_multipla
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	# create player name
+	
 	hide_all_oth_containers()
 	
 	if get_tree().root.get_node("Main-multiplayer") == null:

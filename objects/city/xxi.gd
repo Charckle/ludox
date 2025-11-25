@@ -46,7 +46,7 @@ func get_moves(soldier_pos, dryrun=false, simulation=false):
 					possible_moves.append(tile_pos)
 			# can move to dux
 			var dux_pos = get_coord_nxt_to_dux(soldier_pos, possible_basic_moves, 
-									othr_p(city.player_turn), simulation)
+									othr_p(current_unit["player"]), simulation)
 			for pos in dux_pos:
 				possible_moves.append(pos)
 			# add to all those, that would attack another unit
@@ -62,7 +62,7 @@ func get_moves(soldier_pos, dryrun=false, simulation=false):
 			else:
 				# can move to dux
 				var dux_pos = get_coord_nxt_to_dux(soldier_pos, possible_basic_moves, 
-									othr_p(city.player_turn), simulation)
+									othr_p(current_unit["player"]), simulation)
 				
 				for pos in dux_pos:
 					possible_moves.append(pos)
@@ -107,10 +107,10 @@ func get_moves(soldier_pos, dryrun=false, simulation=false):
 		city.possible_moves = _possible_moves_local
 	
 func get_coord_nxt_to_dux(soldier_pos, possible_moves, player_of_dux, simulation):
+	var enemy_pid = city.get_enemy_pid(player_of_dux)
 	var _moves = []
 	for tile_pos in basic.get_basic_moves(soldier_pos, true, simulation):
-		var tile = city.get_tile_on_position(tile_pos)
-		if tile.do_adj_dux(city, player_of_dux, simulation):
+		if city.check_adj_enemy_dux_of(tile_pos, enemy_pid, simulation):
 			_moves.append(tile_pos)
 	return _moves
 	
@@ -189,9 +189,9 @@ func push_and_crush(where, my_player, start_coord, target_pos, dryrun=false,
 				if unit_rr["pg"] in city.border_tiles:
 					position_to_check = unit_rr["pg"]
 					position_to_check[axis] = position_to_check[axis] + up
-					var tile_ = city.get_tile_on_position(position_to_check)
 					
-					if tile_ == null:
+					if position_to_check in city.all_board_positions:
+
 						if not unit_rr.dux:
 							if dryrun:
 								can_eat.append([start_coord, target_pos, position_to_check])
@@ -346,8 +346,7 @@ func phalanx_attack(where, my_player, start_coord, target_pos, dryrun=false,
 	if first_unit:
 		# check on which side your units are
 		# get left and right tiles
-		var tile = city.get_tile_on_position(target_pos)
-		var unit_sourounding_tiles = tile.get_adjacent_tiles(city)
+		var unit_sourounding_tiles = city.get_adjacent_tiles(target_pos)
 		unit_sourounding_tiles.erase(start_coord)
 
 		var xyz_pos = target_pos

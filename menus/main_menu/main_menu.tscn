@@ -88,6 +88,7 @@ offset_right = 40.0
 offset_bottom = 40.0
 
 [node name="new_game_pan" type="Panel" parent="othr_containers"]
+visible = false
 layout_mode = 0
 offset_left = -312.0
 offset_top = -120.0
@@ -182,11 +183,10 @@ offset_bottom = 242.0
 text = "Start Game"
 
 [node name="settings_pan" type="Panel" parent="othr_containers"]
-visible = false
 layout_mode = 0
-offset_left = -360.0
+offset_left = -400.0
 offset_top = -144.0
-offset_right = -16.0
+offset_right = 24.0
 offset_bottom = 136.0
 script = ExtResource("5_er5qh")
 
@@ -194,8 +194,8 @@ script = ExtResource("5_er5qh")
 layout_mode = 0
 offset_left = 16.0
 offset_top = 40.0
-offset_right = 320.0
-offset_bottom = 192.0
+offset_right = 408.0
+offset_bottom = 252.0
 columns = 2
 
 [node name="animation_lbl" type="Label" parent="othr_containers/settings_pan/GridContainer"]
@@ -234,6 +234,7 @@ text = "Username"
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 placeholder_text = "Vigitilus"
+max_length = 35
 
 [node name="server_ip_lbl" type="Label" parent="othr_containers/settings_pan/GridContainer"]
 layout_mode = 2
