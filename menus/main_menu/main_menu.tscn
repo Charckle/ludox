@@ -315,3 +315,5 @@ texture = ExtResource("5_oic2i")
 [connection signal="pressed" from="othr_containers/new_game_pan/start_g_btn" to="othr_containers/new_game_pan" method="_on_start_g_btn_pressed"]
 [connection signal="item_selected" from="othr_containers/settings_pan/GridContainer/animation_btn" to="othr_containers/settings_pan" method="_on_animation_btn_item_selected"]
 [connection signal="item_selected" from="othr_containers/settings_pan/GridContainer/movement_btn" to="othr_containers/settings_pan" method="_on_movement_btn_item_selected"]
+[connection signal="focus_exited" from="othr_containers/settings_pan/GridContainer/username_lnd" to="othr_containers/settings_pan" method="_on_username_lnd_focus_exited"]
+[connection signal="focus_exited" from="othr_containers/settings_pan/GridContainer/server_ip_lnd" to="othr_containers/settings_pan" method="_on_server_ip_lnd_focus_exited"]

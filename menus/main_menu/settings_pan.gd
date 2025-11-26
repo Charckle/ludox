@@ -30,3 +30,19 @@ func _on_animation_btn_item_selected(index: int) -> void:
 func _on_movement_btn_item_selected(index: int) -> void:
 	GlobalSet.settings["movement_highlight"] = $GridContainer/movement_btn.get_item_id(index)
 	SettingsLoad.save_settings()
+
+
+func _on_username_lnd_focus_exited() -> void:
+	save_user_ip()
+
+
+func _on_server_ip_lnd_focus_exited() -> void:
+	save_user_ip()
+
+func save_user_ip():
+	var user_v = $GridContainer/username_lnd.text
+	var ip_v = $GridContainer/server_ip_lnd.text
+	
+	GlobalSet.settings["multiplayer"]["username"] = user_v
+	GlobalSet.settings["multiplayer"]["server_ip"] = ip_v
+	SettingsLoad.save_settings()
