@@ -58,6 +58,37 @@ func execute_move(my_player):
 		else:
 			print("not eating")
 	
+	# check if you can have a unit eaten
+	if ai_lvl != city.Ai_lvl.EASY:
+		var possible_intercept = []
+		
+		new_scenarion()
+		
+		var simulation_ss = true
+		# enemy moves
+		var player_actions_ss = city.where_can_player_move(othr_p(my_player), simulation_ss)
+		var units_with_possible_eat_s = player_actions_ss["units_with_possible_eat"]
+		print(player_actions_ss)
+		var player_actions_my = city.where_can_player_move(my_player, simulation_ss)
+		var player_poss_moves = player_actions_my["possible_moves"]
+
+		for att_move in units_with_possible_eat_s:
+			# check if it collides with possible moves your units can make,
+			# and then move that unit to prevent from eating
+			for move in player_poss_moves:
+				# if the eating unit will move to a possible move
+				# and if the unit with the possible move is not the one who will be eaten
+				if att_move[1] == move[1] and att_move[2] != move[0]:
+					possible_intercept.append(move)
+		print("poss interc:")
+		print(len(possible_intercept))
+		if len(possible_intercept) != 0:
+			var random_value = pop_random_fast(possible_intercept)
+			city.move_unit(my_player, random_value[0], random_value[1])
+			return
+		
+
+	
 	var eat_dux = false
 	if not eat and len(units_att_dux) > 0:
 		print("going after the dux")
@@ -80,10 +111,10 @@ func execute_move(my_player):
 					# move unit
 					var simulation_s = true
 					var unit_s = city.get_soldier_on_position(move[0], simulation_s)
-					unit_s.position_grid = move[1]
+					unit_s["pg"] = move[1]
 					# calculate, if it can be eaten
 					var player_actions_s = city.where_can_player_move(othr_p(my_player), simulation_s)
-
+					
 					var units_with_possible_eat_s = player_actions_s["units_with_possible_eat"]
 					for att_move in units_with_possible_eat_s:
 						if att_move[2] == move[1]:
@@ -134,15 +165,15 @@ func pop_random_fast(arr: Array) -> Variant:
 
 func new_scenarion():
 	# clear all
-	for unit in $"../simulation".get_children():
-		unit.free()
+	city.vcb_sim = {}
 	
-	for unit in $"../soldiers".get_children():
-		var new_unit = city.SoldierUnitScene.instantiate()
-		new_unit.player = unit.player
-		new_unit.dux = unit.dux
-		$"../simulation".add_child(new_unit)
-		new_unit.set_position_grid(unit.position_grid)
+	for valu_ in city.vcb.keys():
+		var new_unit = {"pg": city.vcb[valu_]["pg"],
+						"player": city.vcb[valu_]["player"],
+						"dux": city.vcb[valu_]["dux"],
+						"id": city.vcb[valu_]["id"]}
+						
+		city.vcb_sim[valu_] = new_unit
 
 
 func othr_p(player):

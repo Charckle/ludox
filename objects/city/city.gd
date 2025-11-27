@@ -518,7 +518,7 @@ func spawn_slain_anim(gb):
 
 func where_can_player_move(player, simulation=false):
 	var soldiers = self.get_soldiers(player, simulation)
-	
+
 	var can_move = true
 	var units_with_possible_eat = []
 	var units_att_dux = []
@@ -654,8 +654,10 @@ func get_soldiers(player=false, simulation=false):
 	if player:
 		var units = []
 		for unit in pool.values():
+			print()
 			if unit["player"] == player:
 				units.append(unit)
+
 		return units
 	else:
 		return pool.values()
