@@ -275,7 +275,7 @@ position_grid = Vector2i(1, 0)
 position = Vector2(280, 0)
 
 [node name="Soldier2" parent="soldiers" instance=ExtResource("3_sgfal")]
-position = Vector2(40, 0)
+position = Vector2(80, 80)
 
 [node name="Soldier3" parent="soldiers" instance=ExtResource("3_sgfal")]
 position = Vector2(80, 0)
@@ -307,7 +307,7 @@ position = Vector2(80, 280)
 player = 2
 
 [node name="Soldier11" parent="soldiers" instance=ExtResource("3_sgfal")]
-position = Vector2(0, 280)
+position = Vector2(0, 40)
 player = 2
 
 [node name="Soldier12" parent="soldiers" instance=ExtResource("3_sgfal")]
@@ -323,7 +323,7 @@ position = Vector2(160, 280)
 player = 2
 
 [node name="Soldier15" parent="soldiers" instance=ExtResource("3_sgfal")]
-position = Vector2(40, 280)
+position = Vector2(40, 40)
 player = 2
 
 [node name="Soldier16" parent="soldiers" instance=ExtResource("3_sgfal")]

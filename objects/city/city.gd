@@ -86,6 +86,7 @@ func can_interact_():
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	initialize_city()
+	
 
 func initial_multiplayer_set(m_m_, players_data):
 	self.m_m = m_m_
@@ -370,10 +371,10 @@ func get_corners(all_positions = null):
 	if all_positions == null:
 		all_positions = self.all_board_positions
 	
-	var highest_x = 0
-	var lowest_x = 0
-	var highest_y = 0
-	var lowest_y = 0
+	var highest_x = -INF
+	var lowest_x = INF
+	var highest_y = -INF
+	var lowest_y = INF
 	
 	for pos_ in all_positions:
 		if highest_x < pos_.x:

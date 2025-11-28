@@ -68,7 +68,7 @@ func execute_move(my_player):
 		# enemy moves
 		var player_actions_ss = city.where_can_player_move(othr_p(my_player), simulation_ss)
 		var units_with_possible_eat_s = player_actions_ss["units_with_possible_eat"]
-		print(player_actions_ss)
+		
 		var player_actions_my = city.where_can_player_move(my_player, simulation_ss)
 		var player_poss_moves = player_actions_my["possible_moves"]
 
@@ -79,9 +79,9 @@ func execute_move(my_player):
 				# if the eating unit will move to a possible move
 				# and if the unit with the possible move is not the one who will be eaten
 				if att_move[1] == move[1] and att_move[2] != move[0]:
+					print("intercepting")
 					possible_intercept.append(move)
-		print("poss interc:")
-		print(len(possible_intercept))
+		
 		if len(possible_intercept) != 0:
 			var random_value = pop_random_fast(possible_intercept)
 			city.move_unit(my_player, random_value[0], random_value[1])

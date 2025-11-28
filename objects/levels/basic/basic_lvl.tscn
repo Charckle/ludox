@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://bd367rr8rfijc"]
+[gd_scene load_steps=8 format=3 uid="uid://bd367rr8rfijc"]
 
 [ext_resource type="Script" uid="uid://crlxp5yjng4t4" path="res://objects/levels/basic/basic_lvl.gd" id="1_74g82"]
 [ext_resource type="PackedScene" uid="uid://kvjswh5bloxe" path="res://objects/city/city.tscn" id="1_gvys7"]
 [ext_resource type="Script" uid="uid://cytsq0lr5xxo2" path="res://objects/levels/basic/panel.gd" id="3_4ebhi"]
 [ext_resource type="Texture2D" uid="uid://cjlyfnt6tl4ih" path="res://sprites/images/table.png" id="3_qwom7"]
+[ext_resource type="Texture2D" uid="uid://d17db7y5lql1v" path="res://sprites/images/settings.png" id="4_2lyv5"]
 [ext_resource type="Script" uid="uid://d008ipc0aadtd" path="res://objects/levels/basic/info_panel.gd" id="4_4ebhi"]
 [ext_resource type="PackedScene" uid="uid://barp2eu1vt3yw" path="res://menus/rule_book/rule_book.tscn" id="4_qtxv8"]
 
@@ -44,13 +45,15 @@ offset_right = 320.0
 offset_bottom = 87.0
 text = "Undo Move"
 
-[node name="settings_btn" type="Button" parent="CanvasModulate/Panel"]
+[node name="settings_btn" type="TextureButton" parent="CanvasModulate/Panel"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 0
-offset_left = -88.0
-offset_top = 424.0
-offset_bottom = 474.0
-text = "Settings"
+offset_left = -80.0
+offset_top = 400.0
+offset_right = -29.0
+offset_bottom = 450.0
+scale = Vector2(1.425, 1.425)
+texture_normal = ExtResource("4_2lyv5")
 
 [node name="ai_difficulty_btn" type="OptionButton" parent="CanvasModulate/Panel"]
 custom_minimum_size = Vector2(0, 50)
