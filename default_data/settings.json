@@ -8,7 +8,7 @@
 	"ai_lvl": 0,
 	"board_size": 0,
 	"multiplayer": {
-		"server_ip": "127.0.0.1",
+		"server_ip": "ludox.registrum.si",
 		"port": 7331,
 		"username": "Vitigilus"
 	}

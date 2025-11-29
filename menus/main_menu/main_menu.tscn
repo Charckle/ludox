@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://blglugajiqw3y"]
+[gd_scene load_steps=11 format=3 uid="uid://blglugajiqw3y"]
 
 [ext_resource type="Script" uid="uid://cjmw0hmqq8fmc" path="res://menus/main_menu/top_btns.gd" id="1_1nwmw"]
 [ext_resource type="Script" uid="uid://bpk3x06ssbpm7" path="res://menus/main_menu/main_menu.gd" id="1_ml8bw"]
@@ -7,12 +7,72 @@
 [ext_resource type="Script" uid="uid://b6n8qhhhlm8ns" path="res://menus/main_menu/settings_pan.gd" id="5_er5qh"]
 [ext_resource type="Texture2D" uid="uid://c5pc6hoik0e1v" path="res://sprites/images/main_menu_01.png" id="5_oic2i"]
 [ext_resource type="PackedScene" uid="uid://barp2eu1vt3yw" path="res://menus/rule_book/rule_book.tscn" id="6_81su3"]
+[ext_resource type="FontFile" uid="uid://dvsr7udbmyb3e" path="res://themes/fonts/roman_antique/RomanAntique.ttf" id="9_t7kvd"]
 [ext_resource type="Texture2D" uid="uid://bqnmfgehdm1bj" path="res://sprites/images/europe_map.png" id="13_11cdn"]
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_t7kvd"]
+emission_shape = 3
+emission_box_extents = Vector3(500, 0, 1)
+angle_min = 1.07288e-05
+angle_max = 197.5
+velocity_pivot = Vector3(0, 100, 0)
+direction = Vector3(0, 0, 0)
+spread = 16.807
+angular_velocity_min = 9.99998
+angular_velocity_max = 30.0
+gravity = Vector3(0, 100, 0)
+scale_min = 2.0
+scale_max = 5.0
+turbulence_enabled = true
 
 [node name="MainMenu" type="Node2D"]
 script = ExtResource("1_ml8bw")
 
 [node name="Camera2D" type="Camera2D" parent="."]
+
+[node name="title_ctrl" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_left = 32.0
+offset_top = 96.0
+offset_right = 72.0
+offset_bottom = 136.0
+
+[node name="label_1" type="Label" parent="title_ctrl"]
+layout_mode = 0
+offset_left = -376.0
+offset_top = -192.0
+offset_right = -321.0
+offset_bottom = -169.0
+theme_override_fonts/font = ExtResource("9_t7kvd")
+theme_override_font_sizes/font_size = 100
+text = "Roman"
+
+[node name="FireParticle" type="GPUParticles2D" parent="title_ctrl"]
+visible = false
+position = Vector2(-288, 264)
+scale = Vector2(1.325, 1.325)
+emitting = false
+amount = 100
+lifetime = 4.23
+process_material = SubResource("ParticleProcessMaterial_t7kvd")
+
+[node name="SnowParticle" type="GPUParticles2D" parent="title_ctrl"]
+position = Vector2(-32, -368)
+emitting = false
+amount = 120
+lifetime = 20.0
+process_material = SubResource("ParticleProcessMaterial_t7kvd")
+
+[node name="label_2" type="Label" parent="title_ctrl"]
+layout_mode = 0
+offset_left = -264.0
+offset_top = -104.0
+offset_right = -61.0
+offset_bottom = -37.0
+theme_override_fonts/font = ExtResource("9_t7kvd")
+theme_override_font_sizes/font_size = 100
+text = "Chess"
 
 [node name="main_container" type="PanelContainer" parent="."]
 offset_left = 48.0
@@ -183,6 +243,7 @@ offset_bottom = 242.0
 text = "Start Game"
 
 [node name="settings_pan" type="Panel" parent="othr_containers"]
+visible = false
 layout_mode = 0
 offset_left = -400.0
 offset_top = -144.0
@@ -303,6 +364,14 @@ z_index = -1
 position = Vector2(-1, 4)
 scale = Vector2(0.554688, 0.554688)
 texture = ExtResource("5_oic2i")
+
+[node name="version_lbl" type="Label" parent="."]
+offset_left = -416.0
+offset_top = 208.0
+offset_right = -359.0
+offset_bottom = 231.0
+theme_override_colors/font_color = Color(0.808998, 0.808998, 0.808998, 1)
+text = "version"
 
 [connection signal="pressed" from="main_container/top_buttons/top_btns/continue_btn" to="main_container/top_buttons/top_btns" method="_on_continue_btn_pressed"]
 [connection signal="pressed" from="main_container/top_buttons/top_btns/new_game_btn" to="main_container/top_buttons/top_btns" method="_on_new_game_btn_pressed"]

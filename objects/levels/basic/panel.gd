@@ -43,7 +43,7 @@ func toggle_console():
 
 func _on_texture_button_pressed() -> void:
 	toggle_console()
-	city.can_interact = !city.can_interact
+	city.multi_play_menu_open = !city.multi_play_menu_open
 
 
 func _on_main_menu_btn_pressed() -> void:

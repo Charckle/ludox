@@ -170,7 +170,7 @@ func push_and_crush(where, my_player, start_coord, target_pos, dryrun=false,
 		Where.RIGHT:
 			up = up * 1
 	
-	
+	# check if first is friendly
 	var position_to_check = target_pos
 	position_to_check[axis] = position_to_check[axis] + up
 	
@@ -179,18 +179,19 @@ func push_and_crush(where, my_player, start_coord, target_pos, dryrun=false,
 		if unit_r["pg"] == start_coord:
 			pass
 		
-		position_to_check = unit_r["pg"]
+		#position_to_check = unit_r["pg"]
 		position_to_check[axis] = position_to_check[axis] + up
 		var unit_rr = city.get_soldier_on_position(position_to_check, simulation)
 
 		if unit_rr != null:
 			# if the unit is on the edge of the city
+			# if the unit is the enemies
 			if unit_rr["player"] != my_player:
 				if unit_rr["pg"] in city.border_tiles:
-					position_to_check = unit_rr["pg"]
+					#position_to_check = unit_rr["pg"]
 					position_to_check[axis] = position_to_check[axis] + up
 					
-					if position_to_check in city.all_board_positions:
+					if not position_to_check in city.all_board_positions:
 
 						if not unit_rr.dux:
 							if dryrun:

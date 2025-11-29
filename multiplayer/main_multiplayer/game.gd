@@ -46,13 +46,18 @@ func send_won_msg(player_data):
 	# display won pieces
 	multiplayer_menu.game_city.set_winner(player_data["player_color"])
 	#display message who won
-	var username = player_data["username"]
-	var color = color_for_username(username)
-	if m_m.my_peer_id == player_data["id"]:
-		username = "You"
-	var message = "won!"
-	var msg = "[color=#%s]%s[/color] %s" % [color, username, message]
-	
+	var msg = "WAT?"
+	if player_data["player_color"] == 3:
+		var color = "#ff5959"
+		msg = "[color=#%s]%s[/color] %s" % [color, "Draw!", "Move exeeded."]
+	else:
+		var username = player_data["username"]
+		var color = color_for_username(username)
+		if m_m.my_peer_id == player_data["id"]:
+			username = "You"
+		var message = "won!"
+		msg = "[color=#%s]%s[/color] %s" % [color, username, message]
+		
 	multiplayer_menu.show_who_won(msg)
 
 func color_for_username(name: String) -> String:

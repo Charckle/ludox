@@ -86,7 +86,7 @@ func can_interact_():
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	initialize_city()
-	
+	#initialize_preset_city()
 
 func initial_multiplayer_set(m_m_, players_data):
 	self.m_m = m_m_
@@ -124,8 +124,24 @@ func initialize_city(board_size_=board_size, rules_=int(GlobalSet.settings["game
 		GlobalSet.load_saved_continue = false
 		load_game_state(ContinueGame.load_continue())
 	else:
+		if not multi_play:
+			set_rand_playerstart()
 		show_pieces_turn()
 		save_move_state()
+		execute_ai_move()
+
+func initialize_preset_city():
+	city_size = Vector2(8, 8)
+	rules = int(GlobalSet.settings["game_rules"])
+	scale = default_scale
+	all_board_positions = blank_board()
+	corners = get_corners()
+	border_tiles = get_border_tiles()
+	set_city_for_calc()
+	get_city_size()
+	
+	show_pieces_turn()
+	save_move_state()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
@@ -625,9 +641,12 @@ func end_turn():
 	save_move_state()
 	
 	if not check_win():
-		if player_turn != 3 and GlobalSet.settings["game_type"] != Game_types.PVP:
-			if player_turn != 2:
-				$ai.execute_move(self.player_turn)
+		execute_ai_move()
+
+func execute_ai_move():
+	if player_turn != 3 and GlobalSet.settings["game_type"] != Game_types.PVP:
+		if player_turn != 2:
+			$ai.execute_move(self.player_turn)
 
 func end_turn_multiplayer():
 	# clear display where can move
@@ -890,3 +909,6 @@ func get_winner_text(player):
 			return "Red Player"
 		else:
 			return "Blue Player"
+
+func set_rand_playerstart():
+	player_turn = randi() % 2 + 1

@@ -1,5 +1,6 @@
 extends Node
 
+var CLIENT_VERSION
 var ADDRESS
 var PORT
 
@@ -18,11 +19,14 @@ var player_turn = null
 
 var players_data = null
 
+var disconnect_reason_ = null
+
 @onready var rooms_obj = $rooms
 @onready var game_obj = $game
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
+	CLIENT_VERSION = ProjectSettings.get_setting("application/config/version")
 	multiplayer.connected_to_server.connect(_local_on_connected_ok) # emmited on the clinet ONLY
 	multiplayer.connection_failed.connect(_local_on_connected_fail) # emmited on the clinet ONLY
 	multiplayer.server_disconnected.connect(_local_on_server_disconnected) # emmited on the clinet ONLY
@@ -42,6 +46,10 @@ func _process(delta: float) -> void:
 
 
 func _local_on_connected_ok():
+	disconnect_reason_ = null
+	# chekc server version
+	self.rpc_id(1, "verify_client_version", CLIENT_VERSION)
+	
 	#send the server your data
 	#_register_player_on_server.rpc_id(1, player_info)
 	var username = GlobalSet.settings["multiplayer"]["username"]
@@ -53,6 +61,11 @@ func _local_on_connected_ok():
 	#multiplayer_menu.insert_message(text_to_display)
 	my_peer_id = multiplayer.get_unique_id()
 	
+@rpc("any_peer", "call_remote", "reliable")
+func verify_client_version(client_version: String):
+	pass
+
+
 func _local_on_connected_fail():
 	multiplayer.multiplayer_peer = null
 	var text_to_display = "Could not connect to the server"
@@ -64,6 +77,7 @@ func _local_on_server_disconnected():
 	stop_multy()
 	#GlobalSettings.multiplayer_data["players"].clear()
 	print("Disconected from server")
+	print(disconnect_reason_)
 	#server_disconnected.emit()
 	multiplayer_menu.exit_multiplayer()
 
@@ -72,6 +86,7 @@ func stop_multy():
 
 func try_connect():
 	var ip_text = GlobalSet.settings["multiplayer"]["server_ip"]
+	ip_text = IP.resolve_hostname(ip_text)
 	
 	if ip_text.is_empty():
 		var text_to_display = "The IP cannot be blank"
@@ -88,6 +103,7 @@ func try_connect():
 func join_game(address = ""):
 	if address.is_empty():
 		ADDRESS = GlobalSet.settings["multiplayer"]["server_ip"]
+		ADDRESS = IP.resolve_hostname(ADDRESS)
 		PORT = GlobalSet.settings["multiplayer"]["port"]
 	
 	var peer = ENetMultiplayerPeer.new()
