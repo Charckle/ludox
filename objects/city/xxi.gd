@@ -347,7 +347,7 @@ func phalanx_attack(where, my_player, start_coord, target_pos, dryrun=false,
 	if first_unit:
 		# check on which side your units are
 		# get left and right tiles
-		var unit_sourounding_tiles = city.get_adjacent_tiles(target_pos)
+		var unit_sourounding_tiles = city.get_adjacent_tiles(target_pos, true)
 		unit_sourounding_tiles.erase(start_coord)
 
 		var xyz_pos = target_pos

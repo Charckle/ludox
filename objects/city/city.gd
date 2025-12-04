@@ -570,7 +570,7 @@ func where_can_player_move(player, simulation=false):
 	
 	return result
 
-func get_adjacent_tiles(position_grid):
+func get_adjacent_tiles(position_grid, even_not_in_city=false):
 	var top = position_grid + Vector2i(0,1)
 	var bottom = position_grid + Vector2i(0,-1)
 	var left = position_grid + Vector2i(-1,0)
@@ -578,8 +578,9 @@ func get_adjacent_tiles(position_grid):
 	
 	var adj_tiles = [top, bottom, left, right]
 	for c_tile in adj_tiles:
-		if c_tile not in self.all_board_positions:
-			adj_tiles.erase(c_tile)
+		if even_not_in_city == false:
+			if c_tile not in self.all_board_positions:
+				adj_tiles.erase(c_tile)
 
 	return adj_tiles
 

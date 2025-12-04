@@ -67,7 +67,7 @@ func start_game(room_id):
 @rpc("authority", "call_remote", "reliable")
 func move_player_to_game(players_data, player_turn, city_size):
 	m_m.players_data = players_data
-	print(players_data)
+	
 	if m_m.my_peer_id in players_data:
 		m_m.is_playing = true
 		multiplayer_menu.can_move_units()

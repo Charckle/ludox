@@ -58,7 +58,7 @@ lifetime = 4.23
 process_material = SubResource("ParticleProcessMaterial_t7kvd")
 
 [node name="SnowParticle" type="GPUParticles2D" parent="title_ctrl"]
-position = Vector2(-32, -368)
+position = Vector2(-32, -344)
 emitting = false
 amount = 120
 lifetime = 20.0
