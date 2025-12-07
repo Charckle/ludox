@@ -35,8 +35,7 @@ func unit_moved(room_id):
 func remove_this_units(units):
 	for unit in units:
 		var to_delete_pg = unit[2]
-		print("to_delete_pgrevieced what unit to dele, and its WRONG")
-		print(to_delete_pg)
+
 		multiplayer_menu.game_city.eat_unit(to_delete_pg, false, true)
 
 @rpc("authority", "call_remote", "reliable")

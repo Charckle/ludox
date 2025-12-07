@@ -92,6 +92,7 @@ func show_loby():
 
 func show_game():
 	$ui.show_game_options()
+	$ui.set_chat_visible(false)
 	room_container.visible = false
 	chat_container.visible = false
 	game_container.visible = true

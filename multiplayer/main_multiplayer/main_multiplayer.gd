@@ -11,7 +11,7 @@ var room_id = null
 var rules = null
 
 var is_playing = false
-var is_spectator= false
+var is_spectator = false
 var being_played = false
 var city_size = null
 

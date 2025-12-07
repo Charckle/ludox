@@ -63,7 +63,7 @@ func _on_start_btn_pressed() -> void:
 	multiplayer_s.rooms_obj.rpc_id(1, "start_game", multiplayer_s.room_id)
 
 func _on_spectato_join_btn_pressed() -> void:
-	pass # Replace with function body.
+	multiplayer_s.rooms_obj.rpc_id(1, "spectator_requerst_join_game", multiplayer_s.room_id)
 
 func _on_size_btn_item_selected(index: int) -> void:
 	push_settings()

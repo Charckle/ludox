@@ -102,12 +102,12 @@ func initial_multiplayer_set(m_m_, players_data, vcb):
 	initialize_city(m_m.city_size, m_m.rules)
 	if not vcb == null:
 		var vcb_transformed = transform_vcb_to_all_units(vcb)
-		print("restoring")
-		print(vcb)
-		print(vcb_transformed)
+		remove_all_units()
+
 		for unit_data in vcb_transformed:
+			
 			self.restore_unit(unit_data)
-	
+	show_pieces_turn()
 
 func initialize_city(board_size_=board_size, rules_=int(GlobalSet.settings["game_rules"])):
 	if board_size_ == 1:
@@ -134,9 +134,9 @@ func initialize_city(board_size_=board_size, rules_=int(GlobalSet.settings["game
 	else:
 		if not multi_play:
 			set_rand_playerstart()
+			save_move_state()
+			execute_ai_move()
 		show_pieces_turn()
-		save_move_state()
-		execute_ai_move()
 
 func initialize_preset_city():
 	city_size = Vector2(8, 8)
@@ -866,7 +866,8 @@ func remove_all_tiles():
 
 func remove_all_units():
 	for unit in all_soldiers.get_children():
-		eat_unit(unit.position_grid, false, true)
+		if is_instance_valid(unit):
+			eat_unit(unit.position_grid, false, true)
 
 
 func restore_unit(unit_data):
@@ -880,7 +881,7 @@ func restore_unit(unit_data):
 	unit.global_position = global_pos
 	#unit.set_position_grid()
 	unit.position_grid = position_grid
-	print(unit.position_grid)
+	
 	var valu = len(vcb) + 1
 	
 	var new_unit = {"pg": unit.position_grid,
@@ -932,7 +933,7 @@ func transform_vcb_to_all_units(vcb):
 		var unit_ = vcb[unit_id]
 		new_unit.append(unit_["pg"])
 		var tile = self.get_tile_on_position(unit_["pg"])
-		new_unit.append(tile.position)
+		new_unit.append(tile.global_position)
 		new_unit.append(unit_["player"])
 		new_unit.append(unit_["dux"])
 		

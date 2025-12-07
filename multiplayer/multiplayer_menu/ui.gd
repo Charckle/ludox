@@ -21,18 +21,31 @@ func _process(delta: float) -> void:
 
 
 func _on_chat_btn_pressed() -> void:
-	$chat.visible = not $chat.visible
 	if $chat.visible:
-		set_multi_play_menu(true)
+		set_chat_visible(false)
 	else:
-		set_multi_play_menu(false)
-	if chat_btn.position.x == -416:
-		chat_btn.position.x = 48
-	else:
-		chat_btn.position.x = -416
+		set_chat_visible(true)
+	#if $chat.visible:
+		#set_multi_play_menu(true)
+	#else:
+		#set_multi_play_menu(false)
+	#if chat_btn.position.x == -416:
+		#chat_btn.position.x = 48
+	#else:
+		#chat_btn.position.x = -416
 	
 	# remove new message notifier
 	remove_new_msg_notify()
+
+func set_chat_visible(set_to_visible=true):
+	if set_to_visible:
+		$chat.visible = true
+		set_multi_play_menu(true)
+		chat_btn.position.x = 48
+	else:
+		$chat.visible = false
+		set_multi_play_menu(false)
+		chat_btn.position.x = -416
 
 func remove_new_msg_notify():
 	$game_ui/chat_btn/new_msg_rect.visible = false
