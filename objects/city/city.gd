@@ -18,6 +18,7 @@ var city_size: Vector2i = Vector2(8, 8)
 var default_scale = Vector2(1.3, 1.3)
  
 var can_interact = true
+var unit_moving = false
 
 var tile_selected = null
 var possible_moves = []
@@ -88,7 +89,7 @@ func _ready() -> void:
 	initialize_city()
 	#initialize_preset_city()
 
-func initial_multiplayer_set(m_m_, players_data):
+func initial_multiplayer_set(m_m_, players_data, vcb):
 	self.m_m = m_m_
 	
 	self.multi_play = true
@@ -99,6 +100,13 @@ func initial_multiplayer_set(m_m_, players_data):
 		can_interact = false
 
 	initialize_city(m_m.city_size, m_m.rules)
+	if not vcb == null:
+		var vcb_transformed = transform_vcb_to_all_units(vcb)
+		print("restoring")
+		print(vcb)
+		print(vcb_transformed)
+		for unit_data in vcb_transformed:
+			self.restore_unit(unit_data)
 	
 
 func initialize_city(board_size_=board_size, rules_=int(GlobalSet.settings["game_rules"])):
@@ -447,6 +455,7 @@ func get_border_tiles(all_positions = null):
 
 func move_unit(my_player, start_pos, end_pos):
 	can_interact = false
+	unit_moving = true
 	var unit_v = get_soldier_on_position(start_pos)
 	var unit = _get_soldier_on_position(start_pos)
 	
@@ -480,6 +489,7 @@ func unit_stopped_moving(my_player, start_pos, end_pos):
 		# check if you eat anything
 		check_if_eatable(my_player, start_pos, end_pos)
 		can_interact = true
+		unit_moving = false
 		
 		end_turn()
 	else:
@@ -645,7 +655,7 @@ func end_turn():
 		execute_ai_move()
 
 func execute_ai_move():
-	if player_turn != 3 and GlobalSet.settings["game_type"] != Game_types.PVP:
+	if player_turn != 3 and GlobalSet.settings["game_type"] != Game_types.PVP and multi_play == false:
 		if player_turn != 2:
 			$ai.execute_move(self.player_turn)
 
@@ -870,7 +880,7 @@ func restore_unit(unit_data):
 	unit.global_position = global_pos
 	#unit.set_position_grid()
 	unit.position_grid = position_grid
-	
+	print(unit.position_grid)
 	var valu = len(vcb) + 1
 	
 	var new_unit = {"pg": unit.position_grid,
@@ -913,3 +923,19 @@ func get_winner_text(player):
 
 func set_rand_playerstart():
 	player_turn = randi() % 2 + 1
+
+func transform_vcb_to_all_units(vcb):
+	var all_units = []
+	
+	for unit_id in vcb:
+		var new_unit = []
+		var unit_ = vcb[unit_id]
+		new_unit.append(unit_["pg"])
+		var tile = self.get_tile_on_position(unit_["pg"])
+		new_unit.append(tile.position)
+		new_unit.append(unit_["player"])
+		new_unit.append(unit_["dux"])
+		
+		all_units.append(new_unit)
+		
+	return all_units

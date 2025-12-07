@@ -95,6 +95,16 @@ offset_bottom = 80.0
 disabled = true
 text = "Start"
 
+[node name="spectato_join_btn" type="Button" parent="room_container"]
+visible = false
+layout_mode = 0
+offset_left = 16.0
+offset_top = 16.0
+offset_right = 304.0
+offset_bottom = 80.0
+disabled = true
+text = "Spectate game"
+
 [node name="size_btn" type="OptionButton" parent="room_container"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
@@ -243,6 +253,15 @@ offset_bottom = 209.0
 scale = Vector2(1.425, 1.425)
 texture_normal = ExtResource("7_of7n4")
 
+[node name="new_msg_rect" type="ColorRect" parent="ui/game_ui/chat_btn"]
+visible = false
+layout_mode = 0
+offset_left = 5.61404
+offset_top = 7.01754
+offset_right = 10.614
+offset_bottom = 12.0175
+color = Color(1, 0.0588235, 0.160784, 1)
+
 [node name="option_panel" type="Panel" parent="ui/game_ui"]
 layout_mode = 0
 offset_left = 432.0
@@ -375,6 +394,7 @@ text = "Cancel"
 [connection signal="pressed" from="main_container/top_cont/HBoxContainer/new_room_btn" to="." method="_on_new_room_btn_pressed"]
 [connection signal="pressed" from="main_container/top_cont/HBoxContainer/leave_btn" to="." method="exit_multiplayer"]
 [connection signal="pressed" from="room_container/start_btn" to="room_container" method="_on_start_btn_pressed"]
+[connection signal="pressed" from="room_container/spectato_join_btn" to="room_container" method="_on_spectato_join_btn_pressed"]
 [connection signal="item_selected" from="room_container/size_btn" to="room_container" method="_on_size_btn_item_selected"]
 [connection signal="item_selected" from="room_container/rules_btn" to="room_container" method="_on_rules_btn_item_selected"]
 [connection signal="pressed" from="room_container/leave_btn" to="room_container" method="_on_leave_btn_pressed"]

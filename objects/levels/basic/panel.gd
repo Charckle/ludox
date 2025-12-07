@@ -30,7 +30,11 @@ func toggle_console():
 	
 	if is_visible:
 		pass
-		
+	
+	if city.unit_moving:
+		$undo_btn.disabled = true
+	else:
+		$undo_btn.disabled = false
 	tween.kill()  # Stop any ongoing tween before starting a new one
 
 	tween = create_tween()

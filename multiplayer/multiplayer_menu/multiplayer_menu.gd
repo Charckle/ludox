@@ -46,6 +46,8 @@ func show_default_windows():
 func insert_message(message):
 	message += "\n"
 	msg_log_container.text += message
+	
+	$ui/game_ui/chat_btn/new_msg_rect.visible = true
 
 func _on_line_edit_text_submitted(new_text: String) -> void:
 	var msg = chat_insert.text
@@ -89,11 +91,13 @@ func show_loby():
 	msg_log_container.text = ""
 
 func show_game():
+	$ui.show_game_options()
 	room_container.visible = false
 	chat_container.visible = false
 	game_container.visible = true
 	game_ui.visible = true
 	game_ui.get_node("who_won_msg").visible = false
+	$ui/game_ui/chat_btn/new_msg_rect.visible = false
 	
 
 func show_who_won(text_):
@@ -107,8 +111,8 @@ func color_for_username(name: String) -> String:
 	return c.to_html(false)
 
 
-func prepare_game(m_m, players_data):
-	game_city.initial_multiplayer_set(m_m, players_data)
+func prepare_game(m_m, players_data, vcb=null):
+	game_city.initial_multiplayer_set(m_m, players_data, vcb)
 	
 func can_move_units(can=true):
 	game_city.can_interact = can

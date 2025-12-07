@@ -30,19 +30,23 @@ func _on_chat_btn_pressed() -> void:
 		chat_btn.position.x = 48
 	else:
 		chat_btn.position.x = -416
+	
+	# remove new message notifier
+	remove_new_msg_notify()
+
+func remove_new_msg_notify():
+	$game_ui/chat_btn/new_msg_rect.visible = false
 
 
 func _on_options_btn_pressed() -> void:
 	if option_panel_shown:
 		hide_game_options()
 	else:
-		set_multi_play_menu(false)
-		option_panel_shown = true
-		option_panel.position.x = 432.0
+		show_game_options()
 
 
 func _on_leave_btn_pressed() -> void:
-	hide_game_options()
+	#hide_game_options()
 	multiplayer_s.rooms_obj.rpc_id(1, "leave_room_request", multiplayer_s.room_id)
 
 
@@ -55,14 +59,20 @@ func _on_close_won_txt_btn_pressed() -> void:
 
 
 func _on_to_loby_btn_pressed() -> void:
-	hide_game_options()
+	#hide_game_options()
 	multiplayer_s.rooms_obj.rpc_id(1, "move_back_room_request", multiplayer_s.room_id)
 
 
 func hide_game_options():
+	remove_new_msg_notify()
 	set_multi_play_menu(true)
 	option_panel_shown = false
 	option_panel.position.x = 0
+
+func show_game_options():
+	set_multi_play_menu(false)
+	option_panel_shown = true
+	option_panel.position.x = 432.0
 
 func set_multi_play_menu(can=true):
 	if can:

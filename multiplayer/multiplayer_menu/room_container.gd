@@ -42,6 +42,18 @@ func update_room_data(room_data):
 	else:
 		$start_btn.disabled = true
 	
+	if multiplayer_s.is_spectator:
+		$start_btn.visible = false
+		$spectato_join_btn.visible = true
+		
+		if room_data["being_played"]:
+			$spectato_join_btn.disabled = false
+		else:
+			$spectato_join_btn.disabled = true
+	else:
+		$start_btn.visible = true
+		$spectato_join_btn.visible = false
+	
 	$size_btn.selected = $size_btn.get_item_index(room_data["city_size"])
 	$rules_btn.selected = $rules_btn.get_item_index(room_data["rules"])
 
@@ -50,6 +62,8 @@ func update_room_data(room_data):
 func _on_start_btn_pressed() -> void:
 	multiplayer_s.rooms_obj.rpc_id(1, "start_game", multiplayer_s.room_id)
 
+func _on_spectato_join_btn_pressed() -> void:
+	pass # Replace with function body.
 
 func _on_size_btn_item_selected(index: int) -> void:
 	push_settings()
