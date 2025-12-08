@@ -14,9 +14,9 @@ func _process(delta: float) -> void:
 
 
 func populate_settings():
-	
 	$GridContainer/animation_btn.selected = $GridContainer/animation_btn.get_item_index(int(GlobalSet.settings["animation"]))
 	$GridContainer/movement_btn.selected = $GridContainer/movement_btn.get_item_index(int(GlobalSet.settings["movement_highlight"]))
+	$GridContainer/audio_btn.selected = $GridContainer/audio_btn.get_item_index(int(GlobalSet.settings["audio"]))
 	
 	$GridContainer/username_lnd.text = GlobalSet.settings["multiplayer"]["username"]
 	$GridContainer/server_ip_lnd.text = GlobalSet.settings["multiplayer"]["server_ip"]
@@ -46,3 +46,16 @@ func save_user_ip():
 	GlobalSet.settings["multiplayer"]["username"] = user_v
 	GlobalSet.settings["multiplayer"]["server_ip"] = ip_v
 	SettingsLoad.save_settings()
+	
+
+
+func _on_audio_btn_item_selected(index: int) -> void:
+	var root = get_tree().root
+
+	GlobalSet.settings["audio"] = $GridContainer/audio_btn.get_item_id(index)
+	SettingsLoad.save_settings()
+	
+	if GlobalSet.settings["audio"] == 1:
+		root.get_node_or_null("BackgroundMusic").play()
+	else:
+		root.get_node_or_null("BackgroundMusic").stop()

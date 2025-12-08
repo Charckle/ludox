@@ -247,9 +247,9 @@ text = "Start Game"
 visible = false
 layout_mode = 0
 offset_left = -400.0
-offset_top = -144.0
+offset_top = -200.0
 offset_right = 24.0
-offset_bottom = 136.0
+offset_bottom = 192.0
 script = ExtResource("5_er5qh")
 
 [node name="GridContainer" type="GridContainer" parent="othr_containers/settings_pan"]
@@ -307,6 +307,29 @@ custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 size_flags_horizontal = 3
 placeholder_text = "Vigitilus"
+
+[node name="audio_lbl" type="Label" parent="othr_containers/settings_pan/GridContainer"]
+layout_mode = 2
+text = "Audio"
+
+[node name="audio_btn" type="OptionButton" parent="othr_containers/settings_pan/GridContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+selected = 1
+item_count = 2
+popup/item_0/text = "Off"
+popup/item_0/id = 0
+popup/item_1/text = "On"
+popup/item_1/id = 1
+
+[node name="music_lbl" type="Label" parent="othr_containers/settings_pan"]
+layout_mode = 2
+offset_left = 56.0
+offset_top = 336.0
+offset_right = 344.0
+offset_bottom = 370.0
+theme_override_font_sizes/font_size = 16
+text = "Music by RubyZephyr from Pixabay"
 
 [node name="campaign_pan" type="Panel" parent="othr_containers"]
 visible = false
@@ -398,3 +421,4 @@ script = ExtResource("10_8woyc")
 [connection signal="item_selected" from="othr_containers/settings_pan/GridContainer/movement_btn" to="othr_containers/settings_pan" method="_on_movement_btn_item_selected"]
 [connection signal="focus_exited" from="othr_containers/settings_pan/GridContainer/username_lnd" to="othr_containers/settings_pan" method="_on_username_lnd_focus_exited"]
 [connection signal="focus_exited" from="othr_containers/settings_pan/GridContainer/server_ip_lnd" to="othr_containers/settings_pan" method="_on_server_ip_lnd_focus_exited"]
+[connection signal="item_selected" from="othr_containers/settings_pan/GridContainer/audio_btn" to="othr_containers/settings_pan" method="_on_audio_btn_item_selected"]

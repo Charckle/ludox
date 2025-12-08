@@ -18,6 +18,7 @@ func _ready() -> void:
 	if multiplyer_s.disconnect_reason_ != null:
 		print(multiplyer_s.disconnect_reason_)
 
+	call_deferred("ensure_music_player")
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -38,3 +39,24 @@ func do_easter_egs():
 		var new_sprite_image = load("res://sprites/images/main_menu_01_snow.png")
 		$Sprite2D.texture = new_sprite_image
 		$title_ctrl/SnowParticle.emitting = true
+
+func ensure_music_player():
+	var root = get_tree().root
+
+	# Check if a music player already exists
+	var music = root.get_node_or_null("BackgroundMusic")
+	if music:
+		return  # Already exists, nothing to do
+	
+	# Create one
+	music = AudioStreamPlayer.new()
+	music.name = "BackgroundMusic"
+	music.stream = preload("res://audio/music/imperium-aeternum-v1-430851.ogg")
+	music.bus = "Master"
+	#music.bus = "Music"     # Optional: assign audio bus
+	music.stream.loop = true       # Ensure looping
+
+	root.add_child(music)
+
+	if GlobalSet.settings.get("audio", 1) == 1:
+		music.play()
