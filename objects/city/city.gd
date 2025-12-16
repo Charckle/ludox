@@ -16,7 +16,7 @@ var player_turn = 2
 var board_size = GlobalSet.settings["board_size"]
 var city_size: Vector2i = Vector2(8, 8)
 var default_scale = Vector2(1.3, 1.3)
- 
+
 var can_interact = true
 var unit_moving = false
 
@@ -587,12 +587,14 @@ func get_adjacent_tiles(position_grid, even_not_in_city=false):
 	var right = position_grid + Vector2i(1,0)
 	
 	var adj_tiles = [top, bottom, left, right]
+	var adj_tiles_copy = adj_tiles.duplicate()
+	
 	for c_tile in adj_tiles:
 		if even_not_in_city == false:
 			if c_tile not in self.all_board_positions:
-				adj_tiles.erase(c_tile)
+				adj_tiles_copy.erase(c_tile)
 
-	return adj_tiles
+	return adj_tiles_copy
 
 
 func get_blocking_tiles(position_grid, player, foes_only=false, simulation=false):
@@ -685,7 +687,6 @@ func get_soldiers(player=false, simulation=false):
 	if player:
 		var units = []
 		for unit in pool.values():
-			print()
 			if unit["player"] == player:
 				units.append(unit)
 

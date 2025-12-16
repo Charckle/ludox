@@ -10,8 +10,8 @@ config_version=5
 
 [application]
 
-config/name="Roman Chess"
-config/version="0.3.1"
+config/name="Roman Chesss"
+config/version="0.3.2"
 run/main_scene="uid://blglugajiqw3y"
 config/features=PackedStringArray("4.4", "GL Compatibility")
 config/icon="uid://dxvc0ipr056vg"
