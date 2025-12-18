@@ -168,16 +168,16 @@ func basic_plus_eatable_rules(my_player, start_coord, pos_coord, dryrun=false,
 	var adj_tiles = city.get_adjacent_tiles(pos_coord)
 	#city.write_console(adj_tiles)
 	# if there is, check if its in a corner
-	city.write_console("All tile corner: " + str(city.corners["all"]) + " - check: " + str(pos_coord))
+	#city.write_console("All tile corner: " + str(city.corners["all"]) + " - check: " + str(pos_coord))
 	
 	for tile_coord in adj_tiles:
 		#print(corners)
 		if tile_coord in city.corners["all"]:
-			city.write_console("tile in corner: " + str(tile_coord))
+			#city.write_console("tile in corner: " + str(tile_coord))
 			# check if unit there
 			var unit_ = city.get_soldier_on_position(tile_coord, simulation)
 			if unit_ != null and unit_["player"] != my_player:
-				city.write_console("found unit: " + str(unit_))
+				#city.write_console("found unit: " + str(unit_))
 				# check if that unit has another player unit alongside it
 				var enemy_adj_tiles = city.get_adjacent_tiles(unit_["pg"])
 				# remove the player unit
@@ -186,7 +186,7 @@ func basic_plus_eatable_rules(my_player, start_coord, pos_coord, dryrun=false,
 					var unit_adj = city.get_soldier_on_position(adj_tile_coord, simulation)
 					if unit_adj != null:
 						if unit_adj["player"] == my_player:
-							city.write_console("friendly unit: " + str(unit_adj))
+							#city.write_console("friendly unit: " + str(unit_adj))
 							if unit_["dux"] == false:
 								if not dryrun:
 									city.write_console("EATTTT")

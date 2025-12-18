@@ -51,7 +51,7 @@ func get_moves(soldier_pos, dryrun=false, simulation=false):
 				possible_moves.append(pos)
 			# add to all those, that would attack another unit
 			for pos in possible_basic_moves:
-				if self.eatable_rules(current_unit["player"], soldier_pos, pos, true, simulation):
+				if self.xxi_eatable_rules(current_unit["player"], soldier_pos, pos, true, simulation):
 					possible_moves.append(pos)
 					
 			_possible_moves_local = possible_moves
@@ -68,7 +68,7 @@ func get_moves(soldier_pos, dryrun=false, simulation=false):
 					possible_moves.append(pos)
 				# add to all those, that would attack another unit
 				for pos in possible_basic_moves:
-					if self.eatable_rules(current_unit["player"], soldier_pos, pos, true, simulation):
+					if self.xxi_eatable_rules(current_unit["player"], soldier_pos, pos, true, simulation):
 						possible_moves.append(pos)
 						
 				_possible_moves_local = possible_moves
