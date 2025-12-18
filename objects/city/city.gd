@@ -407,7 +407,7 @@ func get_corners(all_positions = null):
 			lowest_x = pos_.x
 		if highest_y < pos_.y:
 			highest_y = pos_.y
-		if lowest_y < pos_.y:
+		if lowest_y > pos_.y:
 			lowest_y = pos_.y
 	
 	var tr_ = Vector2i(highest_x, highest_y)
@@ -655,6 +655,7 @@ func end_turn():
 	
 	if not check_win():
 		execute_ai_move()
+	self.write_console("NEXT TURN!!!!")
 
 func execute_ai_move():
 	if player_turn != 3 and GlobalSet.settings["game_type"] != Game_types.PVP and multi_play == false:
@@ -941,3 +942,7 @@ func transform_vcb_to_all_units(vcb):
 		all_units.append(new_unit)
 		
 	return all_units
+
+
+func write_console(text_):
+	lvl_.fill_console(text_)

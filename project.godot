@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Roman Chesss"
-config/version="0.3.2"
+config/version="0.4.0"
 run/main_scene="uid://blglugajiqw3y"
 config/features=PackedStringArray("4.4", "GL Compatibility")
 config/icon="uid://dxvc0ipr056vg"
@@ -26,8 +26,8 @@ ContinueGame="*res://global_scripts/continue_game.gd"
 
 window/size/viewport_width=850
 window/size/viewport_height=480
-window/size/mode=3
 window/stretch/mode="viewport"
+window/name="Roman Chess"
 
 [rendering]
 

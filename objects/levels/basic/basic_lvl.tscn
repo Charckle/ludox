@@ -1,4 +1,4 @@
-[gd_scene load_steps=8 format=3 uid="uid://bd367rr8rfijc"]
+[gd_scene load_steps=9 format=3 uid="uid://bd367rr8rfijc"]
 
 [ext_resource type="Script" uid="uid://crlxp5yjng4t4" path="res://objects/levels/basic/basic_lvl.gd" id="1_74g82"]
 [ext_resource type="PackedScene" uid="uid://kvjswh5bloxe" path="res://objects/city/city.tscn" id="1_gvys7"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://d17db7y5lql1v" path="res://sprites/images/settings.png" id="4_2lyv5"]
 [ext_resource type="Script" uid="uid://d008ipc0aadtd" path="res://objects/levels/basic/info_panel.gd" id="4_4ebhi"]
 [ext_resource type="PackedScene" uid="uid://barp2eu1vt3yw" path="res://menus/rule_book/rule_book.tscn" id="4_qtxv8"]
+[ext_resource type="Script" uid="uid://bymg35rdwvrc1" path="res://objects/levels/basic/console_pnl.gd" id="7_i1ik6"]
 
 [node name="BasicLvl" type="Node2D"]
 script = ExtResource("1_74g82")
@@ -111,6 +112,14 @@ offset_bottom = 467.0
 grow_horizontal = 1
 grow_vertical = 1
 
+[node name="show_console_btn" type="Button" parent="CanvasModulate/Panel"]
+layout_mode = 0
+offset_left = -80.0
+offset_top = 320.0
+offset_right = 34.0
+offset_bottom = 368.0
+text = "Show console"
+
 [node name="info_panel" type="Panel" parent="CanvasModulate"]
 visible = false
 anchors_preset = 8
@@ -141,6 +150,30 @@ offset_right = 280.0
 offset_bottom = 135.0
 text = "OK"
 
+[node name="console_pnl" type="Panel" parent="CanvasModulate"]
+visible = false
+offset_left = -416.0
+offset_top = -240.0
+offset_right = 32.0
+offset_bottom = 208.0
+script = ExtResource("7_i1ik6")
+
+[node name="consol" type="RichTextLabel" parent="CanvasModulate/console_pnl"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 16.0
+offset_right = 424.0
+offset_bottom = 432.0
+scroll_following = true
+
+[node name="close_console_btn" type="Button" parent="CanvasModulate/console_pnl"]
+layout_mode = 0
+offset_left = 448.0
+offset_top = 400.0
+offset_right = 536.0
+offset_bottom = 448.0
+text = "Close"
+
 [node name="Sprite2D" type="Sprite2D" parent="."]
 z_index = -1
 position = Vector2(0, 26)
@@ -153,4 +186,6 @@ texture = ExtResource("3_qwom7")
 [connection signal="pressed" from="CanvasModulate/Panel/main_menu_btn" to="CanvasModulate/Panel" method="_on_main_menu_btn_pressed"]
 [connection signal="pressed" from="CanvasModulate/Panel/rematch_btn" to="CanvasModulate/Panel" method="_on_rematch_btn_pressed"]
 [connection signal="pressed" from="CanvasModulate/Panel/rule_book_btn" to="CanvasModulate/Panel" method="_on_rule_book_btn_pressed"]
+[connection signal="pressed" from="CanvasModulate/Panel/show_console_btn" to="CanvasModulate/console_pnl" method="_on_show_console_btn_pressed"]
 [connection signal="pressed" from="CanvasModulate/info_panel/Button" to="CanvasModulate/info_panel" method="_on_button_pressed"]
+[connection signal="pressed" from="CanvasModulate/console_pnl/close_console_btn" to="CanvasModulate/console_pnl" method="_on_button_pressed"]

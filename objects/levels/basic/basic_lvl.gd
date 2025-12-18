@@ -18,3 +18,6 @@ func show_info_pan(text_):
 
 func _on_undo_btn_pressed() -> void:
 	city.undo_move()
+
+func fill_console(text_):
+	$CanvasModulate/console_pnl/consol.append_text(str(text_) + "\n")
