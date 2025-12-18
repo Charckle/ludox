@@ -86,8 +86,8 @@ func can_interact_():
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	initialize_city()
-	#initialize_preset_city()
+	#initialize_city()
+	initialize_preset_city()
 
 func initial_multiplayer_set(m_m_, players_data, vcb):
 	self.m_m = m_m_
