@@ -728,7 +728,7 @@ func check_win():
 		winner_ = 1
 	
 	if winner_ != 0:
-		var text_ = get_winner_text(winner_) + " won the day!\nThere has no more pawns."
+		var text_ = get_winner_text(winner_) + " won the day!\nThere are no more pawns."
 		lvl_.show_info_pan(text_)
 		set_winner(winner_)
 		return true
@@ -743,7 +743,7 @@ func check_win():
 			
 			if len(blocking_units) == len(all_tiles):
 				var winner = get_enemy_pid(unit_["player"])
-				var text_ = get_winner_text(winner) + " won the day!\nThe dux is sorounded."
+				var text_ = get_winner_text(winner) + " won the day!\nThe dux is surrounded."
 				lvl_.show_info_pan(text_)
 				set_winner(winner)
 				return true
@@ -919,7 +919,7 @@ func get_winner_text(player):
 		else:
 			return "The opponent"
 	else:
-		if player == 2:
+		if player == 1:
 			return "Red Player"
 		else:
 			return "Blue Player"

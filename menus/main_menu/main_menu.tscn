@@ -130,7 +130,7 @@ script = ExtResource("1_xbn2l")
 [node name="game_rules_btn" type="Button" parent="main_container/top_buttons/bottom_btns"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
-text = "Game Rule"
+text = "Game Rules"
 
 [node name="settings_btn" type="Button" parent="main_container/top_buttons/bottom_btns"]
 custom_minimum_size = Vector2(0, 50)

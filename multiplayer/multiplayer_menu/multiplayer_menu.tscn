@@ -7,7 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://kvjswh5bloxe" path="res://objects/city/city.tscn" id="5_of7n4"]
 [ext_resource type="Script" uid="uid://b404jc6byw5vm" path="res://multiplayer/multiplayer_menu/ui.gd" id="6_r56x7"]
 [ext_resource type="Texture2D" uid="uid://cm2cgvdyuqht1" path="res://sprites/images/pigon_pixel.png" id="7_of7n4"]
-[ext_resource type="Texture2D" uid="uid://d17db7y5lql1v" path="res://sprites/images/settings.png" id="8_of7n4"]
+[ext_resource type="Texture2D" uid="uid://boelbifa0ro7r" path="res://sprites/images/settings_2.png" id="8_of7n4"]
 [ext_resource type="PackedScene" uid="uid://barp2eu1vt3yw" path="res://menus/rule_book/rule_book.tscn" id="8_oh6t8"]
 
 [node name="MultiplayerMenu" type="Node2D"]
@@ -89,9 +89,9 @@ script = ExtResource("3_5pcwm")
 [node name="start_btn" type="Button" parent="room_container"]
 layout_mode = 0
 offset_left = 16.0
-offset_top = 16.0
+offset_top = 312.0
 offset_right = 304.0
-offset_bottom = 80.0
+offset_bottom = 376.0
 disabled = true
 text = "Start"
 
@@ -109,9 +109,9 @@ text = "Spectate game"
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 offset_left = 16.0
-offset_top = 272.0
+offset_top = 224.0
 offset_right = 112.0
-offset_bottom = 322.0
+offset_bottom = 274.0
 disabled = true
 selected = 0
 item_count = 2
@@ -124,9 +124,9 @@ popup/item_1/id = 1
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 offset_left = 128.0
-offset_top = 272.0
+offset_top = 224.0
 offset_right = 304.0
-offset_bottom = 322.0
+offset_bottom = 274.0
 disabled = true
 selected = 0
 item_count = 3
@@ -141,9 +141,9 @@ popup/item_2/id = 2
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 offset_left = 16.0
-offset_top = 334.0
+offset_top = 16.0
 offset_right = 304.0
-offset_bottom = 384.0
+offset_bottom = 66.0
 text = "Leave room"
 
 [node name="player_v_cont" type="VBoxContainer" parent="room_container"]

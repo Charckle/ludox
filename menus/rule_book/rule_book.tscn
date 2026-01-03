@@ -47,7 +47,7 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-text = "Lantruculi is an anctient roman game that most likely evolved from the greek game Petteia, which is similar, but excludes the Dux.
+text = "Latrunculi is an ancient roman game that most likely evolved from the greek game Petteia, which is similar, but excludes the Dux.
 No complete rulebook has come down to us, so every ruleset is an interpretation on how it could be played, based on snippets about the game that ancient historians wrote about.
 There are many ways to play it: from multiple rows of soldiers, to placing the units on the board before starting the game.
 There are three game rulesets implemented:
@@ -83,8 +83,8 @@ anchor_bottom = 1.0
 offset_top = 40.0
 grow_horizontal = 2
 grow_vertical = 2
-text = "As the name suggest, its the most basic set.
-In Lantrunculi, you win if your opponent has no more pawns except the dux, or if the dux cannot move.
+text = "As the name suggests, it's the most basic set.
+In Latrunculi, you win if your opponent has no more pawns except the dux, or if the dux cannot move.
 You cannot capture (eat) the dux, which you can use to your advantage.
 To eat an enemy pawn, you move it orthogonally any number of squares, and then block the enemy pawn in a custodial attack, which means the opponents pawn is between two of yours.
 However, if the opponent moves the pawn between two of your pawns, it does not count as a capture."
@@ -118,7 +118,7 @@ offset_bottom = -136.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "The same rules from the Classic set apply here, with the addition that you can capture an opponents pawn, if it stands in the corner.
-Do to its location you cannot capture it orthogonally, so the capture takes place if the pawn has no tile to move to.
+Due to its location you cannot capture it orthogonally, so the capture takes place if the pawn has no tile to move to.
 The top left and bottom right blue pawns would get captured.
 "
 
@@ -156,9 +156,9 @@ offset_bottom = -16.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "Latrunculi XXI is an advanced variation of the game, designed by Jose Manuel Carrillo-Muniz in 2015.
-In the Basic Lantrunculi rules you cannot force a win on an opponent, and the game can drag on if noone of the players make a serious mistake.
+In the Basic Latrunculi rules you cannot force a win on an opponent, and the game can drag on if no one of the players make a serious mistake.
 
-Capturing rules from Basic Plus apply here too, with additional rules, to force any opponents turle position.
+Capturing rules from Basic Plus apply here too, with additional rules, to force any opponents turtle position.
 
 In addition, there are new rules on how a pawn can move."
 
@@ -191,7 +191,7 @@ offset_bottom = -16.0
 grow_horizontal = 2
 grow_vertical = 2
 text = "Pieces can move freely (they cannot jump other units), if they are not in a skirmish.
-A skirmish is define as two oposing pieces being next to eachother. If there are more than two pieces together, its a melee.
+A skirmish is defined as two oposing pieces being next to each other. If there are more than two pieces together, it's a melee.
 A piece in a skirmish can only move if it performs an offensive move: to capture another piece, or to flank an opponents dux.
 A piece in a skirmish can only move freely, if the opponents piece has other of your pieces around it.
 The dux has special movement rules."
@@ -226,7 +226,7 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "If a dux is in a skirmish, it can move offensively, or move by just ONE tile.
 If the dux has two adjacent opponent units, it can only move offensively. If the dux is on the border tile, it cannot move.
-If the dux has three adjacent opponet pawns, it cannot move.
+If the dux has three adjacent opponent pawns, it cannot move.
 If it has four, game over."
 
 [node name="rule_7" type="Panel" parent="rules"]
@@ -294,7 +294,7 @@ offset_top = 40.0
 offset_bottom = -16.0
 grow_horizontal = 2
 grow_vertical = 2
-text = "This offensive movement is defined by your piece \"pushing\" a friendly piece and \"crushing\" a opponents piece against another of your pieces, or the border of the game board.The movement of the piece that will be pushing, must be in the same line as the unit its crushing."
+text = "This offensive movement is defined by your piece \"pushing\" a friendly piece and \"crushing\" an opponent's piece against another of your pieces, or the border of the game board.The movement of the piece that will be pushing, must be in the same line as the unit it's crushing."
 
 [node name="Rule2" type="Sprite2D" parent="rules/rule_8"]
 position = Vector2(219, 264)
@@ -384,7 +384,7 @@ offset_top = 40.0
 offset_bottom = -16.0
 grow_horizontal = 2
 grow_vertical = 2
-text = "This offensive movement is defined by your piece - the Phalanx, moving to complete a Testuto defense position. A Testudo position is any size rectangular group of pieces. This move captures the opponents piece on the other side of the testudo. Your piece has to move in the same line as the opponents piece."
+text = "This offensive movement is defined by your piece - the Phalanx, moving to complete a Testudo defense position. A Testudo position is any size rectangular group of pieces. This move captures the opponents piece on the other side of the testudo. Your piece has to move in the same line as the opponents piece."
 
 [node name="Rule2" type="Sprite2D" parent="rules/rule_10"]
 position = Vector2(203, 275)

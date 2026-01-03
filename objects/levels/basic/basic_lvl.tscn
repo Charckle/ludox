@@ -4,8 +4,8 @@
 [ext_resource type="PackedScene" uid="uid://kvjswh5bloxe" path="res://objects/city/city.tscn" id="1_gvys7"]
 [ext_resource type="Script" uid="uid://cytsq0lr5xxo2" path="res://objects/levels/basic/panel.gd" id="3_4ebhi"]
 [ext_resource type="Texture2D" uid="uid://cjlyfnt6tl4ih" path="res://sprites/images/table.png" id="3_qwom7"]
-[ext_resource type="Texture2D" uid="uid://d17db7y5lql1v" path="res://sprites/images/settings.png" id="4_2lyv5"]
 [ext_resource type="Script" uid="uid://d008ipc0aadtd" path="res://objects/levels/basic/info_panel.gd" id="4_4ebhi"]
+[ext_resource type="Texture2D" uid="uid://boelbifa0ro7r" path="res://sprites/images/settings_2.png" id="4_i1ik6"]
 [ext_resource type="PackedScene" uid="uid://barp2eu1vt3yw" path="res://menus/rule_book/rule_book.tscn" id="4_qtxv8"]
 [ext_resource type="Script" uid="uid://bymg35rdwvrc1" path="res://objects/levels/basic/console_pnl.gd" id="7_i1ik6"]
 
@@ -40,10 +40,10 @@ script = ExtResource("3_4ebhi")
 [node name="undo_btn" type="Button" parent="CanvasModulate/Panel"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 0
-offset_left = 64.0
-offset_top = 32.0
-offset_right = 320.0
-offset_bottom = 87.0
+offset_left = 72.0
+offset_top = 400.0
+offset_right = 328.0
+offset_bottom = 455.0
 text = "Undo Move"
 
 [node name="settings_btn" type="TextureButton" parent="CanvasModulate/Panel"]
@@ -54,15 +54,15 @@ offset_top = 400.0
 offset_right = -29.0
 offset_bottom = 450.0
 scale = Vector2(1.425, 1.425)
-texture_normal = ExtResource("4_2lyv5")
+texture_normal = ExtResource("4_i1ik6")
 
 [node name="ai_difficulty_btn" type="OptionButton" parent="CanvasModulate/Panel"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 0
-offset_left = 64.0
-offset_top = 104.0
-offset_right = 320.0
-offset_bottom = 135.0
+offset_left = 72.0
+offset_top = 304.0
+offset_right = 328.0
+offset_bottom = 354.0
 selected = 0
 item_count = 2
 popup/item_0/text = "AI Difficulty: Easy"
@@ -74,27 +74,27 @@ popup/item_1/id = 1
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 0
 offset_left = 64.0
-offset_top = 408.0
+offset_top = 24.0
 offset_right = 320.0
-offset_bottom = 447.0
+offset_bottom = 74.0
 text = "Back to Main menu"
 
 [node name="rematch_btn" type="Button" parent="CanvasModulate/Panel"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 0
 offset_left = 64.0
-offset_top = 312.0
+offset_top = 88.0
 offset_right = 320.0
-offset_bottom = 367.0
+offset_bottom = 143.0
 text = "Re-match"
 
 [node name="rule_book_btn" type="Button" parent="CanvasModulate/Panel"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 0
-offset_left = 64.0
-offset_top = 176.0
-offset_right = 320.0
-offset_bottom = 231.0
+offset_left = 72.0
+offset_top = 240.0
+offset_right = 328.0
+offset_bottom = 295.0
 text = "Rule Book"
 
 [node name="rule_book" parent="CanvasModulate/Panel" instance=ExtResource("4_qtxv8")]
@@ -122,7 +122,6 @@ offset_bottom = 368.0
 text = "Show console"
 
 [node name="info_panel" type="Panel" parent="CanvasModulate"]
-visible = false
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
@@ -131,7 +130,7 @@ anchor_bottom = 0.5
 offset_left = -144.0
 offset_top = -72.0
 offset_right = 144.0
-offset_bottom = 72.0
+offset_bottom = 109.0
 grow_horizontal = 2
 grow_vertical = 2
 script = ExtResource("4_4ebhi")
@@ -143,7 +142,15 @@ offset_right = 280.0
 offset_bottom = 96.0
 text = "Test"
 
-[node name="Button" type="Button" parent="CanvasModulate/info_panel"]
+[node name="rematch_btn" type="Button" parent="CanvasModulate/info_panel"]
+layout_mode = 0
+offset_left = 8.0
+offset_top = 140.0
+offset_right = 280.0
+offset_bottom = 171.0
+text = "Rematch"
+
+[node name="ok_btn" type="Button" parent="CanvasModulate/info_panel"]
 layout_mode = 0
 offset_left = 8.0
 offset_top = 104.0
@@ -188,5 +195,6 @@ texture = ExtResource("3_qwom7")
 [connection signal="pressed" from="CanvasModulate/Panel/rematch_btn" to="CanvasModulate/Panel" method="_on_rematch_btn_pressed"]
 [connection signal="pressed" from="CanvasModulate/Panel/rule_book_btn" to="CanvasModulate/Panel" method="_on_rule_book_btn_pressed"]
 [connection signal="pressed" from="CanvasModulate/Panel/show_console_btn" to="CanvasModulate/console_pnl" method="_on_show_console_btn_pressed"]
-[connection signal="pressed" from="CanvasModulate/info_panel/Button" to="CanvasModulate/info_panel" method="_on_button_pressed"]
+[connection signal="pressed" from="CanvasModulate/info_panel/rematch_btn" to="CanvasModulate/Panel" method="_on_rematch_btn_pressed"]
+[connection signal="pressed" from="CanvasModulate/info_panel/ok_btn" to="CanvasModulate/info_panel" method="_on_button_pressed"]
 [connection signal="pressed" from="CanvasModulate/console_pnl/close_console_btn" to="CanvasModulate/console_pnl" method="_on_button_pressed"]
