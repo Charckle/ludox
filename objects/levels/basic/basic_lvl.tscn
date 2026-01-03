@@ -122,6 +122,7 @@ offset_bottom = 368.0
 text = "Show console"
 
 [node name="info_panel" type="Panel" parent="CanvasModulate"]
+visible = false
 anchors_preset = 8
 anchor_left = 0.5
 anchor_top = 0.5
