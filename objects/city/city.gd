@@ -655,7 +655,8 @@ func end_turn():
 	
 	if not check_win():
 		execute_ai_move()
-	self.write_console("NEXT TURN!!!!")
+	if not multiplayer.multiplayer_peer:
+		self.write_console("NEXT TURN!!!!")
 
 func execute_ai_move():
 	if player_turn != 3 and GlobalSet.settings["game_type"] != Game_types.PVP and multi_play == false:
@@ -678,6 +679,10 @@ func end_turn_multiplayer():
 	tile_selected = null
 	possible_moves = []
 	tile_target = null
+	
+	# update turn indicator in multiplayer menu
+	if multi_play and m_m and m_m.multiplayer_menu:
+		m_m.multiplayer_menu.update_turn_indicator()
 
 func get_soldiers(player=false, simulation=false):
 	var pool = vcb

@@ -99,6 +99,7 @@ func show_game():
 	game_ui.visible = true
 	game_ui.get_node("who_won_msg").visible = false
 	$ui/game_ui/chat_btn/new_msg_rect.visible = false
+	update_turn_indicator()
 	
 
 func show_who_won(text_):
@@ -117,3 +118,15 @@ func prepare_game(m_m, players_data, vcb=null):
 	
 func can_move_units(can=true):
 	game_city.can_interact = can
+	update_turn_indicator()
+
+func update_turn_indicator():
+	var turn_label = game_ui.get_node_or_null("turn_indicator")
+	if turn_label == null:
+		return
+	if game_city.my_player == game_city.player_turn:
+		turn_label.text = "YOUR TURN"
+		turn_label.modulate = Color(1.0, 0.2, 0.2)
+	else:
+		turn_label.text = "OPPONENT'S TURN"
+		turn_label.modulate = Color(0.8, 0.8, 0.8)
