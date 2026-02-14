@@ -97,12 +97,11 @@ disabled = true
 text = "Start"
 
 [node name="spectato_join_btn" type="Button" parent="room_container"]
-visible = false
 layout_mode = 0
 offset_left = 16.0
-offset_top = 16.0
+offset_top = 312.0
 offset_right = 304.0
-offset_bottom = 80.0
+offset_bottom = 376.0
 disabled = true
 text = "Spectate game"
 

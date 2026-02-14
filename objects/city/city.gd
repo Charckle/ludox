@@ -112,6 +112,8 @@ func initial_multiplayer_set(m_m_, players_data, vcb):
 func initialize_city(board_size_=board_size, rules_=int(GlobalSet.settings["game_rules"])):
 	if board_size_ == 1:
 		city_size = Vector2(12, 8)
+	else:
+		city_size = Vector2(8, 8)
 	remove_all_units()
 	remove_all_tiles()
 	rules = rules_
