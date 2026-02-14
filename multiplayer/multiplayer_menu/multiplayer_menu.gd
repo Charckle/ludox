@@ -124,9 +124,20 @@ func update_turn_indicator():
 	var turn_label = game_ui.get_node_or_null("turn_indicator")
 	if turn_label == null:
 		return
-	if game_city.my_player == game_city.player_turn:
+	if multiplayer_s.is_spectator:
+		var player_name = _get_player_name_by_color(game_city.player_turn)
+		turn_label.text = player_name + "'S TURN"
+		turn_label.modulate = Color(1.0, 1.0, 1.0)
+	elif game_city.my_player == game_city.player_turn:
 		turn_label.text = "YOUR TURN"
 		turn_label.modulate = Color(1.0, 0.2, 0.2)
 	else:
 		turn_label.text = "OPPONENT'S TURN"
 		turn_label.modulate = Color(0.8, 0.8, 0.8)
+
+func _get_player_name_by_color(player_color):
+	if multiplayer_s.room_data != null:
+		for player_data in multiplayer_s.room_data["players_data"]:
+			if player_data["player_color"] == player_color:
+				return player_data["username"]
+	return "Player " + str(player_color)
