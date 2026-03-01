@@ -397,9 +397,20 @@ offset_bottom = 231.0
 theme_override_colors/font_color = Color(0.808998, 0.808998, 0.808998, 1)
 text = "version"
 
+[node name="dev_team" type="Label" parent="."]
+offset_left = 290.0
+offset_top = 219.0
+offset_right = 423.0
+offset_bottom = 242.0
+theme_override_colors/font_color = Color(0.415981, 0.41598, 0.41598, 1)
+theme_override_fonts/font = ExtResource("9_t7kvd")
+theme_override_font_sizes/font_size = 23
+text = "Thingamabob ©"
+
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="fadein_box" type="ColorRect" parent="CanvasLayer"]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
