@@ -252,19 +252,36 @@ offset_right = 24.0
 offset_bottom = 192.0
 script = ExtResource("5_er5qh")
 
-[node name="GridContainer" type="GridContainer" parent="othr_containers/settings_pan"]
-layout_mode = 0
-offset_left = 16.0
-offset_top = 40.0
-offset_right = 408.0
-offset_bottom = 252.0
+[node name="TabContainer" type="TabContainer" parent="othr_containers/settings_pan"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 8.0
+offset_top = 8.0
+offset_right = -8.0
+offset_bottom = -32.0
+grow_horizontal = 2
+grow_vertical = 2
+current_tab = 0
+
+[node name="Gameplay" type="MarginContainer" parent="othr_containers/settings_pan/TabContainer"]
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+metadata/_tab_index = 0
+
+[node name="GridContainer" type="GridContainer" parent="othr_containers/settings_pan/TabContainer/Gameplay"]
+layout_mode = 2
 columns = 2
 
-[node name="animation_lbl" type="Label" parent="othr_containers/settings_pan/GridContainer"]
+[node name="animation_lbl" type="Label" parent="othr_containers/settings_pan/TabContainer/Gameplay/GridContainer"]
 layout_mode = 2
 text = "Animation"
 
-[node name="animation_btn" type="OptionButton" parent="othr_containers/settings_pan/GridContainer"]
+[node name="animation_btn" type="OptionButton" parent="othr_containers/settings_pan/TabContainer/Gameplay/GridContainer"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 selected = 0
@@ -274,11 +291,11 @@ popup/item_0/id = 1
 popup/item_1/text = "Off"
 popup/item_1/id = 0
 
-[node name="movement_lbl" type="Label" parent="othr_containers/settings_pan/GridContainer"]
+[node name="movement_lbl" type="Label" parent="othr_containers/settings_pan/TabContainer/Gameplay/GridContainer"]
 layout_mode = 2
 text = "Movement highlight"
 
-[node name="movement_btn" type="OptionButton" parent="othr_containers/settings_pan/GridContainer"]
+[node name="movement_btn" type="OptionButton" parent="othr_containers/settings_pan/TabContainer/Gameplay/GridContainer"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 selected = 0
@@ -288,31 +305,11 @@ popup/item_0/id = 1
 popup/item_1/text = "Off"
 popup/item_1/id = 0
 
-[node name="username_lbl" type="Label" parent="othr_containers/settings_pan/GridContainer"]
-layout_mode = 2
-text = "Username"
-
-[node name="username_lnd" type="LineEdit" parent="othr_containers/settings_pan/GridContainer"]
-custom_minimum_size = Vector2(0, 50)
-layout_mode = 2
-placeholder_text = "Vigitilus"
-max_length = 35
-
-[node name="server_ip_lbl" type="Label" parent="othr_containers/settings_pan/GridContainer"]
-layout_mode = 2
-text = "Online Server IP"
-
-[node name="server_ip_lnd" type="LineEdit" parent="othr_containers/settings_pan/GridContainer"]
-custom_minimum_size = Vector2(0, 50)
-layout_mode = 2
-size_flags_horizontal = 3
-placeholder_text = "Vigitilus"
-
-[node name="audio_lbl" type="Label" parent="othr_containers/settings_pan/GridContainer"]
+[node name="audio_lbl" type="Label" parent="othr_containers/settings_pan/TabContainer/Gameplay/GridContainer"]
 layout_mode = 2
 text = "Audio"
 
-[node name="audio_btn" type="OptionButton" parent="othr_containers/settings_pan/GridContainer"]
+[node name="audio_btn" type="OptionButton" parent="othr_containers/settings_pan/TabContainer/Gameplay/GridContainer"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
 selected = 1
@@ -321,6 +318,38 @@ popup/item_0/text = "Off"
 popup/item_0/id = 0
 popup/item_1/text = "On"
 popup/item_1/id = 1
+
+[node name="Multiplayer" type="MarginContainer" parent="othr_containers/settings_pan/TabContainer"]
+visible = false
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+metadata/_tab_index = 1
+
+[node name="GridContainer" type="GridContainer" parent="othr_containers/settings_pan/TabContainer/Multiplayer"]
+layout_mode = 2
+
+[node name="username_lbl" type="Label" parent="othr_containers/settings_pan/TabContainer/Multiplayer/GridContainer"]
+layout_mode = 2
+text = "Username"
+
+[node name="username_lnd" type="LineEdit" parent="othr_containers/settings_pan/TabContainer/Multiplayer/GridContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+placeholder_text = "Vigitilus"
+max_length = 35
+
+[node name="server_ip_lbl" type="Label" parent="othr_containers/settings_pan/TabContainer/Multiplayer/GridContainer"]
+layout_mode = 2
+text = "Online Server IP"
+
+[node name="server_ip_lnd" type="LineEdit" parent="othr_containers/settings_pan/TabContainer/Multiplayer/GridContainer"]
+custom_minimum_size = Vector2(0, 50)
+layout_mode = 2
+size_flags_horizontal = 3
+placeholder_text = "Vigitilus"
 
 [node name="music_lbl" type="Label" parent="othr_containers/settings_pan"]
 layout_mode = 2
@@ -397,6 +426,16 @@ offset_bottom = 231.0
 theme_override_colors/font_color = Color(0.808998, 0.808998, 0.808998, 1)
 text = "version"
 
+[node name="dev_team" type="Label" parent="."]
+offset_left = 290.0
+offset_top = 219.0
+offset_right = 423.0
+offset_bottom = 242.0
+theme_override_colors/font_color = Color(0.415981, 0.41598, 0.41598, 1)
+theme_override_fonts/font = ExtResource("9_t7kvd")
+theme_override_font_sizes/font_size = 23
+text = "Thingamabob ©"
+
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="fadein_box" type="ColorRect" parent="CanvasLayer"]
@@ -417,8 +456,8 @@ script = ExtResource("10_8woyc")
 [connection signal="pressed" from="main_container/top_buttons/bottom_btns/exit_btn" to="main_container/top_buttons/bottom_btns" method="_on_exit_btn_pressed"]
 [connection signal="item_selected" from="othr_containers/new_game_pan/game_type_btn" to="othr_containers/new_game_pan" method="_on_game_type_btn_item_selected"]
 [connection signal="pressed" from="othr_containers/new_game_pan/start_g_btn" to="othr_containers/new_game_pan" method="_on_start_g_btn_pressed"]
-[connection signal="item_selected" from="othr_containers/settings_pan/GridContainer/animation_btn" to="othr_containers/settings_pan" method="_on_animation_btn_item_selected"]
-[connection signal="item_selected" from="othr_containers/settings_pan/GridContainer/movement_btn" to="othr_containers/settings_pan" method="_on_movement_btn_item_selected"]
-[connection signal="focus_exited" from="othr_containers/settings_pan/GridContainer/username_lnd" to="othr_containers/settings_pan" method="_on_username_lnd_focus_exited"]
-[connection signal="focus_exited" from="othr_containers/settings_pan/GridContainer/server_ip_lnd" to="othr_containers/settings_pan" method="_on_server_ip_lnd_focus_exited"]
-[connection signal="item_selected" from="othr_containers/settings_pan/GridContainer/audio_btn" to="othr_containers/settings_pan" method="_on_audio_btn_item_selected"]
+[connection signal="item_selected" from="othr_containers/settings_pan/TabContainer/Gameplay/GridContainer/animation_btn" to="othr_containers/settings_pan" method="_on_animation_btn_item_selected"]
+[connection signal="item_selected" from="othr_containers/settings_pan/TabContainer/Gameplay/GridContainer/movement_btn" to="othr_containers/settings_pan" method="_on_movement_btn_item_selected"]
+[connection signal="item_selected" from="othr_containers/settings_pan/TabContainer/Gameplay/GridContainer/audio_btn" to="othr_containers/settings_pan" method="_on_audio_btn_item_selected"]
+[connection signal="focus_exited" from="othr_containers/settings_pan/TabContainer/Multiplayer/GridContainer/username_lnd" to="othr_containers/settings_pan" method="_on_username_lnd_focus_exited"]
+[connection signal="focus_exited" from="othr_containers/settings_pan/TabContainer/Multiplayer/GridContainer/server_ip_lnd" to="othr_containers/settings_pan" method="_on_server_ip_lnd_focus_exited"]

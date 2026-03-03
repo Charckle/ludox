@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://c5hu5spls1b6x"]
+[gd_scene load_steps=11 format=3 uid="uid://c5hu5spls1b6x"]
 
 [ext_resource type="Script" uid="uid://dmp4lvmo23kcs" path="res://multiplayer/multiplayer_menu/multiplayer_menu.gd" id="1_bd2p5"]
 [ext_resource type="Script" uid="uid://46kpgufpnq4y" path="res://multiplayer/multiplayer_menu/main_container.gd" id="1_do8j0"]
@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://cm2cgvdyuqht1" path="res://sprites/images/pigon_pixel.png" id="7_of7n4"]
 [ext_resource type="Texture2D" uid="uid://boelbifa0ro7r" path="res://sprites/images/settings_2.png" id="8_of7n4"]
 [ext_resource type="PackedScene" uid="uid://barp2eu1vt3yw" path="res://menus/rule_book/rule_book.tscn" id="8_oh6t8"]
+[ext_resource type="FontFile" uid="uid://dvsr7udbmyb3e" path="res://themes/fonts/roman_antique/RomanAntique.ttf" id="10_qj0by"]
 
 [node name="MultiplayerMenu" type="Node2D"]
 script = ExtResource("1_bd2p5")
@@ -96,12 +97,11 @@ disabled = true
 text = "Start"
 
 [node name="spectato_join_btn" type="Button" parent="room_container"]
-visible = false
 layout_mode = 0
 offset_left = 16.0
-offset_top = 16.0
+offset_top = 312.0
 offset_right = 304.0
-offset_bottom = 80.0
+offset_bottom = 376.0
 disabled = true
 text = "Spectate game"
 
@@ -312,6 +312,20 @@ offset_left = -268.0
 offset_top = -244.0
 offset_right = 164.0
 offset_bottom = 207.0
+
+[node name="turn_indicator" type="Label" parent="ui/game_ui"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -120.0
+offset_top = -235.0
+offset_right = 120.0
+offset_bottom = -203.0
+grow_horizontal = 2
+theme_override_fonts/font = ExtResource("10_qj0by")
+theme_override_font_sizes/font_size = 22
+horizontal_alignment = 1
 
 [node name="who_won_msg" type="Panel" parent="ui/game_ui"]
 visible = false

@@ -14,21 +14,22 @@ func _process(delta: float) -> void:
 
 
 func populate_settings():
-	$GridContainer/animation_btn.selected = $GridContainer/animation_btn.get_item_index(int(GlobalSet.settings["animation"]))
-	$GridContainer/movement_btn.selected = $GridContainer/movement_btn.get_item_index(int(GlobalSet.settings["movement_highlight"]))
-	$GridContainer/audio_btn.selected = $GridContainer/audio_btn.get_item_index(int(GlobalSet.settings["audio"]))
-	
-	$GridContainer/username_lnd.text = GlobalSet.settings["multiplayer"]["username"]
-	$GridContainer/server_ip_lnd.text = GlobalSet.settings["multiplayer"]["server_ip"]
+	var gameplay = $TabContainer/Gameplay/GridContainer
+	var multiplayer = $TabContainer/Multiplayer/GridContainer
+	gameplay.get_node("animation_btn").selected = gameplay.get_node("animation_btn").get_item_index(int(GlobalSet.settings["animation"]))
+	gameplay.get_node("movement_btn").selected = gameplay.get_node("movement_btn").get_item_index(int(GlobalSet.settings["movement_highlight"]))
+	gameplay.get_node("audio_btn").selected = gameplay.get_node("audio_btn").get_item_index(int(GlobalSet.settings["audio"]))
+	multiplayer.get_node("username_lnd").text = GlobalSet.settings["multiplayer"]["username"]
+	multiplayer.get_node("server_ip_lnd").text = GlobalSet.settings["multiplayer"]["server_ip"]
 
 
 func _on_animation_btn_item_selected(index: int) -> void:
-	GlobalSet.settings["animation"] = $GridContainer/animation_btn.get_item_id(index)
+	GlobalSet.settings["animation"] = $TabContainer/Gameplay/GridContainer/animation_btn.get_item_id(index)
 	SettingsLoad.save_settings()
 
 
 func _on_movement_btn_item_selected(index: int) -> void:
-	GlobalSet.settings["movement_highlight"] = $GridContainer/movement_btn.get_item_id(index)
+	GlobalSet.settings["movement_highlight"] = $TabContainer/Gameplay/GridContainer/movement_btn.get_item_id(index)
 	SettingsLoad.save_settings()
 
 
@@ -40,8 +41,8 @@ func _on_server_ip_lnd_focus_exited() -> void:
 	save_user_ip()
 
 func save_user_ip():
-	var user_v = $GridContainer/username_lnd.text
-	var ip_v = $GridContainer/server_ip_lnd.text
+	var user_v = $TabContainer/Multiplayer/GridContainer/username_lnd.text
+	var ip_v = $TabContainer/Multiplayer/GridContainer/server_ip_lnd.text
 	
 	GlobalSet.settings["multiplayer"]["username"] = user_v
 	GlobalSet.settings["multiplayer"]["server_ip"] = ip_v
@@ -52,7 +53,7 @@ func save_user_ip():
 func _on_audio_btn_item_selected(index: int) -> void:
 	var root = get_tree().root
 
-	GlobalSet.settings["audio"] = $GridContainer/audio_btn.get_item_id(index)
+	GlobalSet.settings["audio"] = $TabContainer/Gameplay/GridContainer/audio_btn.get_item_id(index)
 	SettingsLoad.save_settings()
 	
 	if GlobalSet.settings["audio"] == 1:

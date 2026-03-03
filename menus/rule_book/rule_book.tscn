@@ -33,14 +33,45 @@ offset_top = 19.0
 offset_right = -58.0
 offset_bottom = 50.0
 
-[node name="rule_1" type="Panel" parent="rules"]
+[node name="table_of_contents" type="Panel" parent="rules"]
 layout_mode = 0
 offset_left = 109.0
 offset_top = -8.0
 offset_right = 533.0
 offset_bottom = 368.0
 
-[node name="RichTextLabel" type="RichTextLabel" parent="rules/rule_1"]
+[node name="Title" type="Label" parent="rules/table_of_contents"]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -100.0
+offset_right = 100.0
+offset_bottom = 30.0
+grow_horizontal = 2
+text = "Table of content"
+
+[node name="toc_buttons" type="VBoxContainer" parent="rules/table_of_contents"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = 20.0
+offset_top = 40.0
+offset_right = -20.0
+offset_bottom = -20.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="introduction" type="Panel" parent="rules"]
+visible = false
+layout_mode = 0
+offset_left = 109.0
+offset_top = -8.0
+offset_right = 533.0
+offset_bottom = 368.0
+
+[node name="RichTextLabel" type="RichTextLabel" parent="rules/introduction"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -56,7 +87,7 @@ There are three game rulesets implemented:
 - Basic Plus: simplest + capture units in corners
 - Latrunculi XXI: complex rules for high level gameplay"
 
-[node name="rule_2" type="Panel" parent="rules"]
+[node name="classic" type="Panel" parent="rules"]
 visible = false
 layout_mode = 0
 offset_left = 109.0
@@ -64,7 +95,7 @@ offset_top = -8.0
 offset_right = 533.0
 offset_bottom = 368.0
 
-[node name="Label" type="Label" parent="rules/rule_2"]
+[node name="Label" type="Label" parent="rules/classic"]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -75,7 +106,7 @@ offset_bottom = 23.0
 grow_horizontal = 2
 text = "Classic"
 
-[node name="RichTextLabel" type="RichTextLabel" parent="rules/rule_2"]
+[node name="RichTextLabel" type="RichTextLabel" parent="rules/classic"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -89,7 +120,7 @@ You cannot capture (eat) the dux, which you can use to your advantage.
 To eat an enemy pawn, you move it orthogonally any number of squares, and then block the enemy pawn in a custodial attack, which means the opponents pawn is between two of yours.
 However, if the opponent moves the pawn between two of your pawns, it does not count as a capture."
 
-[node name="rule_3" type="Panel" parent="rules"]
+[node name="classic_plus" type="Panel" parent="rules"]
 visible = false
 layout_mode = 0
 offset_left = 109.0
@@ -97,7 +128,7 @@ offset_top = -8.0
 offset_right = 533.0
 offset_bottom = 368.0
 
-[node name="Label" type="Label" parent="rules/rule_3"]
+[node name="Label" type="Label" parent="rules/classic_plus"]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -108,7 +139,7 @@ offset_bottom = 23.0
 grow_horizontal = 2
 text = "Classic Plus"
 
-[node name="RichTextLabel" type="RichTextLabel" parent="rules/rule_3"]
+[node name="RichTextLabel" type="RichTextLabel" parent="rules/classic_plus"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -122,12 +153,12 @@ Due to its location you cannot capture it orthogonally, so the capture takes pla
 The top left and bottom right blue pawns would get captured.
 "
 
-[node name="Rule1" type="Sprite2D" parent="rules/rule_3"]
+[node name="Rule1" type="Sprite2D" parent="rules/classic_plus"]
 position = Vector2(219, 288)
 scale = Vector2(0.495356, 0.495356)
 texture = ExtResource("2_vr6pg")
 
-[node name="rule_4" type="Panel" parent="rules"]
+[node name="latrunculi_xxi" type="Panel" parent="rules"]
 visible = false
 layout_mode = 0
 offset_left = 109.0
@@ -135,7 +166,7 @@ offset_top = -8.0
 offset_right = 533.0
 offset_bottom = 368.0
 
-[node name="Label" type="Label" parent="rules/rule_4"]
+[node name="Label" type="Label" parent="rules/latrunculi_xxi"]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -146,7 +177,7 @@ offset_bottom = 23.0
 grow_horizontal = 2
 text = "Latrunculi XXI"
 
-[node name="RichTextLabel" type="RichTextLabel" parent="rules/rule_4"]
+[node name="RichTextLabel" type="RichTextLabel" parent="rules/latrunculi_xxi"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -162,7 +193,7 @@ Capturing rules from Basic Plus apply here too, with additional rules, to force 
 
 In addition, there are new rules on how a pawn can move."
 
-[node name="rule_5" type="Panel" parent="rules"]
+[node name="latrunculi_xxi_movement" type="Panel" parent="rules"]
 visible = false
 layout_mode = 0
 offset_left = 109.0
@@ -170,7 +201,7 @@ offset_top = -8.0
 offset_right = 533.0
 offset_bottom = 368.0
 
-[node name="Label" type="Label" parent="rules/rule_5"]
+[node name="Label" type="Label" parent="rules/latrunculi_xxi_movement"]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -181,7 +212,7 @@ offset_bottom = 23.0
 grow_horizontal = 2
 text = "Latrunculi XXI - Movement"
 
-[node name="RichTextLabel" type="RichTextLabel" parent="rules/rule_5"]
+[node name="RichTextLabel" type="RichTextLabel" parent="rules/latrunculi_xxi_movement"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -196,7 +227,7 @@ A piece in a skirmish can only move if it performs an offensive move: to capture
 A piece in a skirmish can only move freely, if the opponents piece has other of your pieces around it.
 The dux has special movement rules."
 
-[node name="rule_6" type="Panel" parent="rules"]
+[node name="latrunculi_xxi_movement_2" type="Panel" parent="rules"]
 visible = false
 layout_mode = 0
 offset_left = 109.0
@@ -204,7 +235,7 @@ offset_top = -8.0
 offset_right = 533.0
 offset_bottom = 368.0
 
-[node name="Label" type="Label" parent="rules/rule_6"]
+[node name="Label" type="Label" parent="rules/latrunculi_xxi_movement_2"]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -215,7 +246,7 @@ offset_bottom = 23.0
 grow_horizontal = 2
 text = "Latrunculi XXI - Movement"
 
-[node name="RichTextLabel" type="RichTextLabel" parent="rules/rule_6"]
+[node name="RichTextLabel" type="RichTextLabel" parent="rules/latrunculi_xxi_movement_2"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -229,7 +260,7 @@ If the dux has two adjacent opponent units, it can only move offensively. If the
 If the dux has three adjacent opponent pawns, it cannot move.
 If it has four, game over."
 
-[node name="rule_7" type="Panel" parent="rules"]
+[node name="latrunculi_xxi_offensive_movement" type="Panel" parent="rules"]
 visible = false
 layout_mode = 0
 offset_left = 109.0
@@ -237,7 +268,7 @@ offset_top = -8.0
 offset_right = 533.0
 offset_bottom = 368.0
 
-[node name="Label" type="Label" parent="rules/rule_7"]
+[node name="Label" type="Label" parent="rules/latrunculi_xxi_offensive_movement"]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -248,7 +279,7 @@ offset_bottom = 23.0
 grow_horizontal = 2
 text = "Latrunculi XXI - Offensive movement"
 
-[node name="RichTextLabel" type="RichTextLabel" parent="rules/rule_7"]
+[node name="RichTextLabel" type="RichTextLabel" parent="rules/latrunculi_xxi_offensive_movement"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -266,7 +297,7 @@ There are:
 - flank attack
 - phalanx"
 
-[node name="rule_8" type="Panel" parent="rules"]
+[node name="latrunculi_xxi_offensive_movement_push_and_crush" type="Panel" parent="rules"]
 visible = false
 layout_mode = 0
 offset_left = 109.0
@@ -274,7 +305,7 @@ offset_top = -8.0
 offset_right = 533.0
 offset_bottom = 368.0
 
-[node name="Label" type="Label" parent="rules/rule_8"]
+[node name="Label" type="Label" parent="rules/latrunculi_xxi_offensive_movement_push_and_crush"]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -285,7 +316,7 @@ offset_bottom = 23.0
 grow_horizontal = 2
 text = "Latrunculi XXI - Offensive movement - Push and crush"
 
-[node name="RichTextLabel" type="RichTextLabel" parent="rules/rule_8"]
+[node name="RichTextLabel" type="RichTextLabel" parent="rules/latrunculi_xxi_offensive_movement_push_and_crush"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -296,25 +327,25 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "This offensive movement is defined by your piece \"pushing\" a friendly piece and \"crushing\" an opponent's piece against another of your pieces, or the border of the game board.The movement of the piece that will be pushing, must be in the same line as the unit it's crushing."
 
-[node name="Rule2" type="Sprite2D" parent="rules/rule_8"]
+[node name="Rule2" type="Sprite2D" parent="rules/latrunculi_xxi_offensive_movement_push_and_crush"]
 position = Vector2(219, 264)
 scale = Vector2(0.643963, 0.643963)
 texture = ExtResource("3_gucmy")
 
-[node name="Cross" parent="rules/rule_8/Rule2" instance=ExtResource("4_ii262")]
+[node name="Cross" parent="rules/latrunculi_xxi_offensive_movement_push_and_crush/Rule2" instance=ExtResource("4_ii262")]
 position = Vector2(80.75, 59.0096)
 
-[node name="Cross2" parent="rules/rule_8/Rule2" instance=ExtResource("4_ii262")]
+[node name="Cross2" parent="rules/latrunculi_xxi_offensive_movement_push_and_crush/Rule2" instance=ExtResource("4_ii262")]
 position = Vector2(-159.947, -21.7404)
 
-[node name="Arrow" parent="rules/rule_8/Rule2" instance=ExtResource("5_nj8rq")]
+[node name="Arrow" parent="rules/latrunculi_xxi_offensive_movement_push_and_crush/Rule2" instance=ExtResource("5_nj8rq")]
 position = Vector2(-90.0673, 59.0096)
 
-[node name="Arrow2" parent="rules/rule_8/Rule2" instance=ExtResource("5_nj8rq")]
+[node name="Arrow2" parent="rules/latrunculi_xxi_offensive_movement_push_and_crush/Rule2" instance=ExtResource("5_nj8rq")]
 position = Vector2(49.6924, -12.4231)
 rotation = -3.14159
 
-[node name="rule_9" type="Panel" parent="rules"]
+[node name="latrunculi_xxi_offensive_movement_flank_attack" type="Panel" parent="rules"]
 visible = false
 layout_mode = 0
 offset_left = 109.0
@@ -322,7 +353,7 @@ offset_top = -8.0
 offset_right = 533.0
 offset_bottom = 368.0
 
-[node name="Label" type="Label" parent="rules/rule_9"]
+[node name="Label" type="Label" parent="rules/latrunculi_xxi_offensive_movement_flank_attack"]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -333,7 +364,7 @@ offset_bottom = 23.0
 grow_horizontal = 2
 text = "Latrunculi XXI - Offensive movement - Flank attack"
 
-[node name="RichTextLabel" type="RichTextLabel" parent="rules/rule_9"]
+[node name="RichTextLabel" type="RichTextLabel" parent="rules/latrunculi_xxi_offensive_movement_flank_attack"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -344,19 +375,19 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "This offensive movement is defined by your piece moving next to the last piece in an opponents linear defensive line. This will lead to the capture of the opponents piece. The defensive line can be any pieces long, as long as there is one of your pieces on the other end. The attack movement has to be in the same line as the defensive line."
 
-[node name="Rule2" type="Sprite2D" parent="rules/rule_9"]
+[node name="Rule2" type="Sprite2D" parent="rules/latrunculi_xxi_offensive_movement_flank_attack"]
 position = Vector2(331, 282)
 scale = Vector2(0.544892, 0.544892)
 texture = ExtResource("6_iy4lo")
 
-[node name="Cross2" parent="rules/rule_9/Rule2" instance=ExtResource("4_ii262")]
+[node name="Cross2" parent="rules/latrunculi_xxi_offensive_movement_flank_attack/Rule2" instance=ExtResource("4_ii262")]
 position = Vector2(-40.3749, -23.2933)
 
-[node name="Arrow2" parent="rules/rule_9/Rule2" instance=ExtResource("5_nj8rq")]
+[node name="Arrow2" parent="rules/latrunculi_xxi_offensive_movement_flank_attack/Rule2" instance=ExtResource("5_nj8rq")]
 position = Vector2(136.654, -12.4231)
 rotation = -3.14159
 
-[node name="rule_10" type="Panel" parent="rules"]
+[node name="latrunculi_xxi_offensive_movement_phalanx" type="Panel" parent="rules"]
 visible = false
 layout_mode = 0
 offset_left = 109.0
@@ -364,7 +395,7 @@ offset_top = -8.0
 offset_right = 533.0
 offset_bottom = 368.0
 
-[node name="Label" type="Label" parent="rules/rule_10"]
+[node name="Label" type="Label" parent="rules/latrunculi_xxi_offensive_movement_phalanx"]
 layout_mode = 1
 anchors_preset = 5
 anchor_left = 0.5
@@ -375,7 +406,7 @@ offset_bottom = 23.0
 grow_horizontal = 2
 text = "Latrunculi XXI - Offensive movement - Phalanx"
 
-[node name="RichTextLabel" type="RichTextLabel" parent="rules/rule_10"]
+[node name="RichTextLabel" type="RichTextLabel" parent="rules/latrunculi_xxi_offensive_movement_phalanx"]
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -386,22 +417,22 @@ grow_horizontal = 2
 grow_vertical = 2
 text = "This offensive movement is defined by your piece - the Phalanx, moving to complete a Testudo defense position. A Testudo position is any size rectangular group of pieces. This move captures the opponents piece on the other side of the testudo. Your piece has to move in the same line as the opponents piece."
 
-[node name="Rule2" type="Sprite2D" parent="rules/rule_10"]
+[node name="Rule2" type="Sprite2D" parent="rules/latrunculi_xxi_offensive_movement_phalanx"]
 position = Vector2(203, 275)
 scale = Vector2(0.594427, 0.594427)
 texture = ExtResource("7_yyr5g")
 
-[node name="Cross2" parent="rules/rule_10/Rule2" instance=ExtResource("4_ii262")]
+[node name="Cross2" parent="rules/latrunculi_xxi_offensive_movement_phalanx/Rule2" instance=ExtResource("4_ii262")]
 position = Vector2(1.14441e-05, -21.8698)
 
-[node name="Cross3" parent="rules/rule_10/Rule2" instance=ExtResource("4_ii262")]
+[node name="Cross3" parent="rules/latrunculi_xxi_offensive_movement_phalanx/Rule2" instance=ExtResource("4_ii262")]
 position = Vector2(80.75, 18.5052)
 
-[node name="Arrow2" parent="rules/rule_10/Rule2" instance=ExtResource("5_nj8rq")]
+[node name="Arrow2" parent="rules/latrunculi_xxi_offensive_movement_phalanx/Rule2" instance=ExtResource("5_nj8rq")]
 position = Vector2(104.302, -149.724)
 rotation = -4.71238
 
-[node name="Arrow3" parent="rules/rule_10/Rule2" instance=ExtResource("5_nj8rq")]
+[node name="Arrow3" parent="rules/latrunculi_xxi_offensive_movement_phalanx/Rule2" instance=ExtResource("5_nj8rq")]
 position = Vector2(15.1406, 153.089)
 rotation = -1.57079
 
