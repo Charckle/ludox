@@ -156,6 +156,28 @@ func execute_move(my_player):
 			print("deciding not to")
 				
 	
+	if ai_lvl != city.Ai_lvl.EASY:
+		var my_dux = null
+		for u in city.vcb.values():
+			if u["player"] == my_player and u["dux"] == true:
+				my_dux = u
+				break
+		if my_dux:
+			var bt = city.get_blocking_tiles(my_dux["pg"], my_player)
+			var free_tiles = bt[2]
+			if len(free_tiles) <= 2:
+				print("dux rescue mode")
+				var dux_adj = city.get_adjacent_tiles(my_dux["pg"])
+				var rescue_moves = []
+				for move in possible_moves:
+					if move[0] in dux_adj and move[0] != my_dux["pg"]:
+						if is_dux_move_safe(move, my_player):
+							rescue_moves.append(move)
+				if len(rescue_moves) > 0:
+					var chosen = rescue_moves.pick_random()
+					city.move_unit(my_player, chosen[0], chosen[1])
+					return
+
 	if ai_lvl == city.Ai_lvl.HARD:
 		var safe_moves = []
 		for move in possible_moves:
