@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://bd367rr8rfijc"]
+[gd_scene load_steps=10 format=3 uid="uid://bd367rr8rfijc"]
 
 [ext_resource type="Script" uid="uid://crlxp5yjng4t4" path="res://objects/levels/basic/basic_lvl.gd" id="1_74g82"]
 [ext_resource type="PackedScene" uid="uid://kvjswh5bloxe" path="res://objects/city/city.tscn" id="1_gvys7"]
@@ -8,6 +8,7 @@
 [ext_resource type="Texture2D" uid="uid://boelbifa0ro7r" path="res://sprites/images/settings_2.png" id="4_i1ik6"]
 [ext_resource type="PackedScene" uid="uid://barp2eu1vt3yw" path="res://menus/rule_book/rule_book.tscn" id="4_qtxv8"]
 [ext_resource type="Script" uid="uid://bymg35rdwvrc1" path="res://objects/levels/basic/console_pnl.gd" id="7_i1ik6"]
+[ext_resource type="Script" uid="uid://s5p0g6dulsdj" path="res://menus/main_menu/fadein_box.gd" id="9_fadein"]
 
 [node name="BasicLvl" type="Node2D"]
 script = ExtResource("1_74g82")
@@ -184,6 +185,35 @@ offset_top = 400.0
 offset_right = 536.0
 offset_bottom = 448.0
 text = "Close"
+
+[node name="HudLayer" type="CanvasLayer" parent="."]
+layer = 10
+
+[node name="ai_thinking_label" type="Label" parent="HudLayer"]
+visible = false
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -80.0
+offset_top = 16.0
+offset_right = 80.0
+offset_bottom = 40.0
+grow_horizontal = 2
+text = "AI is thinking..."
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="FadeLayer" type="CanvasLayer" parent="."]
+layer = 100
+
+[node name="fadein_box" type="ColorRect" parent="FadeLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+script = ExtResource("9_fadein")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 z_index = -1

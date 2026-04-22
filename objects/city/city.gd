@@ -657,14 +657,22 @@ func end_turn():
 	save_move_state()
 	
 	if not check_win():
-		execute_ai_move()
+		await execute_ai_move()
 	if not multiplayer.multiplayer_peer:
 		self.write_console("NEXT TURN!!!!")
 
 func execute_ai_move():
 	if player_turn != 3 and GlobalSet.settings["game_type"] != Game_types.PVP and multi_play == false:
 		if player_turn != 2:
+			show_ai_thinking(true)
+			await get_tree().process_frame
 			$ai.execute_move(self.player_turn)
+			show_ai_thinking(false)
+
+func show_ai_thinking(visible_: bool):
+	var label = get_node_or_null("../HudLayer/ai_thinking_label")
+	if label:
+		label.visible = visible_
 
 func end_turn_multiplayer():
 	# clear display where can move
