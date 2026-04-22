@@ -44,17 +44,37 @@ func execute_move(my_player):
 		
 		if eat:
 			print("eating")
-			#var random_value = units_with_possible_eat.pick_random()
-			var random_value = pop_random_fast(units_with_possible_eat)
-			if ai_lvl == city.Ai_lvl.EASY:
-				city.move_unit(my_player, random_value[0], random_value[1])
-				return
-				# check if you get eaten on that spot
-				#while true:
-					#pass#if check_if_eaten()
+			if ai_lvl == city.Ai_lvl.HARD:
+				var safe_eats = []
+				for move in units_with_possible_eat:
+					new_scenarion()
+					var unit_s = city.get_soldier_on_position(move[0], true)
+					unit_s["pg"] = move[1]
+					var eaten_s = city.get_soldier_on_position(move[2], true)
+					if eaten_s:
+						city.vcb_sim.erase(eaten_s["id"])
+					var opp_actions = city.where_can_player_move(othr_p(my_player), true)
+					var opp_eats = opp_actions["units_with_possible_eat"]
+					var is_safe = true
+					for opp_eat in opp_eats:
+						if opp_eat[2] == move[1]:
+							is_safe = false
+							break
+					if is_safe:
+						safe_eats.append(move)
+				if len(safe_eats) > 0:
+					var random_value = pop_random_fast(safe_eats)
+					city.move_unit(my_player, random_value[0], random_value[1])
+					return
+				print("no safe eats, falling through")
 			else:
-				city.move_unit(my_player, random_value[0], random_value[1])
-				return
+				var random_value = pop_random_fast(units_with_possible_eat)
+				if ai_lvl == city.Ai_lvl.EASY:
+					city.move_unit(my_player, random_value[0], random_value[1])
+					return
+				else:
+					city.move_unit(my_player, random_value[0], random_value[1])
+					return
 		else:
 			print("not eating")
 	
@@ -131,8 +151,32 @@ func execute_move(my_player):
 			print("deciding not to")
 				
 	
-	var random_value = possible_moves.pick_random()
+	if ai_lvl == city.Ai_lvl.HARD:
+		var safe_moves = []
+		for move in possible_moves:
+			new_scenarion()
+			var unit_s = city.get_soldier_on_position(move[0], true)
+			unit_s["pg"] = move[1]
+			var opp_actions = city.where_can_player_move(othr_p(my_player), true)
+			var opp_eats = opp_actions["units_with_possible_eat"]
+			var dominated = false
+			for opp_eat in opp_eats:
+				if opp_eat[2] == move[1]:
+					dominated = true
+					break
+			if not dominated:
+				safe_moves.append(move)
+		if len(safe_moves) > 0:
+			var center = Vector2(city.city_size) / 2.0
+			safe_moves.sort_custom(func(a, b):
+				return Vector2(a[1]).distance_to(center) < Vector2(b[1]).distance_to(center)
+			)
+			var top_n = safe_moves.slice(0, min(3, safe_moves.size()))
+			var chosen = top_n.pick_random()
+			city.move_unit(my_player, chosen[0], chosen[1])
+			return
 	
+	var random_value = possible_moves.pick_random()
 	city.move_unit(my_player, random_value[0], random_value[1])
 
 
@@ -151,6 +195,8 @@ func ai_perc_set():
 			return 0.65
 		city.Ai_lvl.NORMAL:
 			return 0.85
+		city.Ai_lvl.HARD:
+			return 0.95
 
 
 func pop_random_fast(arr: Array) -> Variant:

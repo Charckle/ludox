@@ -58,7 +58,8 @@ enum Game_types {
 
 enum Ai_lvl {
 	EASY,
-	NORMAL
+	NORMAL,
+	HARD
 }
 
 var moves_till_attack_dux_ai = 6

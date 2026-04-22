@@ -214,11 +214,13 @@ offset_bottom = 50.0
 grow_horizontal = 2
 grow_vertical = 2
 selected = 0
-item_count = 2
+item_count = 3
 popup/item_0/text = "Easy"
 popup/item_0/id = 0
 popup/item_1/text = "Normal"
 popup/item_1/id = 1
+popup/item_2/text = "Hard"
+popup/item_2/id = 2
 
 [node name="city_size_btn" type="OptionButton" parent="othr_containers/new_game_pan"]
 custom_minimum_size = Vector2(0, 50)
