@@ -60,21 +60,24 @@ func execute_move(my_player):
 						if opp_eat[2] == move[1]:
 							is_safe = false
 							break
-					if is_safe:
+					if is_safe and is_dux_move_safe(move, my_player) and is_own_dux_safe_in_sim(my_player):
 						safe_eats.append(move)
 				if len(safe_eats) > 0:
 					var random_value = pop_random_fast(safe_eats)
 					city.move_unit(my_player, random_value[0], random_value[1])
 					return
 				print("no safe eats, falling through")
-			else:
+			elif ai_lvl == city.Ai_lvl.EASY:
 				var random_value = pop_random_fast(units_with_possible_eat)
-				if ai_lvl == city.Ai_lvl.EASY:
+				city.move_unit(my_player, random_value[0], random_value[1])
+				return
+			else:
+				var dux_safe_eats = units_with_possible_eat.filter(func(m): return is_dux_move_safe(m, my_player))
+				if len(dux_safe_eats) > 0:
+					var random_value = pop_random_fast(dux_safe_eats)
 					city.move_unit(my_player, random_value[0], random_value[1])
 					return
-				else:
-					city.move_unit(my_player, random_value[0], random_value[1])
-					return
+				print("no dux-safe eats for normal, falling through")
 		else:
 			print("not eating")
 	
@@ -102,8 +105,9 @@ func execute_move(my_player):
 					print("intercepting")
 					possible_intercept.append(move)
 		
-		if len(possible_intercept) != 0:
-			var random_value = pop_random_fast(possible_intercept)
+		var safe_intercepts = possible_intercept.filter(func(m): return is_dux_move_safe(m, my_player))
+		if len(safe_intercepts) != 0:
+			var random_value = pop_random_fast(safe_intercepts)
 			city.move_unit(my_player, random_value[0], random_value[1])
 			return
 		
@@ -140,7 +144,8 @@ func execute_move(my_player):
 						if att_move[2] == move[1]:
 							units_att_dux.erase(move)
 
-				var random_value = units_att_dux.pick_random()
+				var dux_safe_att = units_att_dux.filter(func(m): return is_dux_move_safe(m, my_player))
+				var random_value = dux_safe_att.pick_random()
 
 				if random_value != null:
 					city.move_unit(my_player, random_value[0], random_value[1])
@@ -164,7 +169,7 @@ func execute_move(my_player):
 				if opp_eat[2] == move[1]:
 					dominated = true
 					break
-			if not dominated:
+			if not dominated and is_dux_move_safe(move, my_player) and is_own_dux_safe_in_sim(my_player):
 				safe_moves.append(move)
 		if len(safe_moves) > 0:
 			var center = Vector2(city.city_size) / 2.0
@@ -176,6 +181,13 @@ func execute_move(my_player):
 			city.move_unit(my_player, chosen[0], chosen[1])
 			return
 	
+	if ai_lvl != city.Ai_lvl.EASY:
+		var dux_safe_moves = possible_moves.filter(func(m): return is_dux_move_safe(m, my_player))
+		if len(dux_safe_moves) > 0:
+			var random_value = dux_safe_moves.pick_random()
+			city.move_unit(my_player, random_value[0], random_value[1])
+			return
+
 	var random_value = possible_moves.pick_random()
 	city.move_unit(my_player, random_value[0], random_value[1])
 
@@ -220,6 +232,26 @@ func new_scenarion():
 						"id": city.vcb[valu_]["id"]}
 						
 		city.vcb_sim[valu_] = new_unit
+
+
+func is_dux_move_safe(move, my_player) -> bool:
+	var unit = city.get_soldier_on_position(move[0])
+	if unit == null or unit["dux"] != true:
+		return true
+	var blocking = city.get_blocking_tiles(move[1], my_player)
+	var free_tiles = blocking[2]
+	var actual_free = len(free_tiles)
+	if move[0] in city.get_adjacent_tiles(move[1]):
+		actual_free += 1
+	return actual_free >= 2
+
+
+func is_own_dux_safe_in_sim(my_player) -> bool:
+	for u in city.vcb_sim.values():
+		if u["player"] == my_player and u["dux"] == true:
+			var bt = city.get_blocking_tiles(u["pg"], my_player, false, true)
+			return len(bt[2]) >= 2
+	return true
 
 
 func othr_p(player):
