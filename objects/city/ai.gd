@@ -118,7 +118,7 @@ func execute_move(my_player):
 		print("going after the dux")
 		eat_dux = chance(ai_perc)
 		
-		if eat_dux and (city.all_moves > city.moves_till_attack_dux_ai):
+		if eat_dux:
 			# Don't send own dux at enemy dux unless enemy dux is already cornered
 			var enemy_dux_pos = null
 			for u in city.vcb.values():
