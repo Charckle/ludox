@@ -119,6 +119,20 @@ func execute_move(my_player):
 		eat_dux = chance(ai_perc)
 		
 		if eat_dux and (city.all_moves > city.moves_till_attack_dux_ai):
+			# Don't send own dux at enemy dux unless enemy dux is already cornered
+			var enemy_dux_pos = null
+			for u in city.vcb.values():
+				if u["player"] == othr_p(my_player) and u["dux"] == true:
+					enemy_dux_pos = u["pg"]
+					break
+			if enemy_dux_pos:
+				var bt = city.get_blocking_tiles(enemy_dux_pos, othr_p(my_player))
+				if len(bt[2]) > 2:
+					units_att_dux = units_att_dux.filter(func(m):
+						var unit = city.get_soldier_on_position(m[0])
+						return unit == null or unit["dux"] != true
+					)
+			
 			if ai_lvl == city.Ai_lvl.EASY:
 				var random_value = units_att_dux.pick_random()
 				city.move_unit(my_player, random_value[0], random_value[1])
