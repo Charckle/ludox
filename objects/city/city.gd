@@ -87,7 +87,10 @@ func can_interact_():
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	initialize_city()
+	if GlobalSet.current_battle != null:
+		initialize_battle(GlobalSet.current_battle)
+	else:
+		initialize_city()
 	#initialize_preset_city()
 
 func initial_multiplayer_set(m_m_, players_data, vcb):
@@ -154,12 +157,45 @@ func initialize_preset_city():
 	show_pieces_turn()
 	save_move_state()
 
+func initialize_battle(battle):
+	remove_all_units()
+	remove_all_tiles()
+	
+	city_size = battle.city_size
+	board_size = 1 if city_size.x == 12 else 0
+	rules = battle.rules
+	GlobalSet.settings["game_type"] = Game_types.PVAI
+	GlobalSet.settings["ai_lvl"] = battle.ai_lvl
+	scale = default_scale
+	
+	create_tiles()
+	all_board_positions = blank_board()
+	corners = get_corners()
+	border_tiles = get_border_tiles()
+	
+	place_preset_pawns(battle.pawns)
+	set_city_for_calc()
+	get_city_size()
+	center_board()
+	
+	set_rand_playerstart()
+	show_pieces_turn()
+	save_move_state()
+	execute_ai_move()
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
 	pass
 
 
 func createboard():
+	create_tiles()
+	place_default_pawns()
+	set_city_for_calc()
+	get_city_size()
+	center_board()
+
+func create_tiles():
 	for y in range(city_size.y):
 		for x in range(city_size.x):
 			var tile_ = Tile.instantiate()
@@ -168,6 +204,10 @@ func createboard():
 			tile_.position = Vector2i(x, y) * tile_.my_size
 			tile_.position_grid = Vector2i(x, y)
 	
+	# set city_tile_size
+	tile_size = all_tiles.get_child(0).my_size
+
+func place_default_pawns():
 	for x in range(city_size.x):
 		var unit_ = Soldier.instantiate()
 	
@@ -189,16 +229,17 @@ func createboard():
 		
 		unit_.position_grid = Vector2i(x, max_y)
 
-		
-	
-	# set city_tile_size
-	tile_size = all_tiles.get_child(0).my_size
-	
 	# place duxes
 	place_dux()
-	set_city_for_calc()
-	get_city_size()
-	center_board()
+
+func place_preset_pawns(pawns):
+	for p in pawns:
+		var unit_ = Soldier.instantiate()
+		unit_.player = p["player"]
+		unit_.dux = p["dux"]
+		all_soldiers.add_child(unit_)
+		unit_.position = Vector2i(p["pos"]) * unit_.my_size
+		unit_.position_grid = Vector2i(p["pos"])
 
 func get_city_size():
 	var s_size = city_size * tile_size
@@ -793,6 +834,10 @@ func set_winner(player_n):
 	
 	if not multi_play:
 		ContinueGame.delete_continue()
+	
+	# Record campaign win (human is player 2).
+	if GlobalSet.current_battle != null and player_n == 2:
+		CampaignProgress.mark_won(GlobalSet.current_campaign_id, GlobalSet.current_battle.id)
 
 func get_current_game_state():
 	var game_state = {
@@ -833,7 +878,9 @@ func get_all_units_for_bckup():
 func save_move_state():
 	var cur_state = get_current_game_state()
 	self.game_move_states.append(cur_state)
-	ContinueGame.save_continue(cur_state)
+	# Campaign battles don't touch the Continue save.
+	if GlobalSet.current_battle == null:
+		ContinueGame.save_continue(cur_state)
 
 	
 func undo_move():

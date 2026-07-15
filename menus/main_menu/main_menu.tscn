@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://blglugajiqw3y"]
+[gd_scene load_steps=13 format=3 uid="uid://blglugajiqw3y"]
 
 [ext_resource type="Script" uid="uid://cjmw0hmqq8fmc" path="res://menus/main_menu/top_btns.gd" id="1_1nwmw"]
 [ext_resource type="Script" uid="uid://bpk3x06ssbpm7" path="res://menus/main_menu/main_menu.gd" id="1_ml8bw"]
@@ -10,6 +10,7 @@
 [ext_resource type="FontFile" uid="uid://dvsr7udbmyb3e" path="res://themes/fonts/roman_antique/RomanAntique.ttf" id="9_t7kvd"]
 [ext_resource type="Script" uid="uid://s5p0g6dulsdj" path="res://menus/main_menu/fadein_box.gd" id="10_8woyc"]
 [ext_resource type="Texture2D" uid="uid://bqnmfgehdm1bj" path="res://sprites/images/europe_map.png" id="13_11cdn"]
+[ext_resource type="Script" uid="uid://bi1d15b7qexss" path="res://menus/main_menu/campaign_pan.gd" id="14_camp"]
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_t7kvd"]
 emission_shape = 3
@@ -368,6 +369,7 @@ layout_mode = 0
 offset_left = -384.0
 offset_top = -216.0
 offset_bottom = 208.0
+script = ExtResource("14_camp")
 
 [node name="map" type="Sprite2D" parent="othr_containers/campaign_pan"]
 position = Vector2(190, 120)
@@ -393,7 +395,6 @@ text = "Punic Wars"
 
 [node name="galic_btn" type="Button" parent="othr_containers/campaign_pan/VBoxContainer"]
 layout_mode = 2
-disabled = true
 text = "Galic Campaign"
 
 [node name="civil_war_btn" type="Button" parent="othr_containers/campaign_pan/VBoxContainer"]
@@ -463,3 +464,4 @@ script = ExtResource("10_8woyc")
 [connection signal="item_selected" from="othr_containers/settings_pan/TabContainer/Gameplay/GridContainer/audio_btn" to="othr_containers/settings_pan" method="_on_audio_btn_item_selected"]
 [connection signal="focus_exited" from="othr_containers/settings_pan/TabContainer/Multiplayer/GridContainer/username_lnd" to="othr_containers/settings_pan" method="_on_username_lnd_focus_exited"]
 [connection signal="focus_exited" from="othr_containers/settings_pan/TabContainer/Multiplayer/GridContainer/server_ip_lnd" to="othr_containers/settings_pan" method="_on_server_ip_lnd_focus_exited"]
+[connection signal="pressed" from="othr_containers/campaign_pan/VBoxContainer/galic_btn" to="othr_containers/campaign_pan" method="_on_galic_btn_pressed"]

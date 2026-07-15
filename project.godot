@@ -21,6 +21,8 @@ config/icon="uid://dxvc0ipr056vg"
 GlobalSet="*res://global_scripts/global_set.gd"
 SettingsLoad="*res://global_scripts/settings_load.gd"
 ContinueGame="*res://global_scripts/continue_game.gd"
+Campaigns="*res://campaigns/campaigns.gd"
+CampaignProgress="*res://campaigns/campaign_progress.gd"
 
 [display]
 

@@ -32,6 +32,7 @@ func _on_start_g_btn_pressed() -> void:
 	GlobalSet.settings["ai_lvl"] = $ai_lvl_btn.selected
 	GlobalSet.settings["board_size"] = $city_size_btn.selected
 	SettingsLoad.save_settings()
+	GlobalSet.current_battle = null
 	get_tree().change_scene_to_file("res://objects/levels/basic/basic_lvl.tscn")
 
 

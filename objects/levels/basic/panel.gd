@@ -1,5 +1,8 @@
 extends Panel
 
+# Set to false when you're done testing campaign flow.
+const SHOW_DEBUG_WIN := true
+
 var city = null
 @onready var tween = create_tween()
 
@@ -16,10 +19,17 @@ func _ready() -> void:
 	visible_x = - 200# panel_lenght # In case it's already anchored where you want it
 
 	#self.position.x = hidden_x  # Start hidden
+	if GlobalSet.current_battle != null:
+		$undo_btn.visible = false
+		$ai_difficulty_btn.visible = false
+	if SHOW_DEBUG_WIN and GlobalSet.current_battle != null:
+		_build_debug_win_btn()
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
+	if GlobalSet.current_battle != null:
+		return
 	# set ai lvl
 	if GlobalSet.settings["ai_lvl"] != $ai_difficulty_btn.selected:
 		$ai_difficulty_btn.selected = GlobalSet.settings["ai_lvl"]
@@ -31,7 +41,7 @@ func toggle_console():
 	if is_visible:
 		pass
 	
-	if city.unit_moving:
+	if city.unit_moving or GlobalSet.current_battle != null:
 		$undo_btn.disabled = true
 	else:
 		$undo_btn.disabled = false
@@ -51,6 +61,7 @@ func _on_texture_button_pressed() -> void:
 
 
 func _on_main_menu_btn_pressed() -> void:
+	GlobalSet.current_battle = null
 	get_tree().change_scene_to_file("res://menus/main_menu/main_menu.tscn")
 
 
@@ -64,3 +75,21 @@ func _on_ai_difficulty_btn_item_selected(index: int) -> void:
 
 func _on_rule_book_btn_pressed() -> void:
 	$rule_book.visible = true
+
+
+func _build_debug_win_btn() -> void:
+	var btn := Button.new()
+	btn.name = "debug_win_btn"
+	btn.text = "Debug Win"
+	btn.custom_minimum_size = Vector2(0, 50)
+	btn.position = Vector2(72, 400)
+	btn.size = Vector2(256, 55)
+	btn.pressed.connect(_on_debug_win_pressed)
+	add_child(btn)
+
+
+func _on_debug_win_pressed() -> void:
+	if GlobalSet.current_battle == null:
+		return
+	city.set_winner(2)
+	city.lvl_.show_info_pan("You won the day!\n(Debug win)")
