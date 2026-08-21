@@ -508,6 +508,12 @@ func get_border_tiles(all_positions = null):
 func move_unit(my_player, start_pos, end_pos):
 	can_interact = false
 	unit_moving = true
+	# Don't let selection / "your units" squares slide with the pawn.
+	show_selected_piece()
+	show_where_can_move()
+	for unit_highlight in all_soldiers.get_children():
+		unit_highlight.set_pieces_turn(false)
+
 	var unit_v = get_soldier_on_position(start_pos)
 	var unit = _get_soldier_on_position(start_pos)
 	
