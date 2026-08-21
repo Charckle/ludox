@@ -5,6 +5,9 @@ extends Node
 
 var rng := RandomNumberGenerator.new()
 
+const SIMS_PER_FRAME := 8
+var _sims_this_frame := 0
+
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	pass # Replace with function body.
@@ -24,10 +27,12 @@ func _process(delta: float) -> void:
 
 func execute_move(my_player):
 	print("AI moving")
+	_sims_this_frame = 0
 
 	#var player_actions = get_player_actions(my_player, false)
 	var simulation = false
 	var player_actions = city.where_can_player_move(my_player, simulation)
+	await _think_yield()
 	
 	var units_with_possible_eat = player_actions["units_with_possible_eat"]
 	var units_att_dux = player_actions["units_att_dux"]
@@ -62,6 +67,7 @@ func execute_move(my_player):
 							break
 					if is_safe and is_dux_move_safe(move, my_player) and is_own_dux_safe_in_sim(my_player):
 						safe_eats.append(move)
+					await _think_yield()
 				if len(safe_eats) > 0:
 					var random_value = pop_random_fast(safe_eats)
 					city.move_unit(my_player, random_value[0], random_value[1])
@@ -90,9 +96,11 @@ func execute_move(my_player):
 		var simulation_ss = true
 		# enemy moves
 		var player_actions_ss = city.where_can_player_move(othr_p(my_player), simulation_ss)
+		await _think_yield()
 		var units_with_possible_eat_s = player_actions_ss["units_with_possible_eat"]
 		
 		var player_actions_my = city.where_can_player_move(my_player, simulation_ss)
+		await _think_yield()
 		var player_poss_moves = player_actions_my["possible_moves"]
 
 		for att_move in units_with_possible_eat_s:
@@ -157,6 +165,7 @@ func execute_move(my_player):
 					for att_move in units_with_possible_eat_s:
 						if att_move[2] == move[1]:
 							units_att_dux.erase(move)
+					await _think_yield()
 
 				var dux_safe_att = units_att_dux.filter(func(m): return is_dux_move_safe(m, my_player))
 				var random_value = dux_safe_att.pick_random()
@@ -207,6 +216,7 @@ func execute_move(my_player):
 					break
 			if not dominated and is_dux_move_safe(move, my_player) and is_own_dux_safe_in_sim(my_player):
 				safe_moves.append(move)
+			await _think_yield()
 		if len(safe_moves) > 0:
 			var center = Vector2(city.city_size) / 2.0
 			safe_moves.sort_custom(func(a, b):
@@ -227,6 +237,13 @@ func execute_move(my_player):
 	var random_value = possible_moves.pick_random()
 	city.move_unit(my_player, random_value[0], random_value[1])
 
+
+
+func _think_yield():
+	_sims_this_frame += 1
+	if _sims_this_frame >= SIMS_PER_FRAME:
+		_sims_this_frame = 0
+		await get_tree().process_frame
 
 
 func chance(prob: float) -> bool:

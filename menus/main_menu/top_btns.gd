@@ -21,6 +21,8 @@ func _on_new_game_btn_pressed() -> void:
 func _on_continue_btn_pressed() -> void:
 	ContinueGame.load_continue()
 	GlobalSet.load_saved_continue = true
+	GlobalSet.current_battle = null
+	GlobalSet.match_cosmetics = null
 	get_tree().change_scene_to_file("res://objects/levels/basic/basic_lvl.tscn")
 
 

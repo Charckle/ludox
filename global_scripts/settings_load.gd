@@ -48,11 +48,63 @@ func load_settings():
 		var parsed = JSON.parse_string(content)
 		if typeof(parsed) == TYPE_DICTIONARY:
 			GlobalSet.settings = parsed
+			_merge_missing_defaults()
 		else:
 			push_error("Failed to parse config JSON as dictionary.")
 	else:
 		push_error("Could not open config JSON file.")
-	
+
+
+func _default_settings_dict() -> Dictionary:
+	var default_file = FileAccess.open("res://default_data/settings.json", FileAccess.READ)
+	if default_file == null:
+		return {}
+	var parsed = JSON.parse_string(default_file.get_as_text())
+	if typeof(parsed) == TYPE_DICTIONARY:
+		return parsed
+	return {}
+
+
+func _merge_missing_defaults() -> void:
+	var defaults := _default_settings_dict()
+	if defaults.is_empty():
+		return
+	var changed := _merge_dict(GlobalSet.settings, defaults)
+	# Existing installs saved you=blue / opponent=red; flip to the new defaults.
+	if _swap_legacy_default_colors():
+		changed = true
+	if changed:
+		save_settings()
+
+
+func _swap_legacy_default_colors() -> bool:
+	if not GlobalSet.settings.has("cosmetics"):
+		return false
+	var cos: Dictionary = GlobalSet.settings["cosmetics"]
+	if typeof(cos) != TYPE_DICTIONARY:
+		return false
+	var you: Dictionary = cos.get("you", {})
+	var opp: Dictionary = cos.get("opponent", {})
+	if str(you.get("color", "")) == "blue" and str(opp.get("color", "")) == "red":
+		you["color"] = "red"
+		opp["color"] = "blue"
+		cos["you"] = you
+		cos["opponent"] = opp
+		return true
+	return false
+
+
+func _merge_dict(target: Dictionary, defaults: Dictionary) -> bool:
+	var changed := false
+	for key in defaults.keys():
+		if not target.has(key):
+			target[key] = defaults[key]
+			changed = true
+		elif typeof(defaults[key]) == TYPE_DICTIONARY and typeof(target[key]) == TYPE_DICTIONARY:
+			if _merge_dict(target[key], defaults[key]):
+				changed = true
+	return changed
+
 
 
 var praenomina = [

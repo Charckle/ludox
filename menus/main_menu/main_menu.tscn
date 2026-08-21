@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://blglugajiqw3y"]
+[gd_scene load_steps=19 format=3 uid="uid://blglugajiqw3y"]
 
 [ext_resource type="Script" uid="uid://cjmw0hmqq8fmc" path="res://menus/main_menu/top_btns.gd" id="1_1nwmw"]
 [ext_resource type="Script" uid="uid://bpk3x06ssbpm7" path="res://menus/main_menu/main_menu.gd" id="1_ml8bw"]
@@ -10,6 +10,7 @@
 [ext_resource type="FontFile" uid="uid://dvsr7udbmyb3e" path="res://themes/fonts/roman_antique/RomanAntique.ttf" id="9_t7kvd"]
 [ext_resource type="Script" uid="uid://s5p0g6dulsdj" path="res://menus/main_menu/fadein_box.gd" id="10_8woyc"]
 [ext_resource type="Texture2D" uid="uid://bqnmfgehdm1bj" path="res://sprites/images/europe_map.png" id="13_11cdn"]
+[ext_resource type="Script" uid="uid://bi1d15b7qexss" path="res://menus/main_menu/campaign_pan.gd" id="14_camp"]
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_t7kvd"]
 emission_shape = 3
@@ -25,6 +26,48 @@ gravity = Vector3(0, 100, 0)
 scale_min = 2.0
 scale_max = 5.0
 turbulence_enabled = true
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_fire"]
+blend_mode = 1
+
+[sub_resource type="Gradient" id="Gradient_particle_tex"]
+offsets = PackedFloat32Array(0, 0.45, 1)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0.55, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_particle"]
+gradient = SubResource("Gradient_particle_tex")
+width = 32
+height = 32
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+fill_to = Vector2(0.5, 0)
+
+[sub_resource type="Gradient" id="Gradient_spark"]
+offsets = PackedFloat32Array(0, 0.2, 1)
+colors = PackedColorArray(1, 1, 0.7, 1, 1, 0.55, 0.1, 0.9, 1, 0.2, 0, 0)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_spark"]
+gradient = SubResource("Gradient_spark")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_spark"]
+lifetime_randomness = 0.4
+particle_flag_align_y = true
+particle_flag_disable_z = true
+emission_shape = 3
+emission_box_extents = Vector3(380, 1, 1)
+direction = Vector3(0, -1, 0)
+spread = 18.0
+initial_velocity_min = 160.0
+initial_velocity_max = 260.0
+gravity = Vector3(0, 70, 0)
+damping_min = 1.0
+damping_max = 5.0
+scale_min = 0.18
+scale_max = 0.45
+color = Color(1, 0.95, 0.55, 1)
+color_ramp = SubResource("GradientTexture1D_spark")
+hue_variation_min = -0.02
+hue_variation_max = 0.05
 
 [node name="MainMenu" type="Node2D"]
 script = ExtResource("1_ml8bw")
@@ -48,15 +91,6 @@ offset_bottom = -169.0
 theme_override_fonts/font = ExtResource("9_t7kvd")
 theme_override_font_sizes/font_size = 100
 text = "Roman"
-
-[node name="FireParticle" type="GPUParticles2D" parent="title_ctrl"]
-visible = false
-position = Vector2(-288, 264)
-scale = Vector2(1.325, 1.325)
-emitting = false
-amount = 100
-lifetime = 4.23
-process_material = SubResource("ParticleProcessMaterial_t7kvd")
 
 [node name="SnowParticle" type="GPUParticles2D" parent="title_ctrl"]
 position = Vector2(-32, -344)
@@ -248,10 +282,10 @@ text = "Start Game"
 [node name="settings_pan" type="Panel" parent="othr_containers"]
 visible = false
 layout_mode = 0
-offset_left = -400.0
-offset_top = -200.0
-offset_right = 24.0
-offset_bottom = 192.0
+offset_left = -420.0
+offset_top = -220.0
+offset_right = 40.0
+offset_bottom = 210.0
 script = ExtResource("5_er5qh")
 
 [node name="TabContainer" type="TabContainer" parent="othr_containers/settings_pan"]
@@ -321,7 +355,7 @@ popup/item_0/id = 0
 popup/item_1/text = "On"
 popup/item_1/id = 1
 
-[node name="Multiplayer" type="MarginContainer" parent="othr_containers/settings_pan/TabContainer"]
+[node name="Appearance" type="MarginContainer" parent="othr_containers/settings_pan/TabContainer"]
 visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 8
@@ -329,6 +363,19 @@ theme_override_constants/margin_top = 8
 theme_override_constants/margin_right = 8
 theme_override_constants/margin_bottom = 8
 metadata/_tab_index = 1
+
+[node name="appearance_root" type="VBoxContainer" parent="othr_containers/settings_pan/TabContainer/Appearance"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Multiplayer" type="MarginContainer" parent="othr_containers/settings_pan/TabContainer"]
+visible = false
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+metadata/_tab_index = 2
 
 [node name="GridContainer" type="GridContainer" parent="othr_containers/settings_pan/TabContainer/Multiplayer"]
 layout_mode = 2
@@ -356,9 +403,9 @@ placeholder_text = "Vigitilus"
 [node name="music_lbl" type="Label" parent="othr_containers/settings_pan"]
 layout_mode = 2
 offset_left = 56.0
-offset_top = 336.0
-offset_right = 344.0
-offset_bottom = 370.0
+offset_top = 390.0
+offset_right = 400.0
+offset_bottom = 424.0
 theme_override_font_sizes/font_size = 16
 text = "Music by RubyZephyr from Pixabay"
 
@@ -368,6 +415,7 @@ layout_mode = 0
 offset_left = -384.0
 offset_top = -216.0
 offset_bottom = 208.0
+script = ExtResource("14_camp")
 
 [node name="map" type="Sprite2D" parent="othr_containers/campaign_pan"]
 position = Vector2(190, 120)
@@ -393,7 +441,6 @@ text = "Punic Wars"
 
 [node name="galic_btn" type="Button" parent="othr_containers/campaign_pan/VBoxContainer"]
 layout_mode = 2
-disabled = true
 text = "Galic Campaign"
 
 [node name="civil_war_btn" type="Button" parent="othr_containers/campaign_pan/VBoxContainer"]
@@ -419,6 +466,19 @@ z_index = -1
 position = Vector2(-1, 4)
 scale = Vector2(0.554688, 0.554688)
 texture = ExtResource("5_oic2i")
+
+[node name="SparkParticle" type="GPUParticles2D" parent="."]
+z_index = 1
+material = SubResource("CanvasItemMaterial_fire")
+position = Vector2(0, 250)
+emitting = false
+amount = 10
+texture = SubResource("GradientTexture2D_particle")
+lifetime = 1.8
+preprocess = 2.5
+randomness = 0.5
+visibility_rect = Rect2(-500, -520, 1000, 600)
+process_material = SubResource("ParticleProcessMaterial_spark")
 
 [node name="version_lbl" type="Label" parent="."]
 offset_left = -416.0
@@ -463,3 +523,4 @@ script = ExtResource("10_8woyc")
 [connection signal="item_selected" from="othr_containers/settings_pan/TabContainer/Gameplay/GridContainer/audio_btn" to="othr_containers/settings_pan" method="_on_audio_btn_item_selected"]
 [connection signal="focus_exited" from="othr_containers/settings_pan/TabContainer/Multiplayer/GridContainer/username_lnd" to="othr_containers/settings_pan" method="_on_username_lnd_focus_exited"]
 [connection signal="focus_exited" from="othr_containers/settings_pan/TabContainer/Multiplayer/GridContainer/server_ip_lnd" to="othr_containers/settings_pan" method="_on_server_ip_lnd_focus_exited"]
+[connection signal="pressed" from="othr_containers/campaign_pan/VBoxContainer/galic_btn" to="othr_containers/campaign_pan" method="_on_galic_btn_pressed"]

@@ -46,3 +46,6 @@ func last_moved(yes=false):
 		$ColorRect/ColorRect3.visible = true
 	else:
 		$ColorRect/ColorRect3.visible = false
+
+func last_moved_to(yes=false):
+	$ColorRect/moved_to_fill.visible = yes

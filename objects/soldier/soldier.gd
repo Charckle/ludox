@@ -8,22 +8,31 @@ var position_grid: Vector2i = Vector2i.ZERO
 var my_size = Vector2i(40,40)
 
 
-# Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	if player == 1:
-		$rect_dux.color = Color.RED
-		$ColorRect.color = Color.RED
-	else:
-		$rect_dux.color = Color.DEEP_SKY_BLUE
-		$ColorRect.color = Color.DEEP_SKY_BLUE
-	if dux:
-		$rect_dux.color = Color.YELLOW
-		
+	_apply_match_cosmetics()
 	self.set_position_grid()
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
+
+func _apply_match_cosmetics() -> void:
+	var look: Dictionary = PawnCosmetics.cosmetics_for_player(player)
+	var faction_id := str(look.get("faction", "roman"))
+	var color_id := str(look.get("color", "blue" if player == 1 else "red"))
+	var pawn_scale := Vector2(PawnCosmetics.PAWN_SCALE, PawnCosmetics.PAWN_SCALE)
+
+	for node in [$dux_outline, $shield, $insignia]:
+		node.position = Vector2(20, 20)
+		node.centered = true
+		node.scale = pawn_scale
+
+	PawnCosmetics.apply_to_sprites(
+		$shield,
+		$insignia,
+		faction_id,
+		color_id,
+		dux,
+		$dux_outline
+	)
+
 
 func set_position_grid(pos_grid=null):
 	if not pos_grid:
@@ -33,15 +42,11 @@ func set_position_grid(pos_grid=null):
 	else:
 		position_grid = pos_grid
 
-func set_moved(yes_no):
-	if yes_no:
-		$moved.visible = true
-	else:
-		$moved.visible = false
-
 
 func set_lost():
-	$ColorRect.color = Color.BLACK
+	$shield.modulate = Color(0.15, 0.15, 0.15)
+	$insignia.modulate = Color(0.35, 0.35, 0.35)
+	$dux_outline.visible = false
 
 func set_selected(yes=true):
 	$selectedpiece.visible = yes

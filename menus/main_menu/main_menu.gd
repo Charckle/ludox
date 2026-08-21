@@ -25,6 +25,22 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	pass
 
+func _input(event: InputEvent) -> void:
+	if not event.is_action_pressed("ui_cancel"):
+		return
+	if $othr_containers/campaign_pan.close_battle_modal_if_open():
+		get_viewport().set_input_as_handled()
+		return
+	var any_open := false
+	for child in $othr_containers.get_children():
+		if child.visible:
+			any_open = true
+			break
+	if any_open:
+		hide_all_oth_containers()
+		get_viewport().set_input_as_handled()
+
+
 func hide_all_oth_containers():
 	for child in $othr_containers.get_children():
 		child.visible = false
@@ -35,10 +51,12 @@ func do_easter_egs():
 	var day = time["day"]
 	var month = time["month"]
 	
-	if month == 12:
+	if month == 12 or month == 1:
 		var new_sprite_image = load("res://sprites/images/main_menu_01_snow.png")
 		$Sprite2D.texture = new_sprite_image
 		$title_ctrl/SnowParticle.emitting = true
+	else:
+		$SparkParticle.emitting = true
 
 func ensure_music_player():
 	var root = get_tree().root
