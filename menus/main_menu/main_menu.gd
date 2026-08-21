@@ -51,10 +51,12 @@ func do_easter_egs():
 	var day = time["day"]
 	var month = time["month"]
 	
-	if month == 12:
+	if month == 12 or month == 1:
 		var new_sprite_image = load("res://sprites/images/main_menu_01_snow.png")
 		$Sprite2D.texture = new_sprite_image
 		$title_ctrl/SnowParticle.emitting = true
+	else:
+		$SparkParticle.emitting = true
 
 func ensure_music_player():
 	var root = get_tree().root
