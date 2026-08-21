@@ -153,9 +153,9 @@ func _populate_cosmetics_ui() -> void:
 	var you: Dictionary = cos.get("you", PawnCosmetics.DEFAULT_COSMETICS_SETTINGS["you"])
 	var opp: Dictionary = cos.get("opponent", PawnCosmetics.DEFAULT_COSMETICS_SETTINGS["opponent"])
 	_select_by_metadata(_you_faction_btn, str(you.get("faction", "roman")))
-	_select_by_metadata(_you_color_btn, str(you.get("color", "blue")))
+	_select_by_metadata(_you_color_btn, str(you.get("color", "red")))
 	_select_by_metadata(_opp_faction_btn, str(opp.get("faction", "roman")))
-	_select_by_metadata(_opp_color_btn, str(opp.get("color", "red")))
+	_select_by_metadata(_opp_color_btn, str(opp.get("color", "blue")))
 	_updating_ui = false
 	_refresh_previews()
 
@@ -201,8 +201,8 @@ func _save_cosmetics_from_ui() -> void:
 
 
 func _refresh_previews() -> void:
-	_apply_preview(_you_shield, _you_insignia, _meta_of(_you_faction_btn), _meta_of(_you_color_btn), "blue")
-	_apply_preview(_opp_shield, _opp_insignia, _meta_of(_opp_faction_btn), _meta_of(_opp_color_btn), "red")
+	_apply_preview(_you_shield, _you_insignia, _meta_of(_you_faction_btn), _meta_of(_you_color_btn), "red")
+	_apply_preview(_opp_shield, _opp_insignia, _meta_of(_opp_faction_btn), _meta_of(_opp_color_btn), "blue")
 
 
 func _apply_preview(shield: TextureRect, insignia: TextureRect, faction_pref: String, color_pref: String, fallback_color: String) -> void:

@@ -36,8 +36,8 @@ const DUX_OUTLINE_PX := 2
 var _outline_cache := {}
 
 const DEFAULT_COSMETICS_SETTINGS := {
-	"you": {"faction": "roman", "color": "blue"},
-	"opponent": {"faction": "roman", "color": "red"},
+	"you": {"faction": "roman", "color": "red"},
+	"opponent": {"faction": "roman", "color": "blue"},
 }
 
 
@@ -76,8 +76,8 @@ func get_faction(faction_id: String) -> Dictionary:
 func campaign_cosmetics() -> Dictionary:
 	# player 1 = AI (top), player 2 = human (bottom)
 	return {
-		"1": {"faction": "roman", "color": "red"},
-		"2": {"faction": "roman", "color": "blue"},
+		"1": {"faction": "roman", "color": "blue"},
+		"2": {"faction": "roman", "color": "red"},
 	}
 
 
@@ -89,8 +89,8 @@ func resolve_from_settings(settings: Dictionary) -> Dictionary:
 	var you_faction := _resolve_faction(str(you.get("faction", "roman")))
 	var opp_faction := _resolve_faction(str(opp.get("faction", "roman")))
 
-	var you_color_pref := str(you.get("color", "blue"))
-	var opp_color_pref := str(opp.get("color", "red"))
+	var you_color_pref := str(you.get("color", "red"))
+	var opp_color_pref := str(opp.get("color", "blue"))
 	var colors := _resolve_colors(you_color_pref, opp_color_pref)
 
 	return {
@@ -261,4 +261,4 @@ func cosmetics_for_player(player_id: int) -> Dictionary:
 	var key := str(player_id)
 	if mc.has(key):
 		return mc[key]
-	return {"faction": "roman", "color": "red" if player_id == 1 else "blue"}
+	return {"faction": "roman", "color": "blue" if player_id == 1 else "red"}

@@ -12,6 +12,7 @@ offset_left = 3.0
 offset_top = 3.0
 offset_right = 37.0
 offset_bottom = 37.0
+color = Color(0.55, 0.5, 0.42, 1)
 
 [node name="selectedpiece" type="ColorRect" parent="."]
 visible = false
@@ -34,10 +35,3 @@ scale = Vector2(0.82, 0.82)
 position = Vector2(20, 20)
 scale = Vector2(0.82, 0.82)
 
-[node name="moved" type="ColorRect" parent="."]
-visible = false
-offset_left = 16.0
-offset_top = 16.0
-offset_right = 24.0
-offset_bottom = 24.0
-color = Color(0.72032, 0.447014, 5.77569e-07, 1)

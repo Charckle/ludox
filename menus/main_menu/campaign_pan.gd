@@ -225,6 +225,13 @@ func _build_battle_modal() -> void:
 	btn_row.add_child(close_btn)
 
 
+func close_battle_modal_if_open() -> bool:
+	if modal_layer and modal_layer.visible:
+		_hide_desc()
+		return true
+	return false
+
+
 func _hide_desc() -> void:
 	if modal_layer:
 		modal_layer.visible = false

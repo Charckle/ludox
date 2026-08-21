@@ -11,11 +11,11 @@
 	"cosmetics": {
 		"you": {
 			"faction": "roman",
-			"color": "blue"
+			"color": "red"
 		},
 		"opponent": {
 			"faction": "roman",
-			"color": "red"
+			"color": "blue"
 		}
 	},
 	"multiplayer": {

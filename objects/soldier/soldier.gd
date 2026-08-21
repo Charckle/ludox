@@ -16,7 +16,7 @@ func _ready() -> void:
 func _apply_match_cosmetics() -> void:
 	var look: Dictionary = PawnCosmetics.cosmetics_for_player(player)
 	var faction_id := str(look.get("faction", "roman"))
-	var color_id := str(look.get("color", "red" if player == 1 else "blue"))
+	var color_id := str(look.get("color", "blue" if player == 1 else "red"))
 	var pawn_scale := Vector2(PawnCosmetics.PAWN_SCALE, PawnCosmetics.PAWN_SCALE)
 
 	for node in [$dux_outline, $shield, $insignia]:
@@ -41,12 +41,6 @@ func set_position_grid(pos_grid=null):
 				position_grid = tile.position_grid
 	else:
 		position_grid = pos_grid
-
-func set_moved(yes_no):
-	if yes_no:
-		$moved.visible = true
-	else:
-		$moved.visible = false
 
 
 func set_lost():

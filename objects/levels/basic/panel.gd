@@ -35,6 +35,17 @@ func _process(delta: float) -> void:
 		$ai_difficulty_btn.selected = GlobalSet.settings["ai_lvl"]
 
 
+func _input(event: InputEvent) -> void:
+	if not event.is_action_pressed("ui_cancel"):
+		return
+	if $rule_book.visible:
+		$rule_book.visible = false
+		get_viewport().set_input_as_handled()
+		return
+	toggle_menu()
+	get_viewport().set_input_as_handled()
+
+
 func toggle_console():
 	is_visible = !is_visible
 	
@@ -55,9 +66,14 @@ func toggle_console():
 	).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 
 
-func _on_texture_button_pressed() -> void:
+func toggle_menu() -> void:
 	toggle_console()
-	city.multi_play_menu_open = !city.multi_play_menu_open
+	if city:
+		city.multi_play_menu_open = is_visible
+
+
+func _on_texture_button_pressed() -> void:
+	toggle_menu()
 
 
 func _on_main_menu_btn_pressed() -> void:

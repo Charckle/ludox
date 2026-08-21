@@ -70,8 +70,28 @@ func _merge_missing_defaults() -> void:
 	if defaults.is_empty():
 		return
 	var changed := _merge_dict(GlobalSet.settings, defaults)
+	# Existing installs saved you=blue / opponent=red; flip to the new defaults.
+	if _swap_legacy_default_colors():
+		changed = true
 	if changed:
 		save_settings()
+
+
+func _swap_legacy_default_colors() -> bool:
+	if not GlobalSet.settings.has("cosmetics"):
+		return false
+	var cos: Dictionary = GlobalSet.settings["cosmetics"]
+	if typeof(cos) != TYPE_DICTIONARY:
+		return false
+	var you: Dictionary = cos.get("you", {})
+	var opp: Dictionary = cos.get("opponent", {})
+	if str(you.get("color", "")) == "blue" and str(opp.get("color", "")) == "red":
+		you["color"] = "red"
+		opp["color"] = "blue"
+		cos["you"] = you
+		cos["opponent"] = opp
+		return true
+	return false
 
 
 func _merge_dict(target: Dictionary, defaults: Dictionary) -> bool:

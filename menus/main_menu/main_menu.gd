@@ -25,6 +25,22 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	pass
 
+func _input(event: InputEvent) -> void:
+	if not event.is_action_pressed("ui_cancel"):
+		return
+	if $othr_containers/campaign_pan.close_battle_modal_if_open():
+		get_viewport().set_input_as_handled()
+		return
+	var any_open := false
+	for child in $othr_containers.get_children():
+		if child.visible:
+			any_open = true
+			break
+	if any_open:
+		hide_all_oth_containers()
+		get_viewport().set_input_as_handled()
+
+
 func hide_all_oth_containers():
 	for child in $othr_containers.get_children():
 		child.visible = false

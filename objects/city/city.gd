@@ -763,18 +763,17 @@ func get_soldiers(player=false, simulation=false):
 func clear_all_last_moved():
 	for tile in all_tiles.get_children():
 		tile.last_moved(false)
-	for unit in all_soldiers.get_children():
-		unit.set_moved(false)
+		tile.last_moved_to(false)
 
 func set_all_last_moved():
 	clear_all_last_moved()
-	var tile =  get_tile_on_position(self.previous_tile)
-	var soldier = _get_soldier_on_position(self.moved_to_tile)
+	var from_tile = get_tile_on_position(self.previous_tile)
+	var to_tile = get_tile_on_position(self.moved_to_tile)
 
-	if tile != null:
-		tile.last_moved(true)
-	if soldier != null:
-		soldier.set_moved(true)
+	if from_tile != null:
+		from_tile.last_moved(true)
+	if to_tile != null:
+		to_tile.last_moved_to(true)
 
 
 func check_win():
