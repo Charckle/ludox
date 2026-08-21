@@ -3,9 +3,8 @@
 [ext_resource type="Script" uid="uid://dy2lfwu4iejmi" path="res://objects/soldier/soldier.gd" id="1_oixgj"]
 
 [node name="Soldier" type="Node2D"]
+texture_filter = 1
 script = ExtResource("1_oixgj")
-player = null
-dux = null
 
 [node name="myturn" type="ColorRect" parent="."]
 visible = false
@@ -22,18 +21,18 @@ offset_right = 38.0
 offset_bottom = 38.0
 color = Color(0.2, 0.596078, 0.0313726, 1)
 
-[node name="rect_dux" type="ColorRect" parent="."]
-offset_left = 5.0
-offset_top = 5.0
-offset_right = 35.0
-offset_bottom = 35.0
-color = Color(1, 0.866667, 0.270588, 1)
+[node name="dux_outline" type="Sprite2D" parent="."]
+visible = false
+position = Vector2(20, 20)
+scale = Vector2(0.82, 0.82)
 
-[node name="ColorRect" type="ColorRect" parent="."]
-offset_left = 8.0
-offset_top = 8.0
-offset_right = 32.0
-offset_bottom = 32.0
+[node name="shield" type="Sprite2D" parent="."]
+position = Vector2(20, 20)
+scale = Vector2(0.82, 0.82)
+
+[node name="insignia" type="Sprite2D" parent="."]
+position = Vector2(20, 20)
+scale = Vector2(0.82, 0.82)
 
 [node name="moved" type="ColorRect" parent="."]
 visible = false

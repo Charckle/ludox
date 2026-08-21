@@ -103,6 +103,10 @@ func initial_multiplayer_set(m_m_, players_data, vcb):
 	if self.my_player != players_data[m_m.player_turn]:
 		can_interact = false
 
+	# Online cosmetics TBD; use campaign defaults for now.
+	if GlobalSet.match_cosmetics == null:
+		GlobalSet.match_cosmetics = PawnCosmetics.campaign_cosmetics()
+
 	initialize_city(m_m.city_size, m_m.rules)
 	if not vcb == null:
 		var vcb_transformed = transform_vcb_to_all_units(vcb)
@@ -125,7 +129,10 @@ func initialize_city(board_size_=board_size, rules_=int(GlobalSet.settings["game
 	#GlobalSet.ai_lvl = $ai_lvl_btn.select
 	#pivot_offset = size * 0.5
 	scale = default_scale
-	
+
+	# Continue restores cosmetics from save before units; otherwise resolve/stash now.
+	if not GlobalSet.load_saved_continue and not multi_play:
+		_ensure_skirmish_cosmetics()
 	
 	if board_size != 99:
 		createboard()
@@ -167,6 +174,7 @@ func initialize_battle(battle):
 	GlobalSet.settings["game_type"] = Game_types.PVAI
 	GlobalSet.settings["ai_lvl"] = battle.ai_lvl
 	scale = default_scale
+	GlobalSet.match_cosmetics = PawnCosmetics.campaign_cosmetics()
 	
 	create_tiles()
 	all_board_positions = blank_board()
@@ -839,6 +847,11 @@ func set_winner(player_n):
 	if GlobalSet.current_battle != null and player_n == 2:
 		CampaignProgress.mark_won(GlobalSet.current_campaign_id, GlobalSet.current_battle.id)
 
+func _ensure_skirmish_cosmetics() -> void:
+	if GlobalSet.match_cosmetics == null:
+		GlobalSet.match_cosmetics = PawnCosmetics.resolve_from_settings(GlobalSet.settings)
+
+
 func get_current_game_state():
 	var game_state = {
 		"player_turn": self.player_turn,
@@ -851,7 +864,8 @@ func get_current_game_state():
 		"since_last_eat": self.since_last_eat,
 		"all_moves": self.all_moves,
 		"moves_till_attack_dux_ai": self.moves_till_attack_dux_ai,
-		"board_size": self.board_size
+		"board_size": self.board_size,
+		"match_cosmetics": GlobalSet.match_cosmetics
 	}
 	return game_state
 
@@ -907,6 +921,10 @@ func load_game_state(game_state):
 	self.all_moves = int(game_state["all_moves"])
 	self.moves_till_attack_dux_ai = int(game_state["moves_till_attack_dux_ai"])
 	self.board_size = int(game_state["board_size"])
+	if game_state.has("match_cosmetics") and game_state["match_cosmetics"] != null:
+		GlobalSet.match_cosmetics = game_state["match_cosmetics"]
+	elif GlobalSet.match_cosmetics == null:
+		GlobalSet.match_cosmetics = PawnCosmetics.resolve_from_settings(GlobalSet.settings)
 
 	remove_all_units()
 	

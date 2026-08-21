@@ -235,4 +235,5 @@ func _on_start_pressed() -> void:
 		return
 	GlobalSet.current_battle = selected_battle
 	GlobalSet.current_campaign_id = current_campaign.id
+	GlobalSet.match_cosmetics = null
 	get_tree().change_scene_to_file("res://objects/levels/basic/basic_lvl.tscn")

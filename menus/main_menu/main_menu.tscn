@@ -249,10 +249,10 @@ text = "Start Game"
 [node name="settings_pan" type="Panel" parent="othr_containers"]
 visible = false
 layout_mode = 0
-offset_left = -400.0
-offset_top = -200.0
-offset_right = 24.0
-offset_bottom = 192.0
+offset_left = -420.0
+offset_top = -220.0
+offset_right = 40.0
+offset_bottom = 210.0
 script = ExtResource("5_er5qh")
 
 [node name="TabContainer" type="TabContainer" parent="othr_containers/settings_pan"]
@@ -322,7 +322,7 @@ popup/item_0/id = 0
 popup/item_1/text = "On"
 popup/item_1/id = 1
 
-[node name="Multiplayer" type="MarginContainer" parent="othr_containers/settings_pan/TabContainer"]
+[node name="Appearance" type="MarginContainer" parent="othr_containers/settings_pan/TabContainer"]
 visible = false
 layout_mode = 2
 theme_override_constants/margin_left = 8
@@ -330,6 +330,19 @@ theme_override_constants/margin_top = 8
 theme_override_constants/margin_right = 8
 theme_override_constants/margin_bottom = 8
 metadata/_tab_index = 1
+
+[node name="appearance_root" type="VBoxContainer" parent="othr_containers/settings_pan/TabContainer/Appearance"]
+layout_mode = 2
+theme_override_constants/separation = 10
+
+[node name="Multiplayer" type="MarginContainer" parent="othr_containers/settings_pan/TabContainer"]
+visible = false
+layout_mode = 2
+theme_override_constants/margin_left = 8
+theme_override_constants/margin_top = 8
+theme_override_constants/margin_right = 8
+theme_override_constants/margin_bottom = 8
+metadata/_tab_index = 2
 
 [node name="GridContainer" type="GridContainer" parent="othr_containers/settings_pan/TabContainer/Multiplayer"]
 layout_mode = 2
@@ -357,9 +370,9 @@ placeholder_text = "Vigitilus"
 [node name="music_lbl" type="Label" parent="othr_containers/settings_pan"]
 layout_mode = 2
 offset_left = 56.0
-offset_top = 336.0
-offset_right = 344.0
-offset_bottom = 370.0
+offset_top = 390.0
+offset_right = 400.0
+offset_bottom = 424.0
 theme_override_font_sizes/font_size = 16
 text = "Music by RubyZephyr from Pixabay"
 

@@ -8,6 +8,16 @@
 	"ai_lvl": 0,
 	"board_size": 0,
 	"audio": 1,
+	"cosmetics": {
+		"you": {
+			"faction": "roman",
+			"color": "blue"
+		},
+		"opponent": {
+			"faction": "roman",
+			"color": "red"
+		}
+	},
 	"multiplayer": {
 		"server_ip": "ludox.registrum.si",
 		"port": 7331,

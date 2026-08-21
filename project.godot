@@ -23,6 +23,7 @@ SettingsLoad="*res://global_scripts/settings_load.gd"
 ContinueGame="*res://global_scripts/continue_game.gd"
 Campaigns="*res://campaigns/campaigns.gd"
 CampaignProgress="*res://campaigns/campaign_progress.gd"
+PawnCosmetics="*res://global_scripts/pawn_cosmetics.gd"
 
 [display]
 
