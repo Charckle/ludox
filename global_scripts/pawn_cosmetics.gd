@@ -10,6 +10,24 @@ const FACTIONS := {
 		"shield": "res://sprites/pawns/shield_types/scutum.png",
 		"insignia": "res://sprites/pawns/factions/f_roman.png",
 	},
+	"spartan": {
+		"id": "spartan",
+		"name": "Spartan",
+		"shield": "res://sprites/pawns/shield_types/round_big.png",
+		"insignia": "res://sprites/pawns/factions/f_spartan_big.png",
+	},
+	"gaul": {
+		"id": "gaul",
+		"name": "Gaul",
+		"shield": "res://sprites/pawns/shield_types/oval.png",
+		"insignia": "res://sprites/pawns/factions/f_gaul.png",
+	},
+	"carthage": {
+		"id": "carthage",
+		"name": "Carthage",
+		"shield": "res://sprites/pawns/shield_types/round_big.png",
+		"insignia": "res://sprites/pawns/factions/f_carthage.png",
+	},
 }
 
 ## Full picker palette (settings).
