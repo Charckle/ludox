@@ -540,9 +540,8 @@ func unit_stopped_moving(my_player, start_pos, end_pos):
 	if not multi_play:
 		# check if you eat anything
 		check_if_eatable(my_player, start_pos, end_pos)
-		can_interact = true
 		unit_moving = false
-		
+		# Stay locked until execute_ai_move finishes thinking (or unlocks for the human).
 		end_turn()
 	else:
 		m_m.get_node("game").rpc_id(1, "unit_moved", m_m.room_id)
@@ -713,10 +712,13 @@ func end_turn():
 func execute_ai_move():
 	if player_turn != 3 and GlobalSet.settings["game_type"] != Game_types.PVP and multi_play == false:
 		if player_turn != 2:
+			can_interact = false
 			show_ai_thinking(true)
 			await get_tree().process_frame
-			$ai.execute_move(self.player_turn)
+			await $ai.execute_move(self.player_turn)
 			show_ai_thinking(false)
+			return
+	can_interact = true
 
 func show_ai_thinking(visible_: bool):
 	var label = get_node_or_null("../HudLayer/ai_thinking_label")
