@@ -3,15 +3,6 @@ extends PanelContainer
 @onready var multiplayer_menu = get_parent()
 var multiplayer_s = null #multiplayer_menu.multiplayer_s
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
-
 
 func recreate_room_list(room_data):
 	var room_cont = $top_cont/room_cont/rooms_list

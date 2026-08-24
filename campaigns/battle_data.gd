@@ -6,7 +6,7 @@ class_name BattleData
 @export var title: String = ""
 @export_multiline var description: String = ""
 
-# Where the dot sits on the campaign map (panel-local pixel coords).
+# Where the dot sits on the campaign map, as UV coords on the map texture (0-1).
 @export var map_position: Vector2 = Vector2.ZERO
 
 # City.Rules index: 0 = BASIC, 1 = BASIC_PLUS, 2 = XXI
@@ -17,6 +17,9 @@ class_name BattleData
 # Board dimensions. Height must be 8; width is 8 or 12.
 @export var city_size: Vector2i = Vector2i(8, 8)
 
-# Each entry: { "pos": Vector2i, "player": int, "dux": bool }
-# player 1 = AI (top, red), player 2 = human (bottom, blue)
+# Each entry: { "pos": Vector2i, "player": int, "dux": bool, "faction": String? }
+# player 1 = AI (top), player 2 = human (bottom). Optional faction overrides the side look.
 @export var pawns: Array = []
+
+# Optional opener played once when Epic mode is on, then the normal battle playlist.
+@export var epic_track: String = ""

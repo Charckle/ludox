@@ -10,15 +10,6 @@ enum Where {
 	RIGHT
 }
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
-
 
 func get_moves(soldier_pos, dryrun=false, simulation=false):
 	var _possible_moves_local = []
@@ -29,11 +20,7 @@ func get_moves(soldier_pos, dryrun=false, simulation=false):
 	
 	var blocking_tiles = city.get_blocking_tiles(soldier_pos, current_unit["player"], true, simulation)
 	var blocking_enemy_units = blocking_tiles[0]
-	var all_tiles_coord = blocking_tiles[1]
 	var all_free_tiles_coord = blocking_tiles[2]
-	var all_blocking_tiles_coord = blocking_tiles[3]
-	
-	var unit_r = city.get_soldier_on_position(soldier_pos, simulation)
 	
 	# if there are no enemies, you can go anywhere
 	if len(blocking_enemy_units) == 0:
@@ -45,8 +32,7 @@ func get_moves(soldier_pos, dryrun=false, simulation=false):
 				for tile_pos in all_free_tiles_coord:
 					possible_moves.append(tile_pos)
 			# can move to dux
-			var dux_pos = get_coord_nxt_to_dux(soldier_pos, possible_basic_moves, 
-									othr_p(current_unit["player"]), simulation)
+			var dux_pos = get_coord_nxt_to_dux(soldier_pos, othr_p(current_unit["player"]), simulation)
 			for pos in dux_pos:
 				possible_moves.append(pos)
 			# add to all those, that would attack another unit
@@ -61,8 +47,7 @@ func get_moves(soldier_pos, dryrun=false, simulation=false):
 				possible_moves = []
 			else:
 				# can move to dux
-				var dux_pos = get_coord_nxt_to_dux(soldier_pos, possible_basic_moves, 
-									othr_p(current_unit["player"]), simulation)
+				var dux_pos = get_coord_nxt_to_dux(soldier_pos, othr_p(current_unit["player"]), simulation)
 				
 				for pos in dux_pos:
 					possible_moves.append(pos)
@@ -77,11 +62,10 @@ func get_moves(soldier_pos, dryrun=false, simulation=false):
 			var blocking_tiles_enemy = city.get_blocking_tiles(adj_enemy["pg"], adj_enemy["player"], 
 															true, simulation)
 			var blocking_enemy_units_enemy = blocking_tiles_enemy[0]
-			var all_tiles_coord_enemy = blocking_tiles_enemy[1]
 			
 			if len(blocking_enemy_units_enemy) == 1:
 				# add to the possible moves all those, that are next to an enemy dux
-				var dux_pos = get_coord_nxt_to_dux(soldier_pos, possible_basic_moves, 
+				var dux_pos = get_coord_nxt_to_dux(soldier_pos,
 				blocking_enemy_units[0]["player"], simulation)
 				
 				for pos in dux_pos:
@@ -106,7 +90,7 @@ func get_moves(soldier_pos, dryrun=false, simulation=false):
 	else:
 		city.possible_moves = _possible_moves_local
 	
-func get_coord_nxt_to_dux(soldier_pos, possible_moves, player_of_dux, simulation):
+func get_coord_nxt_to_dux(soldier_pos, player_of_dux, simulation):
 	var enemy_pid = city.get_enemy_pid(player_of_dux)
 	var _moves = []
 	for tile_pos in basic.get_basic_moves(soldier_pos, true, simulation):

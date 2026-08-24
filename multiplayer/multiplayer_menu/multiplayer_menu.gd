@@ -30,11 +30,8 @@ func _ready() -> void:
 	$main_container.multiplayer_s = self.multiplayer_s
 	room_container.multiplayer_s = self.multiplayer_s
 	$ui.multiplayer_s = self.multiplayer_s
-	
+	MusicManager.play_menu()
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
 
 func show_default_windows():
 	main_container.visible = true
@@ -71,6 +68,7 @@ func show_room(room_name, msg=null):
 	game_container.visible = false
 	game_ui.visible = false
 	chat_container.visible = true
+	MusicManager.play_menu()
 	
 	# enable settigns buttons for OP
 	var settings_status = true
@@ -89,6 +87,7 @@ func show_room(room_name, msg=null):
 func show_loby():
 	show_default_windows()
 	msg_log_container.text = ""
+	MusicManager.play_menu()
 
 func show_game():
 	$ui.show_game_options()
@@ -100,6 +99,7 @@ func show_game():
 	game_ui.get_node("who_won_msg").visible = false
 	$ui/game_ui/chat_btn/new_msg_rect.visible = false
 	update_turn_indicator()
+	MusicManager.play_battle()
 	
 
 func show_who_won(text_):
@@ -107,8 +107,8 @@ func show_who_won(text_):
 	game_ui.get_node("who_won_msg").visible = true
 
 
-func color_for_username(name: String) -> String:
-	var hue := float(abs(hash(name)) % 360) / 360.0
+func color_for_username(username: String) -> String:
+	var hue := float(abs(hash(username)) % 360) / 360.0
 	var c := Color.from_hsv(hue, 0.65, 1.0)
 	return c.to_html(false)
 

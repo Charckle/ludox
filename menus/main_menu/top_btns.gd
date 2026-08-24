@@ -8,21 +8,15 @@ func _ready() -> void:
 		$continue_btn.visible = true
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
-
-
 func _on_new_game_btn_pressed() -> void:
 	main_menu.hide_all_oth_containers()
 	$"../../../othr_containers/new_game_pan".visible = true
 
 
 func _on_continue_btn_pressed() -> void:
-	ContinueGame.load_continue()
-	GlobalSet.load_saved_continue = true
-	GlobalSet.current_battle = null
-	GlobalSet.match_cosmetics = null
+	if not ContinueGame.apply_continue_to_global():
+		$continue_btn.visible = false
+		return
 	get_tree().change_scene_to_file("res://objects/levels/basic/basic_lvl.tscn")
 
 

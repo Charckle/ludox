@@ -18,12 +18,13 @@ func _ready() -> void:
 
 func populate_settings():
 	var gameplay = $TabContainer/Gameplay/GridContainer
-	var multiplayer = $TabContainer/Multiplayer/GridContainer
+	var mp_grid = $TabContainer/Multiplayer/GridContainer
 	gameplay.get_node("animation_btn").selected = gameplay.get_node("animation_btn").get_item_index(int(GlobalSet.settings["animation"]))
 	gameplay.get_node("movement_btn").selected = gameplay.get_node("movement_btn").get_item_index(int(GlobalSet.settings["movement_highlight"]))
 	gameplay.get_node("audio_btn").selected = gameplay.get_node("audio_btn").get_item_index(int(GlobalSet.settings["audio"]))
-	multiplayer.get_node("username_lnd").text = GlobalSet.settings["multiplayer"]["username"]
-	multiplayer.get_node("server_ip_lnd").text = GlobalSet.settings["multiplayer"]["server_ip"]
+	gameplay.get_node("epic_btn").selected = gameplay.get_node("epic_btn").get_item_index(int(GlobalSet.settings.get("epic", 1)))
+	mp_grid.get_node("username_lnd").text = GlobalSet.settings["multiplayer"]["username"]
+	mp_grid.get_node("server_ip_lnd").text = GlobalSet.settings["multiplayer"]["server_ip"]
 	_populate_cosmetics_ui()
 
 
@@ -149,9 +150,9 @@ func _fill_color_options(btn: OptionButton) -> void:
 
 func _populate_cosmetics_ui() -> void:
 	_updating_ui = true
-	var cos: Dictionary = GlobalSet.settings.get("cosmetics", PawnCosmetics.DEFAULT_COSMETICS_SETTINGS)
-	var you: Dictionary = cos.get("you", PawnCosmetics.DEFAULT_COSMETICS_SETTINGS["you"])
-	var opp: Dictionary = cos.get("opponent", PawnCosmetics.DEFAULT_COSMETICS_SETTINGS["opponent"])
+	var cosmetics: Dictionary = GlobalSet.settings.get("cosmetics", PawnCosmetics.DEFAULT_COSMETICS_SETTINGS)
+	var you: Dictionary = cosmetics.get("you", PawnCosmetics.DEFAULT_COSMETICS_SETTINGS["you"])
+	var opp: Dictionary = cosmetics.get("opponent", PawnCosmetics.DEFAULT_COSMETICS_SETTINGS["opponent"])
 	_select_by_metadata(_you_faction_btn, str(you.get("faction", "roman")))
 	_select_by_metadata(_you_color_btn, str(you.get("color", "red")))
 	_select_by_metadata(_opp_faction_btn, str(opp.get("faction", "roman")))
@@ -243,12 +244,11 @@ func save_user_ip():
 
 
 func _on_audio_btn_item_selected(index: int) -> void:
-	var root = get_tree().root
-
 	GlobalSet.settings["audio"] = $TabContainer/Gameplay/GridContainer/audio_btn.get_item_id(index)
 	SettingsLoad.save_settings()
-	
-	if GlobalSet.settings["audio"] == 1:
-		root.get_node_or_null("BackgroundMusic").play()
-	else:
-		root.get_node_or_null("BackgroundMusic").stop()
+	MusicManager.set_audio_enabled(GlobalSet.settings["audio"] == 1)
+
+
+func _on_epic_btn_item_selected(index: int) -> void:
+	GlobalSet.settings["epic"] = $TabContainer/Gameplay/GridContainer/epic_btn.get_item_id(index)
+	SettingsLoad.save_settings()

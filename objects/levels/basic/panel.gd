@@ -4,19 +4,16 @@ extends Panel
 const SHOW_DEBUG_WIN := true
 
 var city = null
-@onready var tween = create_tween()
+var tween: Tween
 
-var is_visible = false
+var menu_open = false
 var hidden_x := 0.0  # Adjust based on your panel height
 var visible_x := 0.0    # Y position when shown
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
-	# Get panel height dynamically
-	var panel_lenght = self.size.x
-	hidden_x = self.position.x 
-	
-	visible_x = - 200# panel_lenght # In case it's already anchored where you want it
+	hidden_x = self.position.x
+	visible_x = -200 # In case it's already anchored where you want it
 
 	#self.position.x = hidden_x  # Start hidden
 	if GlobalSet.current_battle != null:
@@ -27,7 +24,7 @@ func _ready() -> void:
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	if GlobalSet.current_battle != null:
 		return
 	# set ai lvl
@@ -47,21 +44,22 @@ func _input(event: InputEvent) -> void:
 
 
 func toggle_console():
-	is_visible = !is_visible
+	menu_open = !menu_open
 	
-	if is_visible:
+	if menu_open:
 		pass
 	
 	if city.unit_moving or GlobalSet.current_battle != null:
 		$undo_btn.disabled = true
 	else:
 		$undo_btn.disabled = false
-	tween.kill()  # Stop any ongoing tween before starting a new one
+	if tween != null and tween.is_valid():
+		tween.kill()
 
 	tween = create_tween()
 	tween.tween_property(
 		self, "position:x",
-		visible_x if is_visible else hidden_x,
+		visible_x if menu_open else hidden_x,
 		0.50
 	).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_OUT)
 
@@ -69,7 +67,7 @@ func toggle_console():
 func toggle_menu() -> void:
 	toggle_console()
 	if city:
-		city.multi_play_menu_open = is_visible
+		city.multi_play_menu_open = menu_open
 
 
 func _on_texture_button_pressed() -> void:
@@ -88,7 +86,7 @@ func _on_rematch_btn_pressed() -> void:
 
 
 func _on_ai_difficulty_btn_item_selected(index: int) -> void:
-	GlobalSet.settings["ai_lvl"] = $ai_difficulty_btn.selected
+	GlobalSet.settings["ai_lvl"] = index
 
 
 func _on_rule_book_btn_pressed() -> void:

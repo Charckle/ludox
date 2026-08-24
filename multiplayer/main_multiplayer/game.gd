@@ -3,18 +3,9 @@ extends Node
 @onready var m_m = get_parent()
 var multiplayer_menu = null
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
-
 
 @rpc("any_peer", "call_remote", "reliable")
-func send_move(room_id, start_pos, end_pos):
+func send_move(_room_id, _start_pos, _end_pos):
 	pass
 
 
@@ -28,7 +19,7 @@ func can_move_unit():
 	multiplayer_menu.can_move_units()
 
 @rpc("any_peer", "call_remote", "reliable")
-func unit_moved(room_id):
+func unit_moved(_room_id):
 	pass
 
 @rpc("authority", "call_remote", "reliable")
@@ -39,7 +30,7 @@ func remove_this_units(units):
 		multiplayer_menu.game_city.eat_unit(to_delete_pg, false, true)
 
 @rpc("authority", "call_remote", "reliable")
-func endturn(player_turn):
+func endturn(_player_turn):
 	multiplayer_menu.game_city.end_turn_multiplayer()
 
 @rpc("authority", "call_remote", "reliable")
@@ -61,7 +52,7 @@ func send_won_msg(player_data):
 		
 	multiplayer_menu.show_who_won(msg)
 
-func color_for_username(name: String) -> String:
-	var hue := float(abs(hash(name)) % 360) / 360.0
+func color_for_username(username: String) -> String:
+	var hue := float(abs(hash(username)) % 360) / 360.0
 	var c := Color.from_hsv(hue, 0.65, 1.0)
 	return c.to_html(false)

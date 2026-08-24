@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://b36t63f4jy3am"
+path="res://.godot/imported/Rome's route.mp3-be386f87273d40045b6a1cfcb3ed11a6.mp3str"
+
+[deps]
+
+source_file="res://audio/music/epic/Rome's route.mp3"
+dest_files=["res://.godot/imported/Rome's route.mp3-be386f87273d40045b6a1cfcb3ed11a6.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

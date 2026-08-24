@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://cmetgvmejgekf"
+path="res://.godot/imported/Thunder in the Stone 2.mp3-3105d07cfd9a6c296ca75b59a563ac64.mp3str"
+
+[deps]
+
+source_file="res://audio/music/battle/Thunder in the Stone 2.mp3"
+dest_files=["res://.godot/imported/Thunder in the Stone 2.mp3-3105d07cfd9a6c296ca75b59a563ac64.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

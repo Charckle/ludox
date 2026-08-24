@@ -33,19 +33,6 @@ func _ready() -> void:
 	multiplayer.connected_to_server.connect(_local_on_connected_ok) # emmited on the clinet ONLY
 	multiplayer.connection_failed.connect(_local_on_connected_fail) # emmited on the clinet ONLY
 	multiplayer.server_disconnected.connect(_local_on_server_disconnected) # emmited on the clinet ONLY
-	
-
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
-	#0 → CONNECTION_DISCONNECTED
-	#1 → CONNECTION_CONNECTING
-	#2 → CONNECTION_CONNECTED
-	
-	#if (multiplayer.multiplayer_peer != null):
-	#	print(multiplayer.multiplayer_peer.get_connection_status())
 
 
 func _local_on_connected_ok():
@@ -65,7 +52,7 @@ func _local_on_connected_ok():
 	my_peer_id = multiplayer.get_unique_id()
 	
 @rpc("any_peer", "call_remote", "reliable")
-func verify_client_version(client_version: String):
+func verify_client_version(_client_version: String):
 	pass
 
 
@@ -138,7 +125,7 @@ func is_valid_ipv4(ip: String) -> bool:
 
 # runs only on server, ignored here
 @rpc("any_peer", "call_remote", "reliable")
-func propagate_user_message(message: String, room_id= null):
+func propagate_user_message(_message: String, _room_id= null):
 	pass
 
 
@@ -148,7 +135,7 @@ func receive_chat_message(message: String):
 
 # runs only on the server
 @rpc("any_peer", "call_remote", "reliable")
-func _register_player_on_server(new_player_info):
+func _register_player_on_server(_new_player_info):
 	pass
 	
 

@@ -4,14 +4,6 @@ extends Node2D
 
 var my_size = Vector2i(40,40)
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
 
 func get_adjacent_tiles(city):
 	var top = position_grid + Vector2i(0,1)

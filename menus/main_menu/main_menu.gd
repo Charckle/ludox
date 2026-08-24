@@ -9,7 +9,7 @@ func _ready() -> void:
 	$version_lbl.text = ProjectSettings.get_setting("application/config/version")
 	do_easter_egs()
 	hide_all_oth_containers()
-	var multiplyer_s = get_tree().root.get_node("Main-multiplayer") 
+	var multiplyer_s = get_tree().root.get_node_or_null("Main-multiplayer")
 	if multiplyer_s == null:
 		multiplyer_s = MultiplayerScene.instantiate()
 		#get_tree().root.add_child(multiplyer_s)
@@ -18,12 +18,8 @@ func _ready() -> void:
 	if multiplyer_s.disconnect_reason_ != null:
 		print(multiplyer_s.disconnect_reason_)
 
-	call_deferred("ensure_music_player")
+	MusicManager.play_menu()
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
 
 func _input(event: InputEvent) -> void:
 	if not event.is_action_pressed("ui_cancel"):
@@ -48,7 +44,6 @@ func hide_all_oth_containers():
 
 func do_easter_egs():
 	var time = Time.get_datetime_dict_from_system()
-	var day = time["day"]
 	var month = time["month"]
 	
 	if month == 12 or month == 1:
@@ -58,23 +53,3 @@ func do_easter_egs():
 	else:
 		$SparkParticle.emitting = true
 
-func ensure_music_player():
-	var root = get_tree().root
-
-	# Check if a music player already exists
-	var music = root.get_node_or_null("BackgroundMusic")
-	if music:
-		return  # Already exists, nothing to do
-	
-	# Create one
-	music = AudioStreamPlayer.new()
-	music.name = "BackgroundMusic"
-	music.stream = preload("res://audio/music/imperium-aeternum-v1-430851.ogg")
-	music.bus = "Master"
-	#music.bus = "Music"     # Optional: assign audio bus
-	music.stream.loop = true       # Ensure looping
-
-	root.add_child(music)
-
-	if GlobalSet.settings.get("audio", 1) == 1:
-		music.play()

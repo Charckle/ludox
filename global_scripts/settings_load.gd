@@ -2,16 +2,6 @@ extends Node
 
 var config_path := "user://settings.json"
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
-
-
 
 func create_config_if_not():
 	if not FileAccess.file_exists(config_path):
@@ -80,16 +70,16 @@ func _merge_missing_defaults() -> void:
 func _swap_legacy_default_colors() -> bool:
 	if not GlobalSet.settings.has("cosmetics"):
 		return false
-	var cos: Dictionary = GlobalSet.settings["cosmetics"]
-	if typeof(cos) != TYPE_DICTIONARY:
+	var cosmetics: Dictionary = GlobalSet.settings["cosmetics"]
+	if typeof(cosmetics) != TYPE_DICTIONARY:
 		return false
-	var you: Dictionary = cos.get("you", {})
-	var opp: Dictionary = cos.get("opponent", {})
+	var you: Dictionary = cosmetics.get("you", {})
+	var opp: Dictionary = cosmetics.get("opponent", {})
 	if str(you.get("color", "")) == "blue" and str(opp.get("color", "")) == "red":
 		you["color"] = "red"
 		opp["color"] = "blue"
-		cos["you"] = you
-		cos["opponent"] = opp
+		cosmetics["you"] = you
+		cosmetics["opponent"] = opp
 		return true
 	return false
 

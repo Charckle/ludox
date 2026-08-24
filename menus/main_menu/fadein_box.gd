@@ -6,10 +6,6 @@ func _ready() -> void:
 	fade_in()
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
-
 func fade_in():
 	self.modulate.a = 1.0
 	var tween = get_tree().create_tween()

@@ -8,15 +8,6 @@ var rng := RandomNumberGenerator.new()
 const SIMS_PER_FRAME := 8
 var _sims_this_frame := 0
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
-
 
 # get all units
 # get all possible moves for that unit
@@ -41,6 +32,7 @@ func execute_move(my_player):
 	
 	var ai_lvl = GlobalSet.settings["ai_lvl"]
 	var ai_perc = ai_perc_set()
+	var random_value
 	
 	# check option to attack
 	var eat = false
@@ -69,18 +61,18 @@ func execute_move(my_player):
 						safe_eats.append(move)
 					await _think_yield()
 				if len(safe_eats) > 0:
-					var random_value = pop_random_fast(safe_eats)
+					random_value = pop_random_fast(safe_eats)
 					city.move_unit(my_player, random_value[0], random_value[1])
 					return
 				print("no safe eats, falling through")
 			elif ai_lvl == city.Ai_lvl.EASY:
-				var random_value = pop_random_fast(units_with_possible_eat)
+				random_value = pop_random_fast(units_with_possible_eat)
 				city.move_unit(my_player, random_value[0], random_value[1])
 				return
 			else:
 				var dux_safe_eats = units_with_possible_eat.filter(func(m): return is_dux_move_safe(m, my_player))
 				if len(dux_safe_eats) > 0:
-					var random_value = pop_random_fast(dux_safe_eats)
+					random_value = pop_random_fast(dux_safe_eats)
 					city.move_unit(my_player, random_value[0], random_value[1])
 					return
 				print("no dux-safe eats for normal, falling through")
@@ -115,7 +107,7 @@ func execute_move(my_player):
 		
 		var safe_intercepts = possible_intercept.filter(func(m): return is_dux_move_safe(m, my_player))
 		if len(safe_intercepts) != 0:
-			var random_value = pop_random_fast(safe_intercepts)
+			random_value = pop_random_fast(safe_intercepts)
 			city.move_unit(my_player, random_value[0], random_value[1])
 			return
 		
@@ -142,9 +134,12 @@ func execute_move(my_player):
 					)
 			
 			if ai_lvl == city.Ai_lvl.EASY:
-				var random_value = units_att_dux.pick_random()
-				city.move_unit(my_player, random_value[0], random_value[1])
-				return
+				if units_att_dux.is_empty():
+					print("no good moves available")
+				else:
+					random_value = units_att_dux.pick_random()
+					city.move_unit(my_player, random_value[0], random_value[1])
+					return
 			else:
 				var units_att_dux_copy = units_att_dux.duplicate()
 				for move in units_att_dux_copy:
@@ -168,13 +163,12 @@ func execute_move(my_player):
 					await _think_yield()
 
 				var dux_safe_att = units_att_dux.filter(func(m): return is_dux_move_safe(m, my_player))
-				var random_value = dux_safe_att.pick_random()
-
-				if random_value != null:
+				if dux_safe_att.is_empty():
+					print("no good moves available")
+				else:
+					random_value = dux_safe_att.pick_random()
 					city.move_unit(my_player, random_value[0], random_value[1])
 					return
-				else:
-					print("no good moves available")
 		else:
 			print("deciding not to")
 				
@@ -230,11 +224,14 @@ func execute_move(my_player):
 	if ai_lvl != city.Ai_lvl.EASY:
 		var dux_safe_moves = possible_moves.filter(func(m): return is_dux_move_safe(m, my_player))
 		if len(dux_safe_moves) > 0:
-			var random_value = dux_safe_moves.pick_random()
+			random_value = dux_safe_moves.pick_random()
 			city.move_unit(my_player, random_value[0], random_value[1])
 			return
 
-	var random_value = possible_moves.pick_random()
+	if possible_moves.is_empty():
+		print("no moves available")
+		return
+	random_value = possible_moves.pick_random()
 	city.move_unit(my_player, random_value[0], random_value[1])
 
 

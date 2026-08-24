@@ -6,13 +6,6 @@ func _ready() -> void:
 	populate_settings()
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass # Replace with function body.
-
-
-
-
 func populate_settings():
 	$game_rules_btn.selected = int(GlobalSet.settings["game_rules"])
 	$game_type_btn.selected = int(GlobalSet.settings["game_type"])

@@ -19,12 +19,6 @@ var Tile = preload("res://objects/tile/base_tile.tscn")
 func _ready() -> void:
 	#createboard("big")
 	createboard()
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
 
 
 func createboard(size=null):
@@ -68,11 +62,8 @@ func createboard(size=null):
 
 	center_board()
 
-func get_city_size():
-	var s_size = city_size * tile_size
-
 func place_dux():
-	var half_city = city_size.x / 2
+	var half_city := int(city_size.x * 0.5)
 	var max_y = city_size.y - 1
 	
 	# bottom player 2

@@ -16,6 +16,48 @@ const FACTIONS := {
 		"shield": "res://sprites/pawns/shield_types/round_big.png",
 		"insignia": "res://sprites/pawns/factions/f_spartan_big.png",
 	},
+	"athenian": {
+		"id": "athenian",
+		"name": "Athenian",
+		"shield": "res://sprites/pawns/shield_types/round_big.png",
+		"insignia": "res://sprites/pawns/factions/f_athenian_big.png",
+	},
+	"theban": {
+		"id": "theban",
+		"name": "Theban",
+		"shield": "res://sprites/pawns/shield_types/round_big.png",
+		"insignia": "res://sprites/pawns/factions/f_thebes_big.png",
+	},
+	"corinthian": {
+		"id": "corinthian",
+		"name": "Corinthian",
+		"shield": "res://sprites/pawns/shield_types/round_big.png",
+		"insignia": "res://sprites/pawns/factions/f_corinth_big.png",
+	},
+	"aeginetan": {
+		"id": "aeginetan",
+		"name": "Aeginetan",
+		"shield": "res://sprites/pawns/shield_types/round_big.png",
+		"insignia": "res://sprites/pawns/factions/f_aegina_big.png",
+	},
+	"thespian": {
+		"id": "thespian",
+		"name": "Thespian",
+		"shield": "res://sprites/pawns/shield_types/round_big.png",
+		"insignia": "res://sprites/pawns/factions/f_thespians_big.png",
+	},
+	"milesian": {
+		"id": "milesian",
+		"name": "Milesian",
+		"shield": "res://sprites/pawns/shield_types/round_big.png",
+		"insignia": "res://sprites/pawns/factions/f_miletuss_big.png",
+	},
+	"plataean": {
+		"id": "plataean",
+		"name": "Plataean",
+		"shield": "res://sprites/pawns/shield_types/round_big.png",
+		"insignia": "res://sprites/pawns/factions/f_plateans_big.png",
+	},
 	"gaul": {
 		"id": "gaul",
 		"name": "Gaul",
@@ -28,6 +70,30 @@ const FACTIONS := {
 		"shield": "res://sprites/pawns/shield_types/round_big.png",
 		"insignia": "res://sprites/pawns/factions/f_carthage.png",
 	},
+	"persian": {
+		"id": "persian",
+		"name": "Persian",
+		"shield": "res://sprites/pawns/shield_types/rectangular.png",
+		"insignia": "res://sprites/pawns/factions/f_persian.png",
+	},
+	"pontus": {
+		"id": "pontus",
+		"name": "Pontus",
+		"shield": "res://sprites/pawns/shield_types/round_big.png",
+		"insignia": "res://sprites/pawns/factions/f_pontus_big.png",
+	},
+	"numidian": {
+		"id": "numidian",
+		"name": "Numidian",
+		"shield": "res://sprites/pawns/shield_types/round_small.png",
+		"insignia": "res://sprites/pawns/factions/f_numidia_small.png",
+	},
+	"german": {
+		"id": "german",
+		"name": "German",
+		"shield": "res://sprites/pawns/shield_types/round_small.png",
+		"insignia": "res://sprites/pawns/factions/f_germans_small.png",
+	},
 }
 
 ## Full picker palette (settings).
@@ -35,6 +101,7 @@ const COLOR_PALETTE := {
 	"red": {"name": "Red", "color": Color(0.85, 0.12, 0.12)},
 	"blue": {"name": "Blue", "color": Color(0.15, 0.45, 0.95)},
 	"green": {"name": "Green", "color": Color(0.12, 0.65, 0.28)},
+	"smaragd": {"name": "Smaragd", "color": Color(0.06, 0.52, 0.38)},
 	"yellow": {"name": "Yellow", "color": Color(0.92, 0.78, 0.12)},
 	"orange": {"name": "Orange", "color": Color(0.95, 0.45, 0.08)},
 	"purple": {"name": "Purple", "color": Color(0.55, 0.22, 0.75)},
@@ -46,6 +113,25 @@ const COLOR_PALETTE := {
 
 ## High-contrast subset used when color is Random.
 const RANDOM_COLOR_IDS := ["red", "blue", "green", "yellow", "white", "black"]
+
+## Default shield color when a pawn has a per-piece faction.
+const FACTION_COLORS := {
+	"spartan": "red",
+	"athenian": "blue",
+	"theban": "green",
+	"corinthian": "white",
+	"aeginetan": "yellow",
+	"thespian": "brown",
+	"milesian": "orange",
+	"plataean": "teal",
+	"persian": "purple",
+	"pontus": "purple",
+	"numidian": "brown",
+	"german": "black",
+	"roman": "red",
+	"gaul": "green",
+	"carthage": "yellow",
+}
 
 const DUX_GOLD := Color(0.95, 0.78, 0.2)
 const PAWN_SCALE := 0.82
@@ -91,18 +177,29 @@ func get_faction(faction_id: String) -> Dictionary:
 	return FACTIONS["roman"]
 
 
+func color_for_faction(faction_id: String) -> String:
+	if FACTION_COLORS.has(faction_id):
+		return FACTION_COLORS[faction_id]
+	return "red"
+
+
 func campaign_cosmetics() -> Dictionary:
 	# player 1 = AI (top), player 2 = human (bottom)
+	var camp_id := str(GlobalSet.current_campaign_id)
+	if camp_id != "":
+		var camp = Campaigns.get_by_id(camp_id)
+		if camp != null and not camp.cosmetics.is_empty():
+			return camp.cosmetics.duplicate(true)
 	return {
-		"1": {"faction": "roman", "color": "blue"},
+		"1": {"faction": "gaul", "color": "green"},
 		"2": {"faction": "roman", "color": "red"},
 	}
 
 
 func resolve_from_settings(settings: Dictionary) -> Dictionary:
-	var cos: Dictionary = settings.get("cosmetics", DEFAULT_COSMETICS_SETTINGS)
-	var you: Dictionary = cos.get("you", DEFAULT_COSMETICS_SETTINGS["you"])
-	var opp: Dictionary = cos.get("opponent", DEFAULT_COSMETICS_SETTINGS["opponent"])
+	var cosmetics: Dictionary = settings.get("cosmetics", DEFAULT_COSMETICS_SETTINGS)
+	var you: Dictionary = cosmetics.get("you", DEFAULT_COSMETICS_SETTINGS["you"])
+	var opp: Dictionary = cosmetics.get("opponent", DEFAULT_COSMETICS_SETTINGS["opponent"])
 
 	var you_faction := _resolve_faction(str(you.get("faction", "roman")))
 	var opp_faction := _resolve_faction(str(opp.get("faction", "roman")))

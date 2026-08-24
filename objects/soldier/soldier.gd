@@ -2,6 +2,8 @@ extends Node2D
 
 @export var player: int = 1
 @export var dux: bool = false
+# Optional city-state / faction id. Empty = use the side's match cosmetics.
+var faction: String = ""
 var captured = false
 var position_grid: Vector2i = Vector2i.ZERO
 
@@ -14,9 +16,15 @@ func _ready() -> void:
 
 
 func _apply_match_cosmetics() -> void:
-	var look: Dictionary = PawnCosmetics.cosmetics_for_player(player)
-	var faction_id := str(look.get("faction", "roman"))
-	var color_id := str(look.get("color", "blue" if player == 1 else "red"))
+	var faction_id: String
+	var color_id: String
+	if faction != "":
+		faction_id = faction
+		color_id = PawnCosmetics.color_for_faction(faction)
+	else:
+		var look: Dictionary = PawnCosmetics.cosmetics_for_player(player)
+		faction_id = str(look.get("faction", "roman"))
+		color_id = str(look.get("color", "blue" if player == 1 else "red"))
 	var pawn_scale := Vector2(PawnCosmetics.PAWN_SCALE, PawnCosmetics.PAWN_SCALE)
 
 	for node in [$dux_outline, $shield, $insignia]:

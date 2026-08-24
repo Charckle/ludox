@@ -4,17 +4,6 @@ extends Node
 var multiplayer_menu = null
 
 
-# Called when the node enters the scene tree for the first time.
-func _ready() -> void:
-	pass
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
-
-
-
 # runs only on server, ignored zhere
 @rpc("any_peer", "call_remote", "reliable")
 func create_room():
@@ -45,19 +34,19 @@ func update_room_data(room_data):
 	multiplayer_menu.room_container.update_room_data(room_data)
 
 @rpc("any_peer", "call_remote", "reliable")
-func push_room_settings(room_id, room_data):
+func push_room_settings(_room_id, _room_data):
 	pass
 
 @rpc("any_peer", "call_remote", "reliable")
-func join_room_request(room_id):
+func join_room_request(_room_id):
 	pass
 
 @rpc("any_peer", "call_remote", "reliable")
-func leave_room_request(room_id):
+func leave_room_request(_room_id):
 	pass
 
 @rpc("any_peer", "call_remote", "reliable")
-func move_back_room_request(room_id):
+func move_back_room_request(_room_id):
 	pass
 
 
@@ -68,11 +57,11 @@ func move_to_loby():
 	multiplayer_menu.show_loby()
 
 @rpc("any_peer", "call_remote", "reliable")
-func start_game(room_id):
+func start_game(_room_id):
 	pass
 
 @rpc("any_peer", "call_remote", "reliable")
-func spectator_requerst_join_game(room_id):
+func spectator_requerst_join_game(_room_id):
 	pass
 
 @rpc("authority", "call_remote", "reliable")

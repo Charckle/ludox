@@ -80,10 +80,7 @@ var SlainScene = preload("res://objects/soldier/slain_anim/slain_anim.tscn")
 
 
 func can_interact_():
-	if multi_play_menu_open == false and can_interact:
-		return true
-	else:
-		false
+	return multi_play_menu_open == false and can_interact
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -93,7 +90,7 @@ func _ready() -> void:
 		initialize_city()
 	#initialize_preset_city()
 
-func initial_multiplayer_set(m_m_, players_data, vcb):
+func initial_multiplayer_set(m_m_, players_data, board):
 	self.m_m = m_m_
 	
 	self.multi_play = true
@@ -108,8 +105,8 @@ func initial_multiplayer_set(m_m_, players_data, vcb):
 		GlobalSet.match_cosmetics = PawnCosmetics.campaign_cosmetics()
 
 	initialize_city(m_m.city_size, m_m.rules)
-	if not vcb == null:
-		var vcb_transformed = transform_vcb_to_all_units(vcb)
+	if board != null:
+		var vcb_transformed = transform_vcb_to_all_units(board)
 		remove_all_units()
 
 		for unit_data in vcb_transformed:
@@ -143,7 +140,11 @@ func initialize_city(board_size_=board_size, rules_=int(GlobalSet.settings["game
 
 	if GlobalSet.load_saved_continue:
 		GlobalSet.load_saved_continue = false
-		load_game_state(ContinueGame.load_continue())
+		var saved = ContinueGame.load_continue()
+		if saved:
+			load_game_state(saved)
+			if not multi_play:
+				execute_ai_move()
 	else:
 		if not multi_play:
 			set_rand_playerstart()
@@ -159,7 +160,6 @@ func initialize_preset_city():
 	corners = get_corners()
 	border_tiles = get_border_tiles()
 	set_city_for_calc()
-	get_city_size()
 	
 	show_pieces_turn()
 	save_move_state()
@@ -169,7 +169,7 @@ func initialize_battle(battle):
 	remove_all_tiles()
 	
 	city_size = battle.city_size
-	board_size = 1 if city_size.x == 12 else 0
+	board_size = 1 if city_size.x >= 12 else 0
 	rules = battle.rules
 	GlobalSet.settings["game_type"] = Game_types.PVAI
 	GlobalSet.settings["ai_lvl"] = battle.ai_lvl
@@ -181,26 +181,29 @@ func initialize_battle(battle):
 	corners = get_corners()
 	border_tiles = get_border_tiles()
 	
-	place_preset_pawns(battle.pawns)
-	set_city_for_calc()
-	get_city_size()
-	center_board()
-	
-	set_rand_playerstart()
-	show_pieces_turn()
-	save_move_state()
-	execute_ai_move()
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	pass
+	if GlobalSet.load_saved_continue:
+		GlobalSet.load_saved_continue = false
+		var saved = ContinueGame.load_continue()
+		if saved:
+			center_board()
+			load_game_state(saved)
+			vcb.clear()
+			set_city_for_calc()
+			execute_ai_move()
+	else:
+		place_preset_pawns(battle.pawns)
+		set_city_for_calc()
+		center_board()
+		set_rand_playerstart()
+		show_pieces_turn()
+		save_move_state()
+		execute_ai_move()
 
 
 func createboard():
 	create_tiles()
 	place_default_pawns()
 	set_city_for_calc()
-	get_city_size()
 	center_board()
 
 func create_tiles():
@@ -245,15 +248,14 @@ func place_preset_pawns(pawns):
 		var unit_ = Soldier.instantiate()
 		unit_.player = p["player"]
 		unit_.dux = p["dux"]
+		if p.has("faction"):
+			unit_.faction = str(p["faction"])
 		all_soldiers.add_child(unit_)
 		unit_.position = Vector2i(p["pos"]) * unit_.my_size
 		unit_.position_grid = Vector2i(p["pos"])
 
-func get_city_size():
-	var s_size = city_size * tile_size
-
 func place_dux():
-	var half_city = city_size.x / 2
+	var half_city := int(city_size.x * 0.5)
 	var max_y = city_size.y - 1
 	
 	# bottom player 2
@@ -505,7 +507,7 @@ func get_border_tiles(all_positions = null):
 	
 	return border_tiles_
 
-func move_unit(my_player, start_pos, end_pos):
+func move_unit(acting_player, start_pos, end_pos):
 	can_interact = false
 	unit_moving = true
 	# Don't let selection / "your units" squares slide with the pawn.
@@ -517,7 +519,6 @@ func move_unit(my_player, start_pos, end_pos):
 	var unit_v = get_soldier_on_position(start_pos)
 	var unit = _get_soldier_on_position(start_pos)
 	
-	var start_tile = get_tile_on_position(start_pos)
 	var tile = get_tile_on_position(end_pos)
 	
 	unit_v["pg"] = end_pos
@@ -537,33 +538,33 @@ func move_unit(my_player, start_pos, end_pos):
 	# move and end turn
 	if GlobalSet.settings["animation"] == 0 and not multi_play:
 		unit.global_position = tile.global_position
-		unit_stopped_moving(my_player, start_pos, end_pos)
+		unit_stopped_moving(acting_player, start_pos, end_pos)
 	else:
 		unit.tween_to_global_and_resume(tile.global_position, self, start_pos, end_pos)
 	
 
-func unit_stopped_moving(my_player, start_pos, end_pos):
+func unit_stopped_moving(acting_player, start_pos, end_pos):
 	if not multi_play:
 		# check if you eat anything
-		check_if_eatable(my_player, start_pos, end_pos)
+		check_if_eatable(acting_player, start_pos, end_pos)
 		unit_moving = false
 		# Stay locked until execute_ai_move finishes thinking (or unlocks for the human).
 		end_turn()
 	else:
 		m_m.get_node("game").rpc_id(1, "unit_moved", m_m.room_id)
 
-func check_if_eatable(my_player, start_coord, pos_coord, dryrun=false, simulation=false):
+func check_if_eatable(acting_player, start_coord, pos_coord, dryrun=false, simulation=false):
 	var can_eat = []
 	
 	match rules:
 		Rules.BASIC:
-			can_eat.append_array($basic.basic_eatable_rules(my_player, 
+			can_eat.append_array($basic.basic_eatable_rules(acting_player, 
 					start_coord, pos_coord, dryrun, simulation))
 		Rules.BASIC_PLUS:
-			can_eat.append_array($basic.basic_plus_eatable_rules(my_player, 
+			can_eat.append_array($basic.basic_plus_eatable_rules(acting_player, 
 					start_coord, pos_coord, dryrun, simulation))
 		Rules.XXI:
-			can_eat.append_array($xxi.xxi_eatable_rules(my_player, 
+			can_eat.append_array($xxi.xxi_eatable_rules(acting_player, 
 					start_coord, pos_coord, dryrun, simulation))
 	
 	return can_eat
@@ -606,14 +607,14 @@ func where_can_player_move(player, simulation=false):
 	var can_move = true
 	var units_with_possible_eat = []
 	var units_att_dux = []
-	var possible_moves = []
+	var move_list = []
 	
 	for unit in soldiers:
 		var start_coord = unit["pg"]
 		var poss_moves = self.get_possible_moves(start_coord, true, simulation)
 		
 		for move in poss_moves:
-			possible_moves.append([start_coord, move])
+			move_list.append([start_coord, move])
 			var is_eatable = self.check_if_eatable(player, start_coord, move, true, simulation)
 			var tile =  self.get_tile_on_position(move)
 			
@@ -625,14 +626,14 @@ func where_can_player_move(player, simulation=false):
 			if tile.do_adj_dux(self, self.get_enemy_pid(player), simulation):
 				units_att_dux.append([unit["pg"], move])
 	
-	if not units_with_possible_eat and not units_att_dux and not possible_moves:
+	if not units_with_possible_eat and not units_att_dux and not move_list:
 		can_move = false
 		
 	var result = {
 		"can_move": can_move,
 		"units_with_possible_eat": units_with_possible_eat,
 		"units_att_dux": units_att_dux,
-		"possible_moves": possible_moves
+		"possible_moves": move_list
 	}
 	
 	return result
@@ -811,9 +812,9 @@ func check_win():
 		if unit_["dux"] == true:
 			var blocking_tiles = self.get_blocking_tiles(unit_["pg"],unit_["player"])
 			var blocking_units = blocking_tiles[0]
-			var all_tiles = blocking_tiles[1]
+			var adj_tile_coords = blocking_tiles[1]
 			
-			if len(blocking_units) == len(all_tiles):
+			if len(blocking_units) == len(adj_tile_coords):
 				var winner = get_enemy_pid(unit_["player"])
 				var text_ = get_winner_text(winner) + " won the day!\nThe dux is surrounded."
 				lvl_.show_info_pan(text_)
@@ -872,7 +873,9 @@ func get_current_game_state():
 		"all_moves": self.all_moves,
 		"moves_till_attack_dux_ai": self.moves_till_attack_dux_ai,
 		"board_size": self.board_size,
-		"match_cosmetics": GlobalSet.match_cosmetics
+		"match_cosmetics": GlobalSet.match_cosmetics,
+		"campaign_id": GlobalSet.current_campaign_id if GlobalSet.current_battle != null else "",
+		"battle_id": GlobalSet.current_battle.id if GlobalSet.current_battle != null else "",
 	}
 	return game_state
 
@@ -885,23 +888,22 @@ func l_t_v(list_):
 	return my_vector
 
 func get_all_units_for_bckup():
-	var all_units = []
+	var units_backup = []
 	for unit in all_soldiers.get_children():
-		all_units.append([
+		units_backup.append([
 			v_t_l(unit.position_grid),
 			v_t_l(unit.global_position),
 			unit.player,
-			unit.dux
+			unit.dux,
+			unit.faction
 		])
 	
-	return all_units
+	return units_backup
 
 func save_move_state():
 	var cur_state = get_current_game_state()
 	self.game_move_states.append(cur_state)
-	# Campaign battles don't touch the Continue save.
-	if GlobalSet.current_battle == null:
-		ContinueGame.save_continue(cur_state)
+	ContinueGame.save_continue(cur_state)
 
 	
 func undo_move():
@@ -963,13 +965,13 @@ func remove_all_units():
 func restore_unit(unit_data):
 	var unit = Soldier.instantiate()
 	var position_grid = l_t_v(unit_data[0])
-	var global_pos = l_t_v(unit_data[1])
 	
 	unit.player = unit_data[2]
 	unit.dux = unit_data[3]
+	if unit_data.size() > 4:
+		unit.faction = str(unit_data[4])
 	all_soldiers.add_child(unit)
-	unit.global_position = global_pos
-	#unit.set_position_grid()
+	unit.position = Vector2(position_grid) * Vector2(unit.my_size)
 	unit.position_grid = position_grid
 	
 	var valu = len(vcb) + 1
@@ -1015,21 +1017,21 @@ func get_winner_text(player):
 func set_rand_playerstart():
 	player_turn = randi() % 2 + 1
 
-func transform_vcb_to_all_units(vcb):
-	var all_units = []
+func transform_vcb_to_all_units(board):
+	var unit_list = []
 	
-	for unit_id in vcb:
+	for unit_id in board:
 		var new_unit = []
-		var unit_ = vcb[unit_id]
+		var unit_ = board[unit_id]
 		new_unit.append(unit_["pg"])
 		var tile = self.get_tile_on_position(unit_["pg"])
 		new_unit.append(tile.global_position)
 		new_unit.append(unit_["player"])
 		new_unit.append(unit_["dux"])
 		
-		all_units.append(new_unit)
+		unit_list.append(new_unit)
 		
-	return all_units
+	return unit_list
 
 
 func write_console(text_):
