@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://cxbiottmvosdd"
+path="res://.godot/imported/The Eagle March 2.ogg-eed0fb02416d42dc5958d058836320d8.oggvorbisstr"
+
+[deps]
+
+source_file="res://audio/music/battle/The Eagle March 2.ogg"
+dest_files=["res://.godot/imported/The Eagle March 2.ogg-eed0fb02416d42dc5958d058836320d8.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

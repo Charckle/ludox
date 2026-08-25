@@ -89,7 +89,7 @@ static func _ecnomus() -> BattleData:
 			". . . . d d D d . . . .",
 			". . d d . . . . d d . .",
 		],
-		"res://audio/music/epic/The Battle of the Black Sea.mp3"
+		"res://audio/music/epic/The Battle of the Black Sea.ogg"
 	)
 
 
@@ -112,7 +112,7 @@ static func _trebia() -> BattleData:
 			". d d D d d . .",
 			". . d . . d . .",
 		],
-		"res://audio/music/epic/Barca On The Alps.mp3"
+		"res://audio/music/epic/Barca On The Alps.ogg"
 	)
 
 
@@ -157,7 +157,7 @@ static func _cannae() -> BattleData:
 			". . d d d d d d d d d . .",
 			"d d d d d d D d d d d d d",
 		],
-		"res://audio/music/epic/Cannae Ring.mp3"
+		"res://audio/music/epic/Cannae Ring.ogg"
 	)
 
 
@@ -202,5 +202,5 @@ static func _zama() -> BattleData:
 			". . d d d d . d d d d . .",
 			"d d d d d d D . . . . d d",
 		],
-		"res://audio/music/epic/Rome Never Broke.mp3"
+		"res://audio/music/epic/Rome Never Broke.ogg"
 	)

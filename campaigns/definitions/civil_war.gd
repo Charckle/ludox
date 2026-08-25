@@ -67,7 +67,7 @@ static func _ilerda() -> BattleData:
 			". . . D . . . .",
 			"d d d d d d d d",
 		],
-		"res://audio/music/epic/The Rubicon.mp3"
+		"res://audio/music/epic/The Rubicon.ogg"
 	)
 
 
@@ -112,7 +112,7 @@ static func _pharsalus() -> BattleData:
 			". . d d d . D . d d . f f",
 			"d d d d d d d d d d d . f",
 		],
-		"res://audio/music/epic/Cross the Plain, Caesar.mp3"
+		"res://audio/music/epic/Cross the Plain, Caesar.ogg"
 	)
 
 
@@ -179,5 +179,5 @@ static func _munda() -> BattleData:
 			"d . d d d . D . d d d . d",
 			"d d d d d d . d d d d d d",
 		],
-		"res://audio/music/epic/Blood Upon the Sand (Steel Legion Mix) (Edit).mp3"
+		"res://audio/music/epic/Blood Upon the Sand (Steel Legion Mix) (Edit).ogg"
 	)

@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://dq8ls7k5aaurq"
+path="res://.godot/imported/Echoes of the Roman Drums 2.ogg-71542bd2bab51f991eb602dceec39a2d.oggvorbisstr"
+
+[deps]
+
+source_file="res://audio/music/battle/Echoes of the Roman Drums 2.ogg"
+dest_files=["res://.godot/imported/Echoes of the Roman Drums 2.ogg-71542bd2bab51f991eb602dceec39a2d.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

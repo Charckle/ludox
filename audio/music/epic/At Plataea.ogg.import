@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://cfug205342o5i"
+path="res://.godot/imported/At Plataea.ogg-1ba1dd3597a5cdee755fd836de319dab.oggvorbisstr"
+
+[deps]
+
+source_file="res://audio/music/epic/At Plataea.ogg"
+dest_files=["res://.godot/imported/At Plataea.ogg-1ba1dd3597a5cdee755fd836de319dab.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

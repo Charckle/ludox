@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://bjgxtl0wdspjo"
+path="res://.godot/imported/Blood Upon the Sand (Steel Legion Mix) (Edit).ogg-879a3b57a41e953d72ac2f2507beeb3b.oggvorbisstr"
+
+[deps]
+
+source_file="res://audio/music/epic/Blood Upon the Sand (Steel Legion Mix) (Edit).ogg"
+dest_files=["res://.godot/imported/Blood Upon the Sand (Steel Legion Mix) (Edit).ogg-879a3b57a41e953d72ac2f2507beeb3b.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

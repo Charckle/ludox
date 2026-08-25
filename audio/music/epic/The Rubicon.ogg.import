@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://d1nhef7cntiwd"
+path="res://.godot/imported/The Rubicon.ogg-e4337d6e9aaa99a66d7f817e98acfd2c.oggvorbisstr"
+
+[deps]
+
+source_file="res://audio/music/epic/The Rubicon.ogg"
+dest_files=["res://.godot/imported/The Rubicon.ogg-e4337d6e9aaa99a66d7f817e98acfd2c.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

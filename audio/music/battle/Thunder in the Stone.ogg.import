@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://p3yisfwg4elp"
+path="res://.godot/imported/Thunder in the Stone.ogg-4b24a6b8c5a7a349284d33e7523ea68f.oggvorbisstr"
+
+[deps]
+
+source_file="res://audio/music/battle/Thunder in the Stone.ogg"
+dest_files=["res://.godot/imported/Thunder in the Stone.ogg-4b24a6b8c5a7a349284d33e7523ea68f.oggvorbisstr"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

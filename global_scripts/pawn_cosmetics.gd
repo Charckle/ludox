@@ -107,12 +107,11 @@ const COLOR_PALETTE := {
 	"purple": {"name": "Purple", "color": Color(0.55, 0.22, 0.75)},
 	"teal": {"name": "Teal", "color": Color(0.1, 0.7, 0.7)},
 	"white": {"name": "White", "color": Color(0.92, 0.92, 0.92)},
-	"black": {"name": "Black", "color": Color(0.12, 0.12, 0.12)},
 	"brown": {"name": "Brown", "color": Color(0.55, 0.32, 0.14)},
 }
 
 ## High-contrast subset used when color is Random.
-const RANDOM_COLOR_IDS := ["red", "blue", "green", "yellow", "white", "black"]
+const RANDOM_COLOR_IDS := ["red", "blue", "green", "yellow", "white"]
 
 ## Default shield color when a pawn has a per-piece faction.
 const FACTION_COLORS := {
@@ -127,7 +126,7 @@ const FACTION_COLORS := {
 	"persian": "purple",
 	"pontus": "purple",
 	"numidian": "brown",
-	"german": "black",
+	"german": "smaragd",
 	"roman": "red",
 	"gaul": "green",
 	"carthage": "yellow",

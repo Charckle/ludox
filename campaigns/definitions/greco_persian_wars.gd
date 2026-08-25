@@ -88,7 +88,7 @@ static func _marathon() -> BattleData:
 			". a a A a a . .",
 			"p p . . . . p p",
 		],
-		"res://audio/music/epic/Marathon Plain.mp3"
+		"res://audio/music/epic/Marathon Plain.ogg"
 	)
 
 
@@ -155,7 +155,7 @@ static func _plataea() -> BattleData:
 			"p a a a . c . s s s s . .",
 			"p a a . c . s . S . s . .",
 		],
-		"res://audio/music/epic/At Plataea.mp3"
+		"res://audio/music/epic/At Plataea.ogg"
 	)
 
 
