@@ -52,3 +52,16 @@ func is_unlocked(camp: CampaignData, index: int) -> bool:
 	if index <= 0:
 		return true
 	return is_won(camp.id, camp.battles[index - 1].id)
+
+
+# True if winning this battle would mean every mission in the campaign is won.
+func would_complete(camp_id: String, battle_id: String) -> bool:
+	var camp := Campaigns.get_by_id(camp_id)
+	if camp == null or camp.battles.is_empty():
+		return false
+	for b in camp.battles:
+		if b.id == battle_id:
+			continue
+		if not is_won(camp.id, b.id):
+			return false
+	return true

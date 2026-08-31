@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=3 uid="uid://blglugajiqw3y"]
+[gd_scene load_steps=20 format=3 uid="uid://blglugajiqw3y"]
 
 [ext_resource type="Script" uid="uid://cjmw0hmqq8fmc" path="res://menus/main_menu/top_btns.gd" id="1_1nwmw"]
 [ext_resource type="Script" uid="uid://bpk3x06ssbpm7" path="res://menus/main_menu/main_menu.gd" id="1_ml8bw"]
@@ -11,6 +11,7 @@
 [ext_resource type="Script" uid="uid://s5p0g6dulsdj" path="res://menus/main_menu/fadein_box.gd" id="10_8woyc"]
 [ext_resource type="Texture2D" uid="uid://bqnmfgehdm1bj" path="res://sprites/images/europe_map.png" id="13_11cdn"]
 [ext_resource type="Script" uid="uid://bi1d15b7qexss" path="res://menus/main_menu/campaign_pan.gd" id="14_camp"]
+[ext_resource type="Script" uid="uid://b8fb4v0yg1y71" path="res://menus/scenarios/scenarios_pan.gd" id="15_scen"]
 
 [sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_t7kvd"]
 emission_shape = 3
@@ -121,29 +122,35 @@ layout_mode = 2
 [node name="top_btns" type="VBoxContainer" parent="main_container/top_buttons"]
 layout_mode = 2
 offset_left = 16.0
-offset_top = 24.0
+offset_top = 16.0
 offset_right = 288.0
-offset_bottom = 96.0
+offset_bottom = 248.0
+theme_override_constants/separation = 6
 script = ExtResource("1_1nwmw")
 
 [node name="continue_btn" type="Button" parent="main_container/top_buttons/top_btns"]
 visible = false
-custom_minimum_size = Vector2(0, 50)
+custom_minimum_size = Vector2(0, 38)
 layout_mode = 2
 text = "Continue"
 
 [node name="new_game_btn" type="Button" parent="main_container/top_buttons/top_btns"]
-custom_minimum_size = Vector2(0, 50)
+custom_minimum_size = Vector2(0, 38)
 layout_mode = 2
 text = "New game"
 
 [node name="campaign_btn" type="Button" parent="main_container/top_buttons/top_btns"]
-custom_minimum_size = Vector2(0, 50)
+custom_minimum_size = Vector2(0, 38)
 layout_mode = 2
 text = "Campaign"
 
+[node name="scenarios_btn" type="Button" parent="main_container/top_buttons/top_btns"]
+custom_minimum_size = Vector2(0, 38)
+layout_mode = 2
+text = "Scenarios"
+
 [node name="online_btn" type="Button" parent="main_container/top_buttons/top_btns"]
-custom_minimum_size = Vector2(0, 50)
+custom_minimum_size = Vector2(0, 38)
 layout_mode = 2
 text = "Online Multiplayer"
 
@@ -154,25 +161,26 @@ anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
 offset_left = 16.0
-offset_top = -88.0
+offset_top = -148.0
 offset_right = -16.0
-offset_bottom = -22.0
+offset_bottom = -16.0
 grow_horizontal = 2
 grow_vertical = 0
+theme_override_constants/separation = 6
 script = ExtResource("1_xbn2l")
 
 [node name="game_rules_btn" type="Button" parent="main_container/top_buttons/bottom_btns"]
-custom_minimum_size = Vector2(0, 50)
+custom_minimum_size = Vector2(0, 38)
 layout_mode = 2
 text = "Game Rules"
 
 [node name="settings_btn" type="Button" parent="main_container/top_buttons/bottom_btns"]
-custom_minimum_size = Vector2(0, 50)
+custom_minimum_size = Vector2(0, 38)
 layout_mode = 2
 text = "Settings"
 
 [node name="exit_btn" type="Button" parent="main_container/top_buttons/bottom_btns"]
-custom_minimum_size = Vector2(0, 50)
+custom_minimum_size = Vector2(0, 38)
 layout_mode = 2
 text = "Exit"
 
@@ -248,13 +256,15 @@ offset_bottom = 50.0
 grow_horizontal = 2
 grow_vertical = 2
 selected = 0
-item_count = 3
+item_count = 4
 popup/item_0/text = "Easy"
 popup/item_0/id = 0
 popup/item_1/text = "Normal"
 popup/item_1/id = 1
 popup/item_2/text = "Hard"
 popup/item_2/id = 2
+popup/item_3/text = "Caesar"
+popup/item_3/id = 3
 
 [node name="city_size_btn" type="OptionButton" parent="othr_containers/new_game_pan"]
 custom_minimum_size = Vector2(0, 50)
@@ -362,7 +372,7 @@ text = "Epic"
 [node name="epic_btn" type="OptionButton" parent="othr_containers/settings_pan/TabContainer/Gameplay/GridContainer"]
 custom_minimum_size = Vector2(0, 50)
 layout_mode = 2
-selected = 1
+selected = 0
 item_count = 2
 popup/item_0/text = "Off"
 popup/item_0/id = 0
@@ -464,6 +474,14 @@ layout_mode = 2
 disabled = true
 text = "Attila"
 
+[node name="scenarios_pan" type="Panel" parent="othr_containers"]
+visible = false
+layout_mode = 0
+offset_left = -384.0
+offset_top = -216.0
+offset_bottom = 208.0
+script = ExtResource("15_scen")
+
 [node name="rule_book" parent="othr_containers" instance=ExtResource("6_81su3")]
 visible = false
 layout_mode = 1
@@ -523,6 +541,7 @@ script = ExtResource("10_8woyc")
 [connection signal="pressed" from="main_container/top_buttons/top_btns/continue_btn" to="main_container/top_buttons/top_btns" method="_on_continue_btn_pressed"]
 [connection signal="pressed" from="main_container/top_buttons/top_btns/new_game_btn" to="main_container/top_buttons/top_btns" method="_on_new_game_btn_pressed"]
 [connection signal="pressed" from="main_container/top_buttons/top_btns/campaign_btn" to="main_container/top_buttons/top_btns" method="_on_button_pressed"]
+[connection signal="pressed" from="main_container/top_buttons/top_btns/scenarios_btn" to="main_container/top_buttons/top_btns" method="_on_scenarios_btn_pressed"]
 [connection signal="pressed" from="main_container/top_buttons/top_btns/online_btn" to="main_container/top_buttons/top_btns" method="_on_online_btn_pressed"]
 [connection signal="pressed" from="main_container/top_buttons/bottom_btns/game_rules_btn" to="main_container/top_buttons/bottom_btns" method="_on_game_rules_btn_pressed"]
 [connection signal="pressed" from="main_container/top_buttons/bottom_btns/settings_btn" to="main_container/top_buttons/bottom_btns" method="_on_settings_btn_pressed"]

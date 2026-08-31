@@ -201,8 +201,8 @@ func _prepend_epic_opener() -> void:
 
 func _epic_enabled() -> bool:
 	if GlobalSet.settings == null:
-		return true
-	return int(GlobalSet.settings.get("epic", 1)) == 1
+		return false
+	return int(GlobalSet.settings.get("epic", 0)) == 1
 
 
 func _play_current_battle_track() -> void:

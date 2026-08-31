@@ -11,7 +11,7 @@ config_version=5
 [application]
 
 config/name="Roman Chess"
-config/version="0.5.12"
+config/version="0.5.14"
 run/main_scene="uid://blglugajiqw3y"
 config/features=PackedStringArray("4.4", "GL Compatibility")
 config/icon="uid://dxvc0ipr056vg"
@@ -24,6 +24,7 @@ ContinueGame="*res://global_scripts/continue_game.gd"
 Campaigns="*res://campaigns/campaigns.gd"
 CampaignProgress="*res://campaigns/campaign_progress.gd"
 PawnCosmetics="*res://global_scripts/pawn_cosmetics.gd"
+ScenarioLibrary="*res://scenarios/scenario_library.gd"
 MusicManager="*res://global_scripts/music_manager.gd"
 
 [display]

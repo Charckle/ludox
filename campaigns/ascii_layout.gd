@@ -2,6 +2,7 @@ extends RefCounted
 class_name AsciiLayout
 
 # Parses an ASCII grid into pawn data.
+# Campaigns pass a LETTERS dict; TOKEN is the shared vocabulary they copy from.
 #
 # Legend (whitespace between cells is ignored):
 #   . = empty
@@ -11,9 +12,9 @@ class_name AsciiLayout
 # Optional city-state letters set faction (and that faction's color).
 # Uppercase = dux. You (player 2):
 #   A/a Athenian   S/s Spartan   C/c Corinthian   G/g Aeginetan
-#   H/h Thespian   M/m Milesian  P/p Plataean     F/f Gaul (Caesar's cavalry)
+#   H/h Thespian   M/m Milesian  P/p Plataean     F/f Gaul (with you)
 # Enemy (player 1) city-states:
-#   I/i Milesian (Ionian levy)   B/b Theban (medizer)   U/u Gaul (Hannibal's Celts)
+#   I/i Milesian (Ionian levy)   B/b Theban (medizer)   U/u Gaul (with enemy)
 #   O/o Pontus   N/n Numidian   T/t German
 #
 # Row 0 is the top of the board. Returns:
@@ -55,7 +56,8 @@ const TOKEN := {
 }
 
 
-static func parse(rows: Array) -> Dictionary:
+static func parse(rows: Array, letters: Dictionary = {}) -> Dictionary:
+	var table: Dictionary = TOKEN if letters.is_empty() else letters
 	var pawns: Array = []
 	var height: int = rows.size()
 	var width: int = 0
@@ -65,9 +67,9 @@ static func parse(rows: Array) -> Dictionary:
 		width = max(width, cells.size())
 		for x in cells.size():
 			var ch: String = cells[x]
-			if not TOKEN.has(ch):
+			if not table.has(ch):
 				continue
-			var spec: Dictionary = TOKEN[ch]
+			var spec: Dictionary = table[ch]
 			var pawn := {
 				"pos": Vector2i(x, y),
 				"player": spec["player"],

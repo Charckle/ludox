@@ -313,101 +313,68 @@ func phalanx_attack(where, my_player, start_coord, target_pos, dryrun=false,
 		Where.RIGHT:
 			up = up * 1
 
-	var testudo_side = false
-
 	var next_position = target_pos
 	next_position[axis] = target_pos[axis] + up
 	
-	
 	var unit = city.get_soldier_on_position(next_position, simulation)
-	var first_unit = false
-	
-	if unit != null and unit["player"] == my_player:
-		first_unit = true
-	
+	if unit == null or unit["player"] != my_player:
+		return can_eat
 	# if the first unit is the one your are moving, shit is afoot, stop
 	if next_position == start_coord:
 		return can_eat
-	if first_unit:
-		# check on which side your units are
-		# get left and right tiles
-		var unit_sourounding_tiles = city.get_adjacent_tiles(target_pos, true)
-		unit_sourounding_tiles.erase(start_coord)
 
-		var xyz_pos = target_pos
-		xyz_pos[axis] = xyz_pos[axis] + up
-		
-		unit_sourounding_tiles.erase(target_pos)
-		# erase one in the back
-		xyz_pos = target_pos
-		xyz_pos[axis] = xyz_pos[axis] - up
-		unit_sourounding_tiles.erase(xyz_pos)
-		# erase the next one
-		unit_sourounding_tiles.erase(next_position)
+	# Perpendicular neighbours of the landing square (not front/back).
+	var unit_sourounding_tiles = city.get_adjacent_tiles(target_pos, true)
+	unit_sourounding_tiles.erase(start_coord)
+	unit_sourounding_tiles.erase(target_pos)
+	var xyz_pos = target_pos
+	xyz_pos[axis] = xyz_pos[axis] - up
+	unit_sourounding_tiles.erase(xyz_pos)
+	unit_sourounding_tiles.erase(next_position)
 
-		var diff_vector = null
-		
-		if len(unit_sourounding_tiles) > 1:
-			var left_side_pos = unit_sourounding_tiles[0]
-			var right_side_pos = unit_sourounding_tiles[1]
+	# Any friendly side that already has a matching friend on the first rank
+	# is a candidate testudo. Extra pieces on the other flank do not cancel it.
+	var candidates: Array = []
+	for side_pos in unit_sourounding_tiles:
+		var side_unit = city.get_soldier_on_position(side_pos, simulation)
+		if side_unit == null or side_unit["player"] != my_player:
+			continue
+		if side_unit["pg"] == start_coord:
+			continue
+		var dv = signed_axis(target_pos, side_pos)
+		if dv in candidates:
+			continue
+		if _testudo_rank_ok(next_position, dv, my_player, simulation):
+			candidates.append(dv)
 
-			var unit_l = city.get_soldier_on_position(left_side_pos, simulation)
-			var unit_r = city.get_soldier_on_position(right_side_pos, simulation)
-			
-			# if there is a friendly unit on one side, and no unit on the other
-			var mlist = [unit_l, unit_r]
-
-			if mlist.has(null) and mlist.count(null) < mlist.size():
-				if unit_l == null:
-					if unit_r["player"] == my_player and unit_r["pg"] != start_coord:
-						testudo_side = right_side_pos # position of the unit
-				elif unit_r == null:
-					if unit_l["player"] == my_player and unit_l["pg"] != start_coord:
-						testudo_side = left_side_pos # position of the unit
-				if testudo_side is not bool:
-					# get the vector to which you add the central to get hte periferal vector
-					diff_vector = signed_axis(target_pos, testudo_side)
-		
-		
-		if testudo_side:
-			# check if the next unit has our unit on the right side
-			var unit_pos_testudo_side = next_position + diff_vector
-			var unit_opos_testudo_side = next_position - diff_vector
-			var test_yes_unit = city.get_soldier_on_position(unit_pos_testudo_side, simulation)
-			var test_no_unit = city.get_soldier_on_position(unit_opos_testudo_side, simulation)
-			
-			if test_no_unit != null or test_yes_unit == null or test_yes_unit["player"] != my_player:
-				testudo_side = false
-				first_unit = false
-			#if start_coord in [unit_pos_testudo_side, unit_opos_testudo_side]:
-				#testudo_side = false
-				#first_unit = false
-
-	if first_unit and testudo_side:
+	for diff_vector in candidates:
+		var scan_pos = next_position
+		var captured = false
 		while true:
-			next_position[axis] = next_position[axis] + up
-			var unit_r = city.get_soldier_on_position(next_position, simulation)
+			scan_pos[axis] = scan_pos[axis] + up
+			var unit_r = city.get_soldier_on_position(scan_pos, simulation)
 
 			if unit_r != null and unit_r["player"] != my_player:
-				
 				if not unit_r["dux"]:
 					if dryrun:
-						can_eat.append([start_coord, target_pos, next_position])
+						can_eat.append([start_coord, target_pos, scan_pos])
 					else:
 						city.eat_unit(unit_r["pg"])
-						
+					captured = true
 				break
 			elif unit_r != null and unit_r["player"] == my_player:
-				var unit_pos_testudo_side = next_position + testudo_side
-				var unit_opos_testudo_side = next_position - testudo_side
-				var test_no_unit = city.get_soldier_on_position(unit_pos_testudo_side, simulation)
-				var test_yes_unit = city.get_soldier_on_position(unit_opos_testudo_side, simulation)
-				if test_no_unit != null and (test_yes_unit == null or test_yes_unit["player"] != my_player):
+				if not _testudo_rank_ok(scan_pos, diff_vector, my_player, simulation):
 					break
 			else:
 				break
+		if captured:
+			break
 
 	return can_eat
+
+func _testudo_rank_ok(rank_pos, diff_vector, my_player, simulation):
+	var test_yes_unit = city.get_soldier_on_position(rank_pos + diff_vector, simulation)
+	return test_yes_unit != null and test_yes_unit["player"] == my_player
 
 # Unit axis (±1 on the dominant axis) from `from_p` toward `to_p`
 func signed_axis(from_p: Vector2i, to_p: Vector2i) -> Vector2i:

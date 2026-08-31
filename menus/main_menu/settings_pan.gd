@@ -22,7 +22,7 @@ func populate_settings():
 	gameplay.get_node("animation_btn").selected = gameplay.get_node("animation_btn").get_item_index(int(GlobalSet.settings["animation"]))
 	gameplay.get_node("movement_btn").selected = gameplay.get_node("movement_btn").get_item_index(int(GlobalSet.settings["movement_highlight"]))
 	gameplay.get_node("audio_btn").selected = gameplay.get_node("audio_btn").get_item_index(int(GlobalSet.settings["audio"]))
-	gameplay.get_node("epic_btn").selected = gameplay.get_node("epic_btn").get_item_index(int(GlobalSet.settings.get("epic", 1)))
+	gameplay.get_node("epic_btn").selected = gameplay.get_node("epic_btn").get_item_index(int(GlobalSet.settings.get("epic", 0)))
 	mp_grid.get_node("username_lnd").text = GlobalSet.settings["multiplayer"]["username"]
 	mp_grid.get_node("server_ip_lnd").text = GlobalSet.settings["multiplayer"]["server_ip"]
 	_populate_cosmetics_ui()

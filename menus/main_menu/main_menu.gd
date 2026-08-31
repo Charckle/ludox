@@ -19,10 +19,14 @@ func _ready() -> void:
 		print(multiplyer_s.disconnect_reason_)
 
 	MusicManager.play_menu()
+	_open_pending_campaign()
 
 
-func _input(event: InputEvent) -> void:
+func _unhandled_input(event: InputEvent) -> void:
 	if not event.is_action_pressed("ui_cancel"):
+		return
+	if $othr_containers/scenarios_pan.close_overlays_if_open():
+		get_viewport().set_input_as_handled()
 		return
 	if $othr_containers/campaign_pan.close_battle_modal_if_open():
 		get_viewport().set_input_as_handled()
@@ -40,6 +44,16 @@ func _input(event: InputEvent) -> void:
 func hide_all_oth_containers():
 	for child in $othr_containers.get_children():
 		child.visible = false
+
+
+func _open_pending_campaign() -> void:
+	var camp_id := str(GlobalSet.pending_campaign_id)
+	GlobalSet.pending_campaign_id = ""
+	if camp_id == "":
+		return
+	hide_all_oth_containers()
+	$othr_containers/campaign_pan.visible = true
+	$othr_containers/campaign_pan.show_campaign(camp_id)
 
 
 func do_easter_egs():

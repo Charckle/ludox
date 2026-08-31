@@ -12,4 +12,5 @@ class_name CampaignData
 
 # Pawn looks for this campaign. player 1 = AI (top), player 2 = human (bottom).
 # Each value: { "faction": String, "color": String }
+# A battle may override this via BattleData.cosmetics.
 @export var cosmetics: Dictionary = {}

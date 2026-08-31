@@ -13,6 +13,15 @@ var skip_epic_opener = false
 # Set when launching a solo campaign battle; null for normal/multiplayer games.
 var current_battle = null
 var current_campaign_id = ""
+# Set when returning from a campaign battle so the menu reopens that campaign.
+var pending_campaign_id := ""
+
+
+func return_to_campaign_menu() -> void:
+	pending_campaign_id = str(current_campaign_id)
+	current_battle = null
+	current_campaign_id = ""
+	match_cosmetics = null
 
 # Resolved per-match pawn looks: {"1": {"faction","color"}, "2": {...}}
 # Kept across rematch; cleared when starting a fresh local/campaign game.

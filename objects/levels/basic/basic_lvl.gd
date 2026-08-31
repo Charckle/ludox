@@ -10,8 +10,9 @@ func _ready() -> void:
 		_show_mission_banner(str(GlobalSet.current_battle.title))
 
 
-func show_info_pan(text_):
+func show_info_pan(text_, to_campaign := false, hide_rematch := false):
 	$CanvasModulate/info_panel/RichTextLabel.text = text_
+	$CanvasModulate/info_panel.setup_for_result(to_campaign, hide_rematch)
 	$CanvasModulate/info_panel.visible = true
 
 func _on_undo_btn_pressed() -> void:

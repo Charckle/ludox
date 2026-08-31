@@ -37,6 +37,13 @@ func check_continue_exists() -> bool:
 	return FileAccess.file_exists(continue_path)
 
 
+func get_continue_campaign_id() -> String:
+	var state = _read_continue()
+	if typeof(state) != TYPE_DICTIONARY:
+		return ""
+	return str(state.get("campaign_id", ""))
+
+
 func delete_continue() -> void:
 	if FileAccess.file_exists(continue_path):
 		var err := DirAccess.remove_absolute(continue_path)
@@ -61,6 +68,16 @@ func apply_continue_to_global() -> bool:
 	var camp_id := str(state.get("campaign_id", ""))
 	var battle_id := str(state.get("battle_id", ""))
 	if camp_id == "" or battle_id == "":
+		var scen := {}
+		if battle_id != "":
+			scen = ScenarioLibrary.get_by_id(battle_id)
+		if not scen.is_empty():
+			GlobalSet.load_saved_continue = true
+			GlobalSet.skip_epic_opener = true
+			GlobalSet.current_campaign_id = ""
+			GlobalSet.current_battle = ScenarioCodec.to_battle(scen)
+			GlobalSet.match_cosmetics = null
+			return true
 		GlobalSet.load_saved_continue = true
 		GlobalSet.skip_epic_opener = true
 		GlobalSet.current_battle = null

@@ -184,6 +184,9 @@ func color_for_faction(faction_id: String) -> String:
 
 func campaign_cosmetics() -> Dictionary:
 	# player 1 = AI (top), player 2 = human (bottom)
+	var battle = GlobalSet.current_battle
+	if battle != null and not battle.cosmetics.is_empty():
+		return battle.cosmetics.duplicate(true)
 	var camp_id := str(GlobalSet.current_campaign_id)
 	if camp_id != "":
 		var camp = Campaigns.get_by_id(camp_id)

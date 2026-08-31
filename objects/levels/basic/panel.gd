@@ -16,10 +16,18 @@ func _ready() -> void:
 	visible_x = -200 # In case it's already anchored where you want it
 
 	#self.position.x = hidden_x  # Start hidden
-	if GlobalSet.current_battle != null:
+	var is_campaign := GlobalSet.current_battle != null \
+		and str(GlobalSet.current_campaign_id) != ""
+	var is_preset := GlobalSet.current_battle != null
+	if is_campaign:
 		$undo_btn.visible = false
 		$ai_difficulty_btn.visible = false
-	if SHOW_DEBUG_WIN and GlobalSet.current_battle != null:
+		$campaign_menu_btn.visible = true
+		$rematch_btn.offset_top = 152.0
+		$rematch_btn.offset_bottom = 207.0
+	elif is_preset:
+		$ai_difficulty_btn.visible = false
+	if SHOW_DEBUG_WIN and is_campaign:
 		_build_debug_win_btn()
 
 
@@ -49,7 +57,8 @@ func toggle_console():
 	if menu_open:
 		pass
 	
-	if city.unit_moving or GlobalSet.current_battle != null:
+	if city.unit_moving or (GlobalSet.current_battle != null \
+			and str(GlobalSet.current_campaign_id) != ""):
 		$undo_btn.disabled = true
 	else:
 		$undo_btn.disabled = false
@@ -76,7 +85,13 @@ func _on_texture_button_pressed() -> void:
 
 func _on_main_menu_btn_pressed() -> void:
 	GlobalSet.current_battle = null
+	GlobalSet.current_campaign_id = ""
 	GlobalSet.match_cosmetics = null
+	get_tree().change_scene_to_file("res://menus/main_menu/main_menu.tscn")
+
+
+func _on_campaign_menu_btn_pressed() -> void:
+	GlobalSet.return_to_campaign_menu()
 	get_tree().change_scene_to_file("res://menus/main_menu/main_menu.tscn")
 
 
@@ -107,5 +122,4 @@ func _build_debug_win_btn() -> void:
 func _on_debug_win_pressed() -> void:
 	if GlobalSet.current_battle == null:
 		return
-	city.set_winner(2)
-	city.lvl_.show_info_pan("You won the day!\n(Debug win)")
+	city.announce_winner(2, "(Debug win)")

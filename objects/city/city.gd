@@ -59,7 +59,8 @@ enum Game_types {
 enum Ai_lvl {
 	EASY,
 	NORMAL,
-	HARD
+	HARD,
+	CAESAR
 }
 
 var moves_till_attack_dux_ai = 6
@@ -171,7 +172,9 @@ func initialize_battle(battle):
 	city_size = battle.city_size
 	board_size = 1 if city_size.x >= 12 else 0
 	rules = battle.rules
-	GlobalSet.settings["game_type"] = Game_types.PVAI
+	# Campaigns are always vs AI. Scenarios keep the type set by the launcher.
+	if str(GlobalSet.current_campaign_id) != "":
+		GlobalSet.settings["game_type"] = Game_types.PVAI
 	GlobalSet.settings["ai_lvl"] = battle.ai_lvl
 	scale = default_scale
 	GlobalSet.match_cosmetics = PawnCosmetics.campaign_cosmetics()
@@ -785,6 +788,30 @@ func set_all_last_moved():
 		to_tile.last_moved_to(true)
 
 
+func _in_campaign() -> bool:
+	return GlobalSet.current_battle != null and str(GlobalSet.current_campaign_id) != ""
+
+
+func announce_winner(winner: int, reason: String) -> void:
+	var to_campaign := _in_campaign()
+	var hide_rematch := false
+	var text_ := ""
+	if to_campaign and winner == 2:
+		hide_rematch = true
+		var battle = GlobalSet.current_battle
+		var flavor := str(battle.victory_text)
+		if flavor == "":
+			text_ = "Victory!\n" + reason
+		else:
+			text_ = "[b]" + str(battle.title) + "[/b]\n\n" + flavor
+		if CampaignProgress.would_complete(GlobalSet.current_campaign_id, battle.id):
+			text_ += "\n\nThe campaign is won."
+	else:
+		text_ = get_winner_text(winner) + " won the day!\n" + reason
+	lvl_.show_info_pan(text_, to_campaign, hide_rematch)
+	set_winner(winner)
+
+
 func check_win():
 	# check if both have any units left
 	var score = {1: 0, 2: 0}
@@ -801,9 +828,7 @@ func check_win():
 		winner_ = 1
 	
 	if winner_ != 0:
-		var text_ = get_winner_text(winner_) + " won the day!\nThere are no more pawns."
-		lvl_.show_info_pan(text_)
-		set_winner(winner_)
+		announce_winner(winner_, "There are no more pawns.")
 		return true
 	
 	# check for dux
@@ -816,9 +841,7 @@ func check_win():
 			
 			if len(blocking_units) == len(adj_tile_coords):
 				var winner = get_enemy_pid(unit_["player"])
-				var text_ = get_winner_text(winner) + " won the day!\nThe dux is surrounded."
-				lvl_.show_info_pan(text_)
-				set_winner(winner)
+				announce_winner(winner, "The dux is surrounded.")
 				return true
 	
 	# check if player can move
@@ -827,15 +850,13 @@ func check_win():
 	
 	if results["can_move"] == false:
 		var winner = get_enemy_pid(player_turn)
-		var text_ = get_winner_text(winner) + " won the day! No more moves available"
-		lvl_.show_info_pan(text_)
-		set_winner(winner)
+		announce_winner(winner, "No more moves available")
 		return true
 	
 	
 	if since_last_eat >= moves_to_draw:
 		var text_ = "The game ends in a draw. Throw some dice to decide the winner"
-		lvl_.show_info_pan(text_)
+		lvl_.show_info_pan(text_, _in_campaign(), false)
 		player_turn = 3
 		ContinueGame.delete_continue()
 	return false
@@ -851,8 +872,9 @@ func set_winner(player_n):
 	if not multi_play:
 		ContinueGame.delete_continue()
 	
-	# Record campaign win (human is player 2).
-	if GlobalSet.current_battle != null and player_n == 2:
+	# Record campaign win (human is player 2). Scenarios are not campaigns.
+	if GlobalSet.current_battle != null and player_n == 2 \
+			and str(GlobalSet.current_campaign_id) != "":
 		CampaignProgress.mark_won(GlobalSet.current_campaign_id, GlobalSet.current_battle.id)
 
 func _ensure_skirmish_cosmetics() -> void:

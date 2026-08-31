@@ -22,8 +22,16 @@ func _on_continue_btn_pressed() -> void:
 
 func _on_button_pressed() -> void:
 	main_menu.hide_all_oth_containers()
-	$"../../../othr_containers/campaign_pan".visible = true
-	
+	var pan = $"../../../othr_containers/campaign_pan"
+	pan.visible = true
+	var camp_id := ContinueGame.get_continue_campaign_id()
+	if camp_id != "":
+		pan.show_campaign(camp_id)
+
+
+func _on_scenarios_btn_pressed() -> void:
+	main_menu.hide_all_oth_containers()
+	$"../../../othr_containers/scenarios_pan".visible = true
 
 
 func _on_online_btn_pressed() -> void:

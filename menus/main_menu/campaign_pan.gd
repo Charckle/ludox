@@ -3,13 +3,16 @@ extends Panel
 const DOT_SIZE := Vector2(20, 20)
 const MIN_DOT_SEPARATION := 36.0
 const MAP_SLOT := Vector2(360, 224)
+const DESC_WIDTH := 400.0
+const DESC_MARGIN := 12.0
 const DEFAULT_MAP := preload("res://sprites/images/europe_map.png")
 
 var current_campaign: CampaignData = null
 var selected_battle: BattleData = null
 
 var dots_root: Control
-var modal_layer: CanvasLayer
+var desc_layer: CanvasLayer
+var desc_card: Panel
 var desc_title: Label
 var desc_label: RichTextLabel
 var start_btn: Button
@@ -48,9 +51,33 @@ func _on_civil_war_btn_pressed() -> void:
 
 func show_campaign(camp_id: String) -> void:
 	current_campaign = Campaigns.get_by_id(camp_id)
+	_highlight_campaign_button(camp_id)
 	_apply_map()
 	_hide_desc()
 	_refresh_dots()
+
+
+func _highlight_campaign_button(camp_id: String) -> void:
+	var names := {
+		"greco_persian_wars": "greco_persian_btn",
+		"punic_wars": "punic_btn",
+		"gallic_wars": "gallic_btn",
+		"civil_war": "civil_war_btn",
+	}
+	var selected := str(names.get(camp_id, ""))
+	for child in $VBoxContainer.get_children():
+		if child is Button:
+			if child.name == selected:
+				child.add_theme_color_override("font_color", Color.GOLD)
+				child.add_theme_color_override("font_hover_color", Color.GOLD)
+				child.add_theme_color_override("font_pressed_color", Color.GOLD)
+				child.add_theme_color_override("font_focus_color", Color.GOLD)
+				child.grab_focus()
+			else:
+				child.remove_theme_color_override("font_color")
+				child.remove_theme_color_override("font_hover_color")
+				child.remove_theme_color_override("font_pressed_color")
+				child.remove_theme_color_override("font_focus_color")
 
 
 func _apply_map() -> void:
@@ -219,103 +246,105 @@ func _on_dot_pressed(battle) -> void:
 	desc_title.text = battle.title
 	desc_label.text = battle.description
 	_update_modal_buttons()
-	modal_layer.visible = true
+	_layout_desc_card()
+	desc_layer.visible = true
 
 
 func _build_battle_modal() -> void:
-	modal_layer = CanvasLayer.new()
-	modal_layer.name = "battle_modal"
-	modal_layer.layer = 20
-	modal_layer.visible = false
-	add_child(modal_layer)
+	desc_layer = CanvasLayer.new()
+	desc_layer.name = "battle_desc"
+	desc_layer.layer = 20
+	desc_layer.visible = false
+	add_child(desc_layer)
 
-	var backdrop := ColorRect.new()
-	backdrop.name = "backdrop"
-	backdrop.set_anchors_preset(Control.PRESET_FULL_RECT)
-	backdrop.anchor_right = 1.0
-	backdrop.anchor_bottom = 1.0
-	backdrop.grow_horizontal = Control.GROW_DIRECTION_BOTH
-	backdrop.grow_vertical = Control.GROW_DIRECTION_BOTH
-	backdrop.color = Color(0, 0, 0, 0.92)
-	backdrop.mouse_filter = Control.MOUSE_FILTER_STOP
-	modal_layer.add_child(backdrop)
-
-	var center := CenterContainer.new()
-	center.set_anchors_preset(Control.PRESET_FULL_RECT)
-	center.anchor_right = 1.0
-	center.anchor_bottom = 1.0
-	center.grow_horizontal = Control.GROW_DIRECTION_BOTH
-	center.grow_vertical = Control.GROW_DIRECTION_BOTH
-	center.mouse_filter = Control.MOUSE_FILTER_IGNORE
-	modal_layer.add_child(center)
-
-	var card := PanelContainer.new()
-	card.custom_minimum_size = Vector2(560, 0)
-	center.add_child(card)
+	desc_card = Panel.new()
+	desc_card.mouse_filter = Control.MOUSE_FILTER_STOP
+	desc_card.clip_contents = true
+	var style := StyleBoxFlat.new()
+	style.bg_color = Color(0.1, 0.1, 0.12, 0.96)
+	style.content_margin_left = 4
+	style.content_margin_top = 4
+	style.content_margin_right = 4
+	style.content_margin_bottom = 4
+	desc_card.add_theme_stylebox_override("panel", style)
+	desc_layer.add_child(desc_card)
 
 	var margin := MarginContainer.new()
-	margin.add_theme_constant_override("margin_left", 24)
-	margin.add_theme_constant_override("margin_top", 20)
-	margin.add_theme_constant_override("margin_right", 24)
-	margin.add_theme_constant_override("margin_bottom", 20)
-	card.add_child(margin)
+	margin.add_theme_constant_override("margin_left", 16)
+	margin.add_theme_constant_override("margin_top", 16)
+	margin.add_theme_constant_override("margin_right", 16)
+	margin.add_theme_constant_override("margin_bottom", 16)
+	desc_card.add_child(margin)
+	margin.set_anchors_and_offsets_preset(Control.PRESET_FULL_RECT)
 
 	var vbox := VBoxContainer.new()
-	vbox.add_theme_constant_override("separation", 14)
+	vbox.add_theme_constant_override("separation", 12)
 	margin.add_child(vbox)
 
 	desc_title = Label.new()
 	desc_title.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	desc_title.horizontal_alignment = HORIZONTAL_ALIGNMENT_CENTER
-	desc_title.add_theme_font_size_override("font_size", 22)
+	desc_title.add_theme_font_size_override("font_size", 20)
 	vbox.add_child(desc_title)
 
 	desc_label = RichTextLabel.new()
 	desc_label.bbcode_enabled = false
-	desc_label.custom_minimum_size = Vector2(512, 160)
-	desc_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	desc_label.fit_content = false
 	desc_label.scroll_active = true
+	desc_label.size_flags_horizontal = Control.SIZE_EXPAND_FILL
+	desc_label.size_flags_vertical = Control.SIZE_EXPAND_FILL
+	desc_label.custom_minimum_size = Vector2(0, 80)
 	vbox.add_child(desc_label)
 
-	var spacer := Control.new()
-	spacer.custom_minimum_size = Vector2(0, 8)
-	vbox.add_child(spacer)
-
 	var btn_row := HBoxContainer.new()
-	btn_row.add_theme_constant_override("separation", 16)
+	btn_row.add_theme_constant_override("separation", 12)
 	btn_row.alignment = BoxContainer.ALIGNMENT_CENTER
 	vbox.add_child(btn_row)
 
 	start_btn = Button.new()
 	start_btn.text = "Start Battle"
-	start_btn.custom_minimum_size = Vector2(160, 44)
+	start_btn.custom_minimum_size = Vector2(0, 40)
+	start_btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	start_btn.pressed.connect(_on_start_pressed)
 	btn_row.add_child(start_btn)
 
 	restart_btn = Button.new()
 	restart_btn.text = "Restart"
-	restart_btn.custom_minimum_size = Vector2(160, 44)
+	restart_btn.custom_minimum_size = Vector2(0, 40)
+	restart_btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	restart_btn.visible = false
 	restart_btn.pressed.connect(_on_restart_pressed)
 	btn_row.add_child(restart_btn)
 
 	var close_btn := Button.new()
 	close_btn.text = "Close"
-	close_btn.custom_minimum_size = Vector2(160, 44)
+	close_btn.custom_minimum_size = Vector2(0, 40)
+	close_btn.size_flags_horizontal = Control.SIZE_EXPAND_FILL
 	close_btn.pressed.connect(_hide_desc)
 	btn_row.add_child(close_btn)
 
 
+func _layout_desc_card() -> void:
+	var vp := Vector2(
+		float(ProjectSettings.get_setting("display/window/size/viewport_width")),
+		float(ProjectSettings.get_setting("display/window/size/viewport_height"))
+	)
+	if vp.x <= 1.0 or vp.y <= 1.0:
+		vp = get_viewport().get_visible_rect().size
+	desc_card.position = Vector2(vp.x - DESC_WIDTH - DESC_MARGIN, DESC_MARGIN)
+	desc_card.size = Vector2(DESC_WIDTH, vp.y - DESC_MARGIN * 2.0)
+
+
 func close_battle_modal_if_open() -> bool:
-	if modal_layer and modal_layer.visible:
+	if desc_layer and desc_layer.visible:
 		_hide_desc()
 		return true
 	return false
 
 
 func _hide_desc() -> void:
-	if modal_layer:
-		modal_layer.visible = false
+	if desc_layer:
+		desc_layer.visible = false
 
 
 func _update_modal_buttons() -> void:
